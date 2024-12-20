@@ -154,7 +154,7 @@ def extract_data_from_content(content, data_points, links_scraped, url):
 
 def update_data(data_points, datas_update):
     """
-    Update the state with new data points found.
+    Update the state with new data points found and save to file.
 
     Args:
         data_points (list): The current data points state
@@ -192,7 +192,9 @@ def update_data(data_points, datas_update):
                         else:
                             obj["value"].extend(data_value)
 
-        return "data updated"
+        # Save interim updates to file
+        save_json_pretty(data_points, f"{entity_name}.json")
+        return "data updated and saved"
     except Exception as e:
         print("Unable to update data points")
         print(f"Exception: {e}")
@@ -260,9 +262,13 @@ def llama_parser(file_url, links_scraped):
 
 # Web scraping function
 @traceable(run_type="tool", name="Scrape")
+@retry(
+    wait=wait_random_exponential(multiplier=1, max=60),
+    stop=stop_after_attempt(3)
+)
 def scrape(url, data_points, links_scraped):
     """
-    Scrape a given URL and extract structured data.
+    Scrape a given URL and extract structured data with retry logic.
 
     Args:
     url (str): The URL to scrape.
@@ -275,7 +281,11 @@ def scrape(url, data_points, links_scraped):
     app = FirecrawlApp()
 
     try:
-        scraped_data = app.scrape_url(url)
+        # Add delay between requests to avoid overwhelming the server
+        time.sleep(2)
+        
+        # Set longer timeout in FirecrawlApp configuration if possible
+        scraped_data = app.scrape_url(url)  # Adjust timeout as needed
         markdown = scraped_data["markdown"][: (max_token * 2)]
         links_scraped.append(url)
 
@@ -283,9 +293,9 @@ def scrape(url, data_points, links_scraped):
 
         return extracted_data
     except Exception as e:
-        print("Unable to scrape the url")
+        print(f"Error scraping URL {url}")
         print(f"Exception: {e}")
-        return "Unable to scrape the url"
+        raise  # Re-raise the exception to trigger retry
 
 @traceable(run_type="llm", name="Agent chat completion")
 @retry(wait=wait_random_exponential(multiplier=1, max=40), stop=stop_after_attempt(3))
@@ -648,8 +658,8 @@ def save_json_pretty(data, filename):
 # REPLACE DATA BELOW FOR WEBSITE TO SCRAPE
 entity_name = "china_monthly_auto_sales_data"
 website = "http://www.myhomeok.com/xiaoliang/liebiao/80_30.htm" #landing page
-# website = "http://www.myhomeok.com/xiaoliang/changshang/67_86.htm"
-special_instruction = "This is a website that publish auto sales data by manufacturer in China. there are numerous links on the initial landing page. Each link links to separate webpage with sales data of a specific auto manufacturer, broken out by models, for a specific month. You should extract the sales data of the manufacturer's models and the total sales for that month. Only scrape the top 5 links on this page under 厂商销量, and before [第一页]. when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn. Do NOT translate data to english."
+monthly_sales_page = "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm"
+special_instruction = "This is a website that publish auto sales data by manufacturer in China. there are numerous links on the initial landing page. Each link links to separate webpage with sales data of a specific auto manufacturer, broken out by models, for a specific month. You should extract the sales data of the manufacturer's models and the total sales for that month. Only scrape links on this page under 厂商销量, and before [第一页]. when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn. Do NOT translate data to english."
 
 # REPLACE PYDANTIC MODEL BELOW TO DATA STRUCTURE YOU WANT TO EXTRACT
 class ModelSales(BaseModel):
@@ -671,11 +681,15 @@ data_keys = list(DataPoints.__fields__.keys())
 data_fields = DataPoints.__fields__
 
 data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
-# data = scrape(website, data_points, [])
-data = run_research(entity_name, website, data_points, special_instruction)
+sample = scrape(monthly_sales_page, data_points, [])
+sample_data = json.loads(sample)  # Parse the JSON string into a Python object
+sample_filename = "sample.json"
+save_json_pretty(sample_data, sample_filename)
 
-# Specify the filename
-filename = f"{entity_name}.json"
+# data = run_research(entity_name, website, data_points, special_instruction)
 
-# Save the data
-save_json_pretty(data_points, filename)
+# # Specify the filename
+# filename = f"{entity_name}.json"
+
+# # Save the data
+# save_json_pretty(data_points, filename)
