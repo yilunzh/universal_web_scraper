@@ -1,0 +1,443 @@
+[
+    {
+        "description": "The name of the restaurant of Gusto Italiano",
+        "name": "restaurant_name",
+        "reference": "http://www.gustoitaliano.co.nz",
+        "value": "Gusto Italiano"
+    },
+    {
+        "description": "The location of the Gusto Italiano",
+        "name": "location",
+        "reference": "http://www.gustoitaliano.co.nz",
+        "value": "263 Ponsonby Road, Three Lamps, Auckland"
+    },
+    {
+        "description": "The contact information of the restaurant Gusto Italiano",
+        "name": "contact",
+        "reference": "http://www.gustoitaliano.co.nz",
+        "value": "(09) 361 1556"
+    },
+    {
+        "description": "The opening hours of the restaurant Gusto Italiano",
+        "name": "opening_hours",
+        "reference": "http://www.gustoitaliano.co.nz",
+        "value": "Monday: Closed, Tue - Wed: 5:00 pm - 10:00 pm, Thu - Sun: 12:00 pm - 10:00 pm"
+    },
+    {
+        "description": "The menu of the restaurant Gusto Italiano, do NOT make things up, only provide information that you found; leave empty array if you cant find any;",
+        "name": "menus",
+        "reference": null,
+        "value": [
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "Parmesan cheese",
+                    "fresh basil"
+                ],
+                "item_name": "Margherita",
+                "prices": [
+                    {
+                        "price": 24.0,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 32.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "potato",
+                    "zucchini",
+                    "red onion",
+                    "fresh tomato",
+                    "mushroom"
+                ],
+                "item_name": "Vegetariano",
+                "prices": [
+                    {
+                        "price": 26.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 34.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "mussels",
+                    "squid",
+                    "prawns",
+                    "touch of chili",
+                    "garlic",
+                    "parsley",
+                    "basil",
+                    "extra virgin olive oil"
+                ],
+                "item_name": "Pescatore",
+                "prices": [
+                    {
+                        "price": 29.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 38.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "red onion",
+                    "cacciatore salami",
+                    "mushroom",
+                    "grana cheese",
+                    "garlic oil",
+                    "chili",
+                    "basil"
+                ],
+                "item_name": "Pizza Gustosa",
+                "prices": [
+                    {
+                        "price": 26.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 35.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "gorgonzola",
+                    "pecorino Romano",
+                    "parmesan"
+                ],
+                "item_name": "Quattro Formaggi",
+                "prices": [
+                    {
+                        "price": 25.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 34.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "smoked chicken",
+                    "almond pesto",
+                    "zucchini",
+                    "rocket"
+                ],
+                "item_name": "Pollo affumicato",
+                "prices": [
+                    {
+                        "price": 27.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 36.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "rocket",
+                    "Parmesan",
+                    "crudo ham"
+                ],
+                "item_name": "Tre signori",
+                "prices": [
+                    {
+                        "price": 28.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 38.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "ham",
+                    "artichokes",
+                    "mushrooms",
+                    "olives",
+                    "capers",
+                    "oregano"
+                ],
+                "item_name": "Capricciosa",
+                "prices": [
+                    {
+                        "price": 27.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 37.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "Gusto's bresaola",
+                    "mesclun",
+                    "sun-dried tomato",
+                    "basil",
+                    "evoo"
+                ],
+                "item_name": "The Angus",
+                "prices": [
+                    {
+                        "price": 28.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 38.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "chili",
+                    "capers",
+                    "anchovy",
+                    "black olives",
+                    "oregano",
+                    "garlic oil"
+                ],
+                "item_name": "Puttanesca",
+                "prices": [
+                    {
+                        "price": 25.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 34.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "red onion",
+                    "spicy salami",
+                    "olives",
+                    "nduja Calabria",
+                    "garlic oil",
+                    "chili"
+                ],
+                "item_name": "Diavolina",
+                "prices": [
+                    {
+                        "price": 27.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 36.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "ham",
+                    "mushrooms",
+                    "basil",
+                    "extra virgin olive oil"
+                ],
+                "item_name": "Calzone",
+                "prices": [
+                    {
+                        "price": 25.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 35.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "smoked chicken",
+                    "spicy salami",
+                    "ham",
+                    "homemade porchetta",
+                    "basil",
+                    "extra virgin olive oil"
+                ],
+                "item_name": "Amanti della carne",
+                "prices": [
+                    {
+                        "price": 26.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 35.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "olives",
+                    "fresh Buffalo mozzarella",
+                    "fresh tomato",
+                    "basil",
+                    "extra virgin olive oil"
+                ],
+                "item_name": "Bufalina",
+                "prices": [
+                    {
+                        "price": 29.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 38.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "tomato",
+                    "mozzarella",
+                    "pineapple",
+                    "ham"
+                ],
+                "item_name": "Hawaiian pizza",
+                "prices": [
+                    {
+                        "price": 25.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 34.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "mozzarella",
+                    "roasted potato",
+                    "homemade porchetta",
+                    "pecorino Romano"
+                ],
+                "item_name": "Pizza Porchetta",
+                "prices": [
+                    {
+                        "price": 26.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 35.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "ingredients": [
+                    "mozzarella",
+                    "mushroom",
+                    "truffle pesto",
+                    "truffle oil",
+                    "grana cheese"
+                ],
+                "item_name": "Dama Bianca",
+                "prices": [
+                    {
+                        "price": 26.5,
+                        "serving": "Medium"
+                    },
+                    {
+                        "price": 36.5,
+                        "serving": "Family"
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza"
+            },
+            {
+                "item_name": "Gluten-free base",
+                "prices": [
+                    {
+                        "price": 4.5
+                    }
+                ],
+                "reference": "https://lirp.cdn-website.com/info24/dms3rep/multi/opt/Wood+Fire+Pizza+2024-1920w.jpg",
+                "section_course": "Wood Fired Pizza Add-ons"
+            }
+        ]
+    }
+]
