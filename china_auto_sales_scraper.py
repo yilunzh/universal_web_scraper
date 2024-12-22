@@ -681,15 +681,15 @@ data_keys = list(DataPoints.__fields__.keys())
 data_fields = DataPoints.__fields__
 
 data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
-sample = scrape(monthly_sales_page, data_points, [])
-sample_data = json.loads(sample)  # Parse the JSON string into a Python object
-sample_filename = "sample.json"
-save_json_pretty(sample_data, sample_filename)
+# sample = scrape(monthly_sales_page, data_points, [])
+# sample_data = json.loads(sample)  # Parse the JSON string into a Python object
+# sample_filename = "sample.json"
+# save_json_pretty(sample_data, sample_filename)
 
-# data = run_research(entity_name, website, data_points, special_instruction)
+data = run_research(entity_name, website, data_points, special_instruction)
 
-# # Specify the filename
-# filename = f"{entity_name}.json"
+# Specify the filename
+filename = f"{entity_name}.json"
 
-# # Save the data
-# save_json_pretty(data_points, filename)
+# Save the data
+save_json_pretty(data_points, filename)
