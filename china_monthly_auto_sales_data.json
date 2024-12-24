@@ -1,22 +1,4933 @@
-[
-    {
-        "description": "A list of sales data grouped by manufacturer.",
-        "name": "manufacturers",
-        "reference": null,
-        "value": [
-            {
-                "manufacturer_name": "小米",
-                "models": [
-                    {
-                        "model_name": "小米SU7",
-                        "units_sold": 23156
-                    }
-                ],
-                "month": 11,
-                "reference": "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm",
-                "total_units_sold": 23156,
-                "year": 2024
-            }
-        ]
-    }
-]
+{
+    "description": "A list of sales data grouped by manufacturer.",
+    "name": "manufacturers",
+    "reference": null,
+    "value": [
+        {
+            "manufacturer_name": "比亚迪",
+            "models": [
+                {
+                    "model_name": "比亚迪海鸥",
+                    "units_sold": 56459
+                },
+                {
+                    "model_name": "比亚迪秦L DM-i",
+                    "units_sold": 50500
+                },
+                {
+                    "model_name": "比亚迪海豹06 DM-i",
+                    "units_sold": 40530
+                },
+                {
+                    "model_name": "比亚迪宋PLUS DM-i",
+                    "units_sold": 39054
+                },
+                {
+                    "model_name": "比亚迪元PLUS",
+                    "units_sold": 32498
+                },
+                {
+                    "model_name": "比亚迪宋Pro DM-i",
+                    "units_sold": 31784
+                },
+                {
+                    "model_name": "比亚迪宋L DM-i",
+                    "units_sold": 28100
+                },
+                {
+                    "model_name": "比亚迪秦PLUS DM-i",
+                    "units_sold": 27121
+                },
+                {
+                    "model_name": "比亚迪驱逐舰05",
+                    "units_sold": 24344
+                },
+                {
+                    "model_name": "比亚迪元UP",
+                    "units_sold": 24070
+                },
+                {
+                    "model_name": "比亚迪海豚",
+                    "units_sold": 21712
+                },
+                {
+                    "model_name": "比亚迪汉DM-i",
+                    "units_sold": 21121
+                },
+                {
+                    "model_name": "比亚迪宋PLUS EV",
+                    "units_sold": 16051
+                },
+                {
+                    "model_name": "比亚迪唐DM-i",
+                    "units_sold": 13560
+                },
+                {
+                    "model_name": "比亚迪海狮07 EV",
+                    "units_sold": 9375
+                },
+                {
+                    "model_name": "比亚迪汉EV",
+                    "units_sold": 9346
+                },
+                {
+                    "model_name": "比亚迪秦PLUS EV",
+                    "units_sold": 9240
+                },
+                {
+                    "model_name": "比亚迪海豹07 DM-i",
+                    "units_sold": 6700
+                },
+                {
+                    "model_name": "比亚迪海豹06GT",
+                    "units_sold": 6500
+                },
+                {
+                    "model_name": "比亚迪海狮05 DM-i",
+                    "units_sold": 5233
+                },
+                {
+                    "model_name": "比亚迪宋L EV",
+                    "units_sold": 3754
+                },
+                {
+                    "model_name": "比亚迪海豹",
+                    "units_sold": 2840
+                },
+                {
+                    "model_name": "比亚迪唐EV",
+                    "units_sold": 1850
+                },
+                {
+                    "model_name": "比亚迪e2",
+                    "units_sold": 570
+                },
+                {
+                    "model_name": "比亚迪护卫舰07",
+                    "units_sold": 451
+                },
+                {
+                    "model_name": "腾势N7",
+                    "units_sold": 345
+                },
+                {
+                    "model_name": "比亚迪秦EV",
+                    "units_sold": 185
+                },
+                {
+                    "model_name": "比亚迪元Pro",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪宋MAX新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪e3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪D1",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪海豹DM-i",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/10_86.htm",
+            "total_units_sold": 483293,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "奇瑞汽车",
+            "models": [
+                {
+                    "model_name": "奇瑞瑞虎8",
+                    "units_sold": 35691
+                },
+                {
+                    "model_name": "奇瑞瑞虎7",
+                    "units_sold": 33610
+                },
+                {
+                    "model_name": "捷途X70",
+                    "units_sold": 20048
+                },
+                {
+                    "model_name": "捷途旅行者",
+                    "units_sold": 17428
+                },
+                {
+                    "model_name": "奇瑞瑞虎5X",
+                    "units_sold": 14004
+                },
+                {
+                    "model_name": "奇瑞艾瑞泽8",
+                    "units_sold": 13871
+                },
+                {
+                    "model_name": "奇瑞瑞虎3x",
+                    "units_sold": 12929
+                },
+                {
+                    "model_name": "奇瑞欧萌达",
+                    "units_sold": 11438
+                },
+                {
+                    "model_name": "奇瑞风云T9",
+                    "units_sold": 10564
+                },
+                {
+                    "model_name": "奇瑞瑞虎9",
+                    "units_sold": 7993
+                },
+                {
+                    "model_name": "奇瑞艾瑞泽5",
+                    "units_sold": 7494
+                },
+                {
+                    "model_name": "捷途大圣",
+                    "units_sold": 7181
+                },
+                {
+                    "model_name": "捷途山海T2",
+                    "units_sold": 5956
+                },
+                {
+                    "model_name": "奇瑞瑞虎7 PLUS PHEV",
+                    "units_sold": 3908
+                },
+                {
+                    "model_name": "捷途X90",
+                    "units_sold": 3856
+                },
+                {
+                    "model_name": "捷途山海T1",
+                    "units_sold": 3642
+                },
+                {
+                    "model_name": "捷途山海L7",
+                    "units_sold": 2880
+                },
+                {
+                    "model_name": "奇瑞瑞虎9 C-DM",
+                    "units_sold": 2641
+                },
+                {
+                    "model_name": "奇瑞风云A8",
+                    "units_sold": 2619
+                },
+                {
+                    "model_name": "捷途山海L6",
+                    "units_sold": 1129
+                },
+                {
+                    "model_name": "奇瑞风云T10",
+                    "units_sold": 961
+                },
+                {
+                    "model_name": "捷途山海L9",
+                    "units_sold": 869
+                },
+                {
+                    "model_name": "奇瑞瑞虎3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奇瑞瑞虎8 PLUS鲲鹏e+",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "捷途X70S EV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "探索06 C-DM",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "探索06",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "捷途大圣i-DM",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奇瑞瑞虎8L",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/54_86.htm",
+            "total_units_sold": 220712,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "吉利汽车",
+            "models": [
+                {
+                    "model_name": "吉利星越L",
+                    "units_sold": 30507
+                },
+                {
+                    "model_name": "吉利博越L",
+                    "units_sold": 22345
+                },
+                {
+                    "model_name": "吉利星愿",
+                    "units_sold": 20038
+                },
+                {
+                    "model_name": "吉利熊猫",
+                    "units_sold": 19027
+                },
+                {
+                    "model_name": "吉利星瑞",
+                    "units_sold": 17838
+                },
+                {
+                    "model_name": "吉利缤越",
+                    "units_sold": 17782
+                },
+                {
+                    "model_name": "吉利帝豪",
+                    "units_sold": 16043
+                },
+                {
+                    "model_name": "吉利豪越",
+                    "units_sold": 3716
+                },
+                {
+                    "model_name": "吉利ICON",
+                    "units_sold": 3106
+                },
+                {
+                    "model_name": "吉利缤瑞",
+                    "units_sold": 2159
+                },
+                {
+                    "model_name": "吉利嘉际",
+                    "units_sold": 309
+                },
+                {
+                    "model_name": "吉利星瑞L",
+                    "units_sold": 195
+                },
+                {
+                    "model_name": "吉利帝豪L 雷神Hi·P",
+                    "units_sold": 130
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/42_86.htm",
+            "total_units_sold": 153195,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽大众",
+            "models": [
+                {
+                    "model_name": "大众朗逸",
+                    "units_sold": 31434
+                },
+                {
+                    "model_name": "大众帕萨特",
+                    "units_sold": 28163
+                },
+                {
+                    "model_name": "大众途观L",
+                    "units_sold": 22548
+                },
+                {
+                    "model_name": "大众途岳",
+                    "units_sold": 17253
+                },
+                {
+                    "model_name": "大众ID.3",
+                    "units_sold": 10416
+                },
+                {
+                    "model_name": "大众途昂",
+                    "units_sold": 5052
+                },
+                {
+                    "model_name": "大众凌渡",
+                    "units_sold": 4644
+                },
+                {
+                    "model_name": "大众ID.4 X",
+                    "units_sold": 3955
+                },
+                {
+                    "model_name": "大众威然",
+                    "units_sold": 1225
+                },
+                {
+                    "model_name": "大众途安",
+                    "units_sold": 499
+                },
+                {
+                    "model_name": "大众帕萨特新能源",
+                    "units_sold": 459
+                },
+                {
+                    "model_name": "大众POLO",
+                    "units_sold": 360
+                },
+                {
+                    "model_name": "大众ID.6 X",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "大众辉昂",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众桑塔纳",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众途观L新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众途铠T-Cross",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/56_86.htm",
+            "total_units_sold": 126010,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽通用五菱",
+            "models": [
+                {
+                    "model_name": "五菱宏光MINIEV",
+                    "units_sold": 37236
+                },
+                {
+                    "model_name": "五菱缤果",
+                    "units_sold": 36911
+                },
+                {
+                    "model_name": "五菱宏光",
+                    "units_sold": 10749
+                },
+                {
+                    "model_name": "五菱缤果PLUS",
+                    "units_sold": 8677
+                },
+                {
+                    "model_name": "五菱星光S PHEV",
+                    "units_sold": 7093
+                },
+                {
+                    "model_name": "五菱星光S EV",
+                    "units_sold": 3149
+                },
+                {
+                    "model_name": "宝骏云朵",
+                    "units_sold": 3038
+                },
+                {
+                    "model_name": "五菱佳辰",
+                    "units_sold": 3013
+                },
+                {
+                    "model_name": "宝骏云海EV",
+                    "units_sold": 2976
+                },
+                {
+                    "model_name": "五菱Air ev晴空",
+                    "units_sold": 1752
+                },
+                {
+                    "model_name": "五菱星驰",
+                    "units_sold": 1712
+                },
+                {
+                    "model_name": "宝骏云海PHEV",
+                    "units_sold": 1042
+                },
+                {
+                    "model_name": "五菱星辰",
+                    "units_sold": 915
+                },
+                {
+                    "model_name": "宝骏悦也Plus",
+                    "units_sold": 750
+                },
+                {
+                    "model_name": "五菱星光PHEV",
+                    "units_sold": 603
+                },
+                {
+                    "model_name": "五菱征程",
+                    "units_sold": 340
+                },
+                {
+                    "model_name": "五菱星光EV",
+                    "units_sold": 329
+                },
+                {
+                    "model_name": "宝骏悦也",
+                    "units_sold": 283
+                },
+                {
+                    "model_name": "宝骏KiWi EV",
+                    "units_sold": 27
+                },
+                {
+                    "model_name": "五菱凯捷",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "五菱星云",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/61_86.htm",
+            "total_units_sold": 120595,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安汽车",
+            "models": [
+                {
+                    "model_name": "长安CS75 PLUS",
+                    "units_sold": 31230
+                },
+                {
+                    "model_name": "长安Lumin",
+                    "units_sold": 17193
+                },
+                {
+                    "model_name": "长安逸动",
+                    "units_sold": 13326
+                },
+                {
+                    "model_name": "长安欧尚X5 PLUS",
+                    "units_sold": 9259
+                },
+                {
+                    "model_name": "长安CS55 PLUS",
+                    "units_sold": 8486
+                },
+                {
+                    "model_name": "长安欧尚X7 PLUS",
+                    "units_sold": 6567
+                },
+                {
+                    "model_name": "长安UNI-V",
+                    "units_sold": 6385
+                },
+                {
+                    "model_name": "长安UNI-Z PHEV",
+                    "units_sold": 5705
+                },
+                {
+                    "model_name": "长安UNI-Z",
+                    "units_sold": 5705
+                },
+                {
+                    "model_name": "长安CS35 PLUS",
+                    "units_sold": 3979
+                },
+                {
+                    "model_name": "长安欧诺",
+                    "units_sold": 1559
+                },
+                {
+                    "model_name": "长安欧尚Z6",
+                    "units_sold": 1419
+                },
+                {
+                    "model_name": "长安UNI-K",
+                    "units_sold": 1175
+                },
+                {
+                    "model_name": "长安逸达",
+                    "units_sold": 928
+                },
+                {
+                    "model_name": "长安UNI-T",
+                    "units_sold": 824
+                },
+                {
+                    "model_name": "长安锐程PLUS",
+                    "units_sold": 760
+                },
+                {
+                    "model_name": "长安欧尚Z6 iDD",
+                    "units_sold": 521
+                },
+                {
+                    "model_name": "长安UNI-V智电iDD",
+                    "units_sold": 383
+                },
+                {
+                    "model_name": "长安CS95",
+                    "units_sold": 277
+                },
+                {
+                    "model_name": "长安逸动EV",
+                    "units_sold": 110
+                },
+                {
+                    "model_name": "长安UNI-K 智电iDD",
+                    "units_sold": 38
+                },
+                {
+                    "model_name": "长安锐程CC",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS15",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安逸动DT",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安悦翔",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安奔奔E-Star",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS85 COUPE",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安欧尚X5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS75 PLUS 智电iDD",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/84_86.htm",
+            "total_units_sold": 115829,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长城汽车",
+            "models": [
+                {
+                    "model_name": "哈弗H6",
+                    "units_sold": 18753
+                },
+                {
+                    "model_name": "哈弗大狗",
+                    "units_sold": 17081
+                },
+                {
+                    "model_name": "哈弗猛龙PHEV",
+                    "units_sold": 11012
+                },
+                {
+                    "model_name": "坦克300",
+                    "units_sold": 7751
+                },
+                {
+                    "model_name": "魏牌蓝山",
+                    "units_sold": 6488
+                },
+                {
+                    "model_name": "哈弗M6",
+                    "units_sold": 6220
+                },
+                {
+                    "model_name": "欧拉好猫",
+                    "units_sold": 5441
+                },
+                {
+                    "model_name": "坦克400 Hi4-T",
+                    "units_sold": 5216
+                },
+                {
+                    "model_name": "坦克500 Hi4-T",
+                    "units_sold": 4790
+                },
+                {
+                    "model_name": "哈弗H9",
+                    "units_sold": 3719
+                },
+                {
+                    "model_name": "哈弗赤兔",
+                    "units_sold": 1775
+                },
+                {
+                    "model_name": "坦克500",
+                    "units_sold": 1370
+                },
+                {
+                    "model_name": "哈弗H5",
+                    "units_sold": 1275
+                },
+                {
+                    "model_name": "坦克700 Hi4-T",
+                    "units_sold": 1062
+                },
+                {
+                    "model_name": "哈弗二代大狗PHEV",
+                    "units_sold": 770
+                },
+                {
+                    "model_name": "魏牌高山",
+                    "units_sold": 347
+                },
+                {
+                    "model_name": "欧拉闪电猫",
+                    "units_sold": 215
+                },
+                {
+                    "model_name": "魏牌摩卡DHT-PHEV",
+                    "units_sold": 211
+                },
+                {
+                    "model_name": "欧拉芭蕾猫",
+                    "units_sold": 150
+                },
+                {
+                    "model_name": "哈弗H6新能源",
+                    "units_sold": 128
+                },
+                {
+                    "model_name": "哈弗枭龙MAX",
+                    "units_sold": 55
+                },
+                {
+                    "model_name": "哈弗F7",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "魏牌拿铁DHT-PHEV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "哈弗酷狗",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "哈弗神兽",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "魏牌玛奇朵DHT-PHEV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "坦克300 Hi4-T",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/85_86.htm",
+            "total_units_sold": 93829,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽丰田",
+            "models": [
+                {
+                    "model_name": "丰田RAV4",
+                    "units_sold": 24573
+                },
+                {
+                    "model_name": "丰田卡罗拉锐放",
+                    "units_sold": 19621
+                },
+                {
+                    "model_name": "丰田亚洲龙",
+                    "units_sold": 12186
+                },
+                {
+                    "model_name": "丰田卡罗拉",
+                    "units_sold": 11482
+                },
+                {
+                    "model_name": "丰田格瑞维亚",
+                    "units_sold": 9016
+                },
+                {
+                    "model_name": "丰田bZ3",
+                    "units_sold": 5674
+                },
+                {
+                    "model_name": "皇冠陆放",
+                    "units_sold": 5344
+                },
+                {
+                    "model_name": "丰田普拉多",
+                    "units_sold": 2910
+                },
+                {
+                    "model_name": "丰田凌放HARRIER",
+                    "units_sold": 1264
+                },
+                {
+                    "model_name": "丰田亚洲狮",
+                    "units_sold": 970
+                },
+                {
+                    "model_name": "丰田奕泽",
+                    "units_sold": 18
+                },
+                {
+                    "model_name": "丰田RAV4荣放双擎E+",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "丰田威驰",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "丰田威驰FS",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "丰田卡罗拉双擎E+",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "一汽丰田bZ4X",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/73_86.htm",
+            "total_units_sold": 93060,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽大众",
+            "models": [
+                {
+                    "model_name": "大众速腾",
+                    "units_sold": 24435
+                },
+                {
+                    "model_name": "大众探岳",
+                    "units_sold": 20356
+                },
+                {
+                    "model_name": "大众迈腾",
+                    "units_sold": 16943
+                },
+                {
+                    "model_name": "大众宝来",
+                    "units_sold": 10117
+                },
+                {
+                    "model_name": "大众探歌T-ROC",
+                    "units_sold": 5587
+                },
+                {
+                    "model_name": "大众揽巡",
+                    "units_sold": 4100
+                },
+                {
+                    "model_name": "大众高尔夫",
+                    "units_sold": 3112
+                },
+                {
+                    "model_name": "大众ID.4 CROZZ",
+                    "units_sold": 2991
+                },
+                {
+                    "model_name": "大众CC",
+                    "units_sold": 2464
+                },
+                {
+                    "model_name": "大众揽境",
+                    "units_sold": 1686
+                },
+                {
+                    "model_name": "大众探岳X",
+                    "units_sold": 509
+                },
+                {
+                    "model_name": "大众ID.7 VIZZION",
+                    "units_sold": 179
+                },
+                {
+                    "model_name": "大众ID.6 CROZZ",
+                    "units_sold": 94
+                },
+                {
+                    "model_name": "大众探影",
+                    "units_sold": 30
+                },
+                {
+                    "model_name": "大众迈腾GTE",
+                    "units_sold": 13
+                },
+                {
+                    "model_name": "大众探岳GTE",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/71_86.htm",
+            "total_units_sold": 92616,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "特斯拉",
+            "models": [
+                {
+                    "model_name": "特斯拉Model Y",
+                    "units_sold": 46595
+                },
+                {
+                    "model_name": "特斯拉 Model 3",
+                    "units_sold": 32261
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/104_86.htm",
+            "total_units_sold": 78856,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "广汽丰田",
+            "models": [
+                {
+                    "model_name": "丰田锋兰达",
+                    "units_sold": 19832
+                },
+                {
+                    "model_name": "丰田凯美瑞",
+                    "units_sold": 17679
+                },
+                {
+                    "model_name": "丰田威兰达",
+                    "units_sold": 15328
+                },
+                {
+                    "model_name": "丰田赛那SIENNA",
+                    "units_sold": 9432
+                },
+                {
+                    "model_name": "丰田汉兰达",
+                    "units_sold": 5907
+                },
+                {
+                    "model_name": "丰田雷凌",
+                    "units_sold": 3711
+                },
+                {
+                    "model_name": "丰田威飒",
+                    "units_sold": 596
+                },
+                {
+                    "model_name": "广汽丰田铂智4X",
+                    "units_sold": 425
+                },
+                {
+                    "model_name": "丰田凌尚",
+                    "units_sold": 89
+                },
+                {
+                    "model_name": "丰田C-HR",
+                    "units_sold": 1
+                },
+                {
+                    "model_name": "丰田C-HR EV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "广汽丰田iA5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "广汽丰田bZ4X",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "丰田威兰达新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/33_86.htm",
+            "total_units_sold": 73000,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽乘用车",
+            "models": [
+                {
+                    "model_name": "MG ZS",
+                    "units_sold": 19202
+                },
+                {
+                    "model_name": "MG5",
+                    "units_sold": 13175
+                },
+                {
+                    "model_name": "荣威i5",
+                    "units_sold": 9403
+                },
+                {
+                    "model_name": "荣威RX5",
+                    "units_sold": 8697
+                },
+                {
+                    "model_name": "MG4 EV",
+                    "units_sold": 3205
+                },
+                {
+                    "model_name": "荣威eRX5",
+                    "units_sold": 2547
+                },
+                {
+                    "model_name": "MG ES5",
+                    "units_sold": 2213
+                },
+                {
+                    "model_name": "MG7",
+                    "units_sold": 1987
+                },
+                {
+                    "model_name": "荣威D7 DMH",
+                    "units_sold": 1678
+                },
+                {
+                    "model_name": "荣威iMAX8 DMH",
+                    "units_sold": 589
+                },
+                {
+                    "model_name": "荣威D5X DMH",
+                    "units_sold": 482
+                },
+                {
+                    "model_name": "荣威i6 MAX新能源",
+                    "units_sold": 455
+                },
+                {
+                    "model_name": "荣威D7 EV",
+                    "units_sold": 423
+                },
+                {
+                    "model_name": "MG ONE",
+                    "units_sold": 353
+                },
+                {
+                    "model_name": "荣威RX9",
+                    "units_sold": 209
+                },
+                {
+                    "model_name": "荣威Ei5",
+                    "units_sold": 100
+                },
+                {
+                    "model_name": "荣威iMAX8",
+                    "units_sold": 77
+                },
+                {
+                    "model_name": "MG6",
+                    "units_sold": 25
+                },
+                {
+                    "model_name": "荣威iMAX8 EV",
+                    "units_sold": 24
+                },
+                {
+                    "model_name": "名爵6新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "荣威RX8",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "荣威RX3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "科莱威CLEVER",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "MG领航",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "MG领航 PHEV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "荣威鲸",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "MG Cyberster",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/57_86.htm",
+            "total_units_sold": 64844,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "华晨宝马",
+            "models": [
+                {
+                    "model_name": "宝马3系",
+                    "units_sold": 12610
+                },
+                {
+                    "model_name": "宝马X3",
+                    "units_sold": 10729
+                },
+                {
+                    "model_name": "宝马X5",
+                    "units_sold": 9805
+                },
+                {
+                    "model_name": "宝马5系",
+                    "units_sold": 9360
+                },
+                {
+                    "model_name": "宝马X1",
+                    "units_sold": 5410
+                },
+                {
+                    "model_name": "宝马iX3",
+                    "units_sold": 3506
+                },
+                {
+                    "model_name": "宝马i3",
+                    "units_sold": 2867
+                },
+                {
+                    "model_name": "宝马i5",
+                    "units_sold": 1152
+                },
+                {
+                    "model_name": "宝马iX1",
+                    "units_sold": 825
+                },
+                {
+                    "model_name": "宝马5系新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "宝马1系",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "宝马X2",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/38_86.htm",
+            "total_units_sold": 56264,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风日产",
+            "models": [
+                {
+                    "model_name": "日产轩逸",
+                    "units_sold": 29120
+                },
+                {
+                    "model_name": "日产逍客",
+                    "units_sold": 11009
+                },
+                {
+                    "model_name": "日产天籁",
+                    "units_sold": 7516
+                },
+                {
+                    "model_name": "日产奇骏",
+                    "units_sold": 3751
+                },
+                {
+                    "model_name": "启辰VX6",
+                    "units_sold": 1229
+                },
+                {
+                    "model_name": "日产探陆",
+                    "units_sold": 1104
+                },
+                {
+                    "model_name": "日产骐达",
+                    "units_sold": 481
+                },
+                {
+                    "model_name": "启辰大V DD-i超混动",
+                    "units_sold": 330
+                },
+                {
+                    "model_name": "日产劲客",
+                    "units_sold": 71
+                },
+                {
+                    "model_name": "日产蓝鸟",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "日产楼兰",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "日产奇骏·荣耀",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "日产ARIYA艾睿雅",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/19_86.htm",
+            "total_units_sold": 54611,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽大众奥迪",
+            "models": [
+                {
+                    "model_name": "奥迪Q5L",
+                    "units_sold": 14958
+                },
+                {
+                    "model_name": "奥迪A6L",
+                    "units_sold": 13379
+                },
+                {
+                    "model_name": "奥迪A4L",
+                    "units_sold": 9866
+                },
+                {
+                    "model_name": "奥迪A3",
+                    "units_sold": 5976
+                },
+                {
+                    "model_name": "奥迪Q3",
+                    "units_sold": 3718
+                },
+                {
+                    "model_name": "奥迪Q4 e-tron",
+                    "units_sold": 1205
+                },
+                {
+                    "model_name": "奥迪Q5L Sportback",
+                    "units_sold": 454
+                },
+                {
+                    "model_name": "奥迪Q2L",
+                    "units_sold": 315
+                },
+                {
+                    "model_name": "奥迪Q3 Sportback",
+                    "units_sold": 161
+                },
+                {
+                    "model_name": "奥迪A6L新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奥迪Q2L e-tron",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奥迪e-tron",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/72_86.htm",
+            "total_units_sold": 50032,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "理想汽车",
+            "models": [
+                {
+                    "model_name": "理想L6",
+                    "units_sold": 24318
+                },
+                {
+                    "model_name": "理想L7",
+                    "units_sold": 11067
+                },
+                {
+                    "model_name": "理想L8",
+                    "units_sold": 6383
+                },
+                {
+                    "model_name": "理想L9",
+                    "units_sold": 6112
+                },
+                {
+                    "model_name": "理想MEGA",
+                    "units_sold": 863
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/103_86.htm",
+            "total_units_sold": 48743,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北京奔驰",
+            "models": [
+                {
+                    "model_name": "奔驰E级",
+                    "units_sold": 14126
+                },
+                {
+                    "model_name": "奔驰GLC",
+                    "units_sold": 14001
+                },
+                {
+                    "model_name": "奔驰C级",
+                    "units_sold": 13200
+                },
+                {
+                    "model_name": "奔驰GLB",
+                    "units_sold": 3781
+                },
+                {
+                    "model_name": "奔驰A级",
+                    "units_sold": 1550
+                },
+                {
+                    "model_name": "奔驰GLA",
+                    "units_sold": 440
+                },
+                {
+                    "model_name": "奔驰EQE SUV",
+                    "units_sold": 348
+                },
+                {
+                    "model_name": "奔驰EQE",
+                    "units_sold": 285
+                },
+                {
+                    "model_name": "奔驰EQB",
+                    "units_sold": 214
+                },
+                {
+                    "model_name": "奔驰EQA",
+                    "units_sold": 155
+                },
+                {
+                    "model_name": "奔驰EQC",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奔驰C级PHEV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奔驰A级AMG",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奔驰E级新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/2_86.htm",
+            "total_units_sold": 48100,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "广汽传祺",
+            "models": [
+                {
+                    "model_name": "广汽传祺GS3",
+                    "units_sold": 12251
+                },
+                {
+                    "model_name": "广汽传祺E8 PHEV",
+                    "units_sold": 6400
+                },
+                {
+                    "model_name": "广汽传祺M8",
+                    "units_sold": 5136
+                },
+                {
+                    "model_name": "广汽传祺GS8",
+                    "units_sold": 5100
+                },
+                {
+                    "model_name": "广汽传祺M6",
+                    "units_sold": 4319
+                },
+                {
+                    "model_name": "广汽传祺影豹",
+                    "units_sold": 3842
+                },
+                {
+                    "model_name": "广汽传祺GS4",
+                    "units_sold": 2441
+                },
+                {
+                    "model_name": "广汽传祺影酷",
+                    "units_sold": 2053
+                },
+                {
+                    "model_name": "广汽传祺E9 PHEV",
+                    "units_sold": 1385
+                },
+                {
+                    "model_name": "广汽传祺ES9 PHEV",
+                    "units_sold": 631
+                },
+                {
+                    "model_name": "广汽传祺GA8",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "广汽传祺GA6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "广汽传祺GA4",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/31_86.htm",
+            "total_units_sold": 43558,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽通用别克",
+            "models": [
+                {
+                    "model_name": "别克昂科威",
+                    "units_sold": 19153
+                },
+                {
+                    "model_name": "别克GL8",
+                    "units_sold": 7751
+                },
+                {
+                    "model_name": "别克GL8 PHEV",
+                    "units_sold": 4852
+                },
+                {
+                    "model_name": "别克君越",
+                    "units_sold": 4481
+                },
+                {
+                    "model_name": "别克威朗",
+                    "units_sold": 2592
+                },
+                {
+                    "model_name": "别克微蓝6",
+                    "units_sold": 1322
+                },
+                {
+                    "model_name": "别克君威",
+                    "units_sold": 1188
+                },
+                {
+                    "model_name": "别克世纪",
+                    "units_sold": 1002
+                },
+                {
+                    "model_name": "别克E5",
+                    "units_sold": 7
+                },
+                {
+                    "model_name": "别克E4",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "别克昂扬",
+                    "units_sold": 1
+                },
+                {
+                    "model_name": "别克昂科拉",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "别克昂科拉GX",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "别克昂科旗",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/59_86.htm",
+            "total_units_sold": 42351,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "广汽埃安",
+            "models": [
+                {
+                    "model_name": "埃安AION RT",
+                    "units_sold": 11811
+                },
+                {
+                    "model_name": "埃安AION Y",
+                    "units_sold": 11408
+                },
+                {
+                    "model_name": "埃安AION S",
+                    "units_sold": 7965
+                },
+                {
+                    "model_name": "埃安AION V",
+                    "units_sold": 7401
+                },
+                {
+                    "model_name": "昊铂HT",
+                    "units_sold": 2697
+                },
+                {
+                    "model_name": "昊铂GT",
+                    "units_sold": 895
+                },
+                {
+                    "model_name": "埃安AION LX",
+                    "units_sold": 123
+                },
+                {
+                    "model_name": "昊铂SSR",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/35_86.htm",
+            "total_units_sold": 42300,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "零跑汽车",
+            "models": [
+                {
+                    "model_name": "零跑C11",
+                    "units_sold": 11260
+                },
+                {
+                    "model_name": "零跑C10",
+                    "units_sold": 9494
+                },
+                {
+                    "model_name": "零跑T03",
+                    "units_sold": 9126
+                },
+                {
+                    "model_name": "零跑C16",
+                    "units_sold": 7945
+                },
+                {
+                    "model_name": "零跑C01",
+                    "units_sold": 2344
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/109_86.htm",
+            "total_units_sold": 40169,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "广汽本田",
+            "models": [
+                {
+                    "model_name": "本田雅阁",
+                    "units_sold": 12415
+                },
+                {
+                    "model_name": "本田皓影",
+                    "units_sold": 11539
+                },
+                {
+                    "model_name": "本田型格",
+                    "units_sold": 6094
+                },
+                {
+                    "model_name": "本田奥德赛",
+                    "units_sold": 4751
+                },
+                {
+                    "model_name": "本田冠道",
+                    "units_sold": 1251
+                },
+                {
+                    "model_name": "本田雅阁 PHEV",
+                    "units_sold": 842
+                },
+                {
+                    "model_name": "本田飞度",
+                    "units_sold": 593
+                },
+                {
+                    "model_name": "本田凌派",
+                    "units_sold": 520
+                },
+                {
+                    "model_name": "本田缤智",
+                    "units_sold": 429
+                },
+                {
+                    "model_name": "本田e:NP2 极湃2",
+                    "units_sold": 392
+                },
+                {
+                    "model_name": "本田皓影新能源",
+                    "units_sold": 317
+                },
+                {
+                    "model_name": "理念VE-1",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "本田ZR-V致在",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "本田e:NP1 极湃1",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "广汽本田绎乐",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/30_86.htm",
+            "total_units_sold": 39143,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽红旗",
+            "models": [
+                {
+                    "model_name": "红旗H5",
+                    "units_sold": 16204
+                },
+                {
+                    "model_name": "红旗HS5",
+                    "units_sold": 6661
+                },
+                {
+                    "model_name": "红旗E-QM5",
+                    "units_sold": 5920
+                },
+                {
+                    "model_name": "红旗HS3",
+                    "units_sold": 3244
+                },
+                {
+                    "model_name": "红旗H6",
+                    "units_sold": 2000
+                },
+                {
+                    "model_name": "红旗HS7 PHEV",
+                    "units_sold": 868
+                },
+                {
+                    "model_name": "红旗HS3 PHEV",
+                    "units_sold": 694
+                },
+                {
+                    "model_name": "红旗EH7",
+                    "units_sold": 609
+                },
+                {
+                    "model_name": "红旗H9",
+                    "units_sold": 545
+                },
+                {
+                    "model_name": "红旗HS7",
+                    "units_sold": 347
+                },
+                {
+                    "model_name": "红旗HQ9 PHEV",
+                    "units_sold": 344
+                },
+                {
+                    "model_name": "红旗天工08",
+                    "units_sold": 59
+                },
+                {
+                    "model_name": "红旗E-HS9",
+                    "units_sold": 48
+                },
+                {
+                    "model_name": "红旗国耀LS7",
+                    "units_sold": 28
+                },
+                {
+                    "model_name": "红旗国雅",
+                    "units_sold": 9
+                },
+                {
+                    "model_name": "红旗国礼L5",
+                    "units_sold": 1
+                },
+                {
+                    "model_name": "红旗H7",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "红旗H5经典",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/75_86.htm",
+            "total_units_sold": 37581,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "深蓝汽车",
+            "models": [
+                {
+                    "model_name": "深蓝S07",
+                    "units_sold": 17746
+                },
+                {
+                    "model_name": "深蓝S05",
+                    "units_sold": 10171
+                },
+                {
+                    "model_name": "深蓝L07",
+                    "units_sold": 4589
+                },
+                {
+                    "model_name": "深蓝SL03",
+                    "units_sold": 3346
+                },
+                {
+                    "model_name": "深蓝G318",
+                    "units_sold": 1096
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/148_86.htm",
+            "total_units_sold": 36948,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "吉利",
+            "models": [
+                {
+                    "model_name": "吉利银河E5",
+                    "units_sold": 19010
+                },
+                {
+                    "model_name": "吉利银河L7",
+                    "units_sold": 7184
+                },
+                {
+                    "model_name": "吉利银河L6",
+                    "units_sold": 4214
+                },
+                {
+                    "model_name": "吉利银河E8",
+                    "units_sold": 3681
+                },
+                {
+                    "model_name": "吉利银河星舰7 EM-i",
+                    "units_sold": 800
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/130_86.htm",
+            "total_units_sold": 34889,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风本田",
+            "models": [
+                {
+                    "model_name": "本田CR-V",
+                    "units_sold": 20445
+                },
+                {
+                    "model_name": "本田思域",
+                    "units_sold": 6702
+                },
+                {
+                    "model_name": "本田英仕派",
+                    "units_sold": 1605
+                },
+                {
+                    "model_name": "本田艾力绅",
+                    "units_sold": 1460
+                },
+                {
+                    "model_name": "本田HR-V",
+                    "units_sold": 1061
+                },
+                {
+                    "model_name": "本田UR-V",
+                    "units_sold": 741
+                },
+                {
+                    "model_name": "本田XR-V",
+                    "units_sold": 655
+                },
+                {
+                    "model_name": "本田LIFE",
+                    "units_sold": 279
+                },
+                {
+                    "model_name": "本田e:NS1",
+                    "units_sold": 163
+                },
+                {
+                    "model_name": "本田CR-V新能源",
+                    "units_sold": 49
+                },
+                {
+                    "model_name": "灵悉L",
+                    "units_sold": 11
+                },
+                {
+                    "model_name": "本田猎光e:NS2",
+                    "units_sold": 6
+                },
+                {
+                    "model_name": "本田享域",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "东风本田M-NV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "本田英仕派 PHEV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/13_86.htm",
+            "total_units_sold": 33177,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "领克",
+            "models": [
+                {
+                    "model_name": "领克08 EM-P",
+                    "units_sold": 10023
+                },
+                {
+                    "model_name": "领克07 EM-P",
+                    "units_sold": 6148
+                },
+                {
+                    "model_name": "领克03",
+                    "units_sold": 5898
+                },
+                {
+                    "model_name": "领克06",
+                    "units_sold": 3613
+                },
+                {
+                    "model_name": "领克09",
+                    "units_sold": 2025
+                },
+                {
+                    "model_name": "领克01 PHEV",
+                    "units_sold": 1142
+                },
+                {
+                    "model_name": "领克Z10",
+                    "units_sold": 1099
+                },
+                {
+                    "model_name": "领克01",
+                    "units_sold": 1059
+                },
+                {
+                    "model_name": "领克06 EM-P",
+                    "units_sold": 827
+                },
+                {
+                    "model_name": "领克09 EM-P",
+                    "units_sold": 652
+                },
+                {
+                    "model_name": "领克Z20",
+                    "units_sold": 193
+                },
+                {
+                    "model_name": "领克05",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "领克05 EM-P",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/123_86.htm",
+            "total_units_sold": 32679,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "赛力斯",
+            "models": [
+                {
+                    "model_name": "问界M9",
+                    "units_sold": 16409
+                },
+                {
+                    "model_name": "问界M7",
+                    "units_sold": 13415
+                },
+                {
+                    "model_name": "问界M5",
+                    "units_sold": 2503
+                },
+                {
+                    "model_name": "赛力斯A5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "赛力斯SF5",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/111_86.htm",
+            "total_units_sold": 32327,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "小鹏汽车",
+            "models": [
+                {
+                    "model_name": "小鹏MONA M03",
+                    "units_sold": 11962
+                },
+                {
+                    "model_name": "小鹏G6",
+                    "units_sold": 7351
+                },
+                {
+                    "model_name": "小鹏P7+",
+                    "units_sold": 6950
+                },
+                {
+                    "model_name": "小鹏G9",
+                    "units_sold": 2594
+                },
+                {
+                    "model_name": "小鹏X9",
+                    "units_sold": 1451
+                },
+                {
+                    "model_name": "小鹏P7",
+                    "units_sold": 574
+                },
+                {
+                    "model_name": "小鹏P5",
+                    "units_sold": 9
+                },
+                {
+                    "model_name": "小鹏G3",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/91_86.htm",
+            "total_units_sold": 30891,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "极氪汽车",
+            "models": [
+                {
+                    "model_name": "极氪7X",
+                    "units_sold": 11112
+                },
+                {
+                    "model_name": "极氪001",
+                    "units_sold": 6603
+                },
+                {
+                    "model_name": "极氪009",
+                    "units_sold": 4201
+                },
+                {
+                    "model_name": "极氪007",
+                    "units_sold": 2472
+                },
+                {
+                    "model_name": "极氪X",
+                    "units_sold": 2074
+                },
+                {
+                    "model_name": "极氪MIX",
+                    "units_sold": 549
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/124_86.htm",
+            "total_units_sold": 27011,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "小米汽车",
+            "models": [
+                {
+                    "model_name": "小米SU7",
+                    "units_sold": 23156
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm",
+            "total_units_sold": 23156,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "起亚",
+            "models": [
+                {
+                    "model_name": "起亚赛图斯",
+                    "units_sold": 6496
+                },
+                {
+                    "model_name": "起亚焕驰",
+                    "units_sold": 6455
+                },
+                {
+                    "model_name": "起亚Sonet",
+                    "units_sold": 3378
+                },
+                {
+                    "model_name": "起亚狮铂拓界",
+                    "units_sold": 2792
+                },
+                {
+                    "model_name": "起亚奕跑",
+                    "units_sold": 1404
+                },
+                {
+                    "model_name": "起亚EV5",
+                    "units_sold": 821
+                },
+                {
+                    "model_name": "起亚K5",
+                    "units_sold": 484
+                },
+                {
+                    "model_name": "起亚智跑",
+                    "units_sold": 477
+                },
+                {
+                    "model_name": "起亚K3",
+                    "units_sold": 230
+                },
+                {
+                    "model_name": "起亚嘉华",
+                    "units_sold": 179
+                },
+                {
+                    "model_name": "起亚KX3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "起亚KX5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "起亚福瑞迪",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/24_86.htm",
+            "total_units_sold": 22716,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "蔚来汽车",
+            "models": [
+                {
+                    "model_name": "蔚来ES6",
+                    "units_sold": 5942
+                },
+                {
+                    "model_name": "乐道L60",
+                    "units_sold": 5082
+                },
+                {
+                    "model_name": "蔚来ET5T",
+                    "units_sold": 4142
+                },
+                {
+                    "model_name": "蔚来EC6",
+                    "units_sold": 2354
+                },
+                {
+                    "model_name": "蔚来ET5",
+                    "units_sold": 1875
+                },
+                {
+                    "model_name": "蔚来ES8",
+                    "units_sold": 572
+                },
+                {
+                    "model_name": "蔚来ET7",
+                    "units_sold": 411
+                },
+                {
+                    "model_name": "蔚来EC7",
+                    "units_sold": 187
+                },
+                {
+                    "model_name": "蔚来ES7",
+                    "units_sold": 10
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/67_86.htm",
+            "total_units_sold": 20575,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "沃尔沃亚太",
+            "models": [
+                {
+                    "model_name": "沃尔沃XC60",
+                    "units_sold": 5570
+                },
+                {
+                    "model_name": "沃尔沃EX30",
+                    "units_sold": 4614
+                },
+                {
+                    "model_name": "沃尔沃S90",
+                    "units_sold": 3035
+                },
+                {
+                    "model_name": "沃尔沃S60",
+                    "units_sold": 2920
+                },
+                {
+                    "model_name": "沃尔沃XC60 PHEV",
+                    "units_sold": 2197
+                },
+                {
+                    "model_name": "沃尔沃XC40",
+                    "units_sold": 496
+                },
+                {
+                    "model_name": "沃尔沃S90 PHEV",
+                    "units_sold": 365
+                },
+                {
+                    "model_name": "沃尔沃XC40 EV",
+                    "units_sold": 152
+                },
+                {
+                    "model_name": "沃尔沃EM90",
+                    "units_sold": 102
+                },
+                {
+                    "model_name": "沃尔沃C40 EV",
+                    "units_sold": 92
+                },
+                {
+                    "model_name": "沃尔沃S60 PHEV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/68_86.htm",
+            "total_units_sold": 19543,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安启源",
+            "models": [
+                {
+                    "model_name": "长安启源A07",
+                    "units_sold": 9022
+                },
+                {
+                    "model_name": "长安启源Q05",
+                    "units_sold": 5736
+                },
+                {
+                    "model_name": "长安启源A05",
+                    "units_sold": 3569
+                },
+                {
+                    "model_name": "长安启源E07",
+                    "units_sold": 171
+                },
+                {
+                    "model_name": "长安启源A06",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/142_86.htm",
+            "total_units_sold": 18498,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽奔腾",
+            "models": [
+                {
+                    "model_name": "奔腾小马",
+                    "units_sold": 13397
+                },
+                {
+                    "model_name": "奔腾B70",
+                    "units_sold": 2127
+                },
+                {
+                    "model_name": "奔腾T77",
+                    "units_sold": 687
+                },
+                {
+                    "model_name": "奔腾T90",
+                    "units_sold": 453
+                },
+                {
+                    "model_name": "奔腾NAT",
+                    "units_sold": 207
+                },
+                {
+                    "model_name": "奔腾M9",
+                    "units_sold": 46
+                },
+                {
+                    "model_name": "奔腾T99",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奔腾T55",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奔腾B70S",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/70_86.htm",
+            "total_units_sold": 16917,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "奇瑞新能源",
+            "models": [
+                {
+                    "model_name": "iCAR 03",
+                    "units_sold": 5655
+                },
+                {
+                    "model_name": "奇瑞小蚂蚁",
+                    "units_sold": 5640
+                },
+                {
+                    "model_name": "奇瑞QQ冰淇淋",
+                    "units_sold": 4233
+                },
+                {
+                    "model_name": "iCAR V23",
+                    "units_sold": 738
+                },
+                {
+                    "model_name": "奇瑞艾瑞泽e",
+                    "units_sold": 460
+                },
+                {
+                    "model_name": "奇瑞无界Pro",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/125_86.htm",
+            "total_units_sold": 16726,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北京现代",
+            "models": [
+                {
+                    "model_name": "现代伊兰特",
+                    "units_sold": 7652
+                },
+                {
+                    "model_name": "现代索纳塔",
+                    "units_sold": 3495
+                },
+                {
+                    "model_name": "现代途胜",
+                    "units_sold": 2085
+                },
+                {
+                    "model_name": "现代库斯途",
+                    "units_sold": 1516
+                },
+                {
+                    "model_name": "现代ix35",
+                    "units_sold": 1330
+                },
+                {
+                    "model_name": "现代全新胜达",
+                    "units_sold": 271
+                },
+                {
+                    "model_name": "现代名图",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "现代菲斯塔",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "现代悦动",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "现代名图新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "现代MUFASA沐飒",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/4_86.htm",
+            "total_units_sold": 16349,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "星途",
+            "models": [
+                {
+                    "model_name": "星途凌云",
+                    "units_sold": 3954
+                },
+                {
+                    "model_name": "星途瑶光",
+                    "units_sold": 2725
+                },
+                {
+                    "model_name": "星途星纪元ET",
+                    "units_sold": 2554
+                },
+                {
+                    "model_name": "星途揽月",
+                    "units_sold": 2544
+                },
+                {
+                    "model_name": "星途瑶光 C-DM",
+                    "units_sold": 2261
+                },
+                {
+                    "model_name": "星途追风",
+                    "units_sold": 1598
+                },
+                {
+                    "model_name": "星途星纪元ES",
+                    "units_sold": 214
+                },
+                {
+                    "model_name": "星途追风 C-DM",
+                    "units_sold": 50
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/150_86.htm",
+            "total_units_sold": 15900,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安福特",
+            "models": [
+                {
+                    "model_name": "福特蒙迪欧",
+                    "units_sold": 8839
+                },
+                {
+                    "model_name": "福特锐界",
+                    "units_sold": 4002
+                },
+                {
+                    "model_name": "福特探险者",
+                    "units_sold": 1700
+                },
+                {
+                    "model_name": "福特锐际",
+                    "units_sold": 807
+                },
+                {
+                    "model_name": "福特福克斯",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "福特锐际新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "福特EVOS",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/81_86.htm",
+            "total_units_sold": 15348,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风乘用车",
+            "models": [
+                {
+                    "model_name": "东风风神L7 PHEV",
+                    "units_sold": 4451
+                },
+                {
+                    "model_name": "eπ008",
+                    "units_sold": 4152
+                },
+                {
+                    "model_name": "eπ007",
+                    "units_sold": 3249
+                },
+                {
+                    "model_name": "东风风神皓瀚",
+                    "units_sold": 1530
+                },
+                {
+                    "model_name": "东风风神奕炫",
+                    "units_sold": 658
+                },
+                {
+                    "model_name": "东风风神皓极",
+                    "units_sold": 465
+                },
+                {
+                    "model_name": "东风风神E70",
+                    "units_sold": 229
+                },
+                {
+                    "model_name": "东风风神AX7",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/15_86.htm",
+            "total_units_sold": 14734,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "阿维塔科技",
+            "models": [
+                {
+                    "model_name": "阿维塔 07",
+                    "units_sold": 9657
+                },
+                {
+                    "model_name": "阿维塔 12",
+                    "units_sold": 3615
+                },
+                {
+                    "model_name": "阿维塔 11",
+                    "units_sold": 924
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/136_86.htm",
+            "total_units_sold": 14196,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽大众捷达",
+            "models": [
+                {
+                    "model_name": "捷达VS5",
+                    "units_sold": 9237
+                },
+                {
+                    "model_name": "捷达VS7",
+                    "units_sold": 2652
+                },
+                {
+                    "model_name": "捷达VA3",
+                    "units_sold": 1518
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/99_86.htm",
+            "total_units_sold": 13407,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北汽新能源",
+            "models": [
+                {
+                    "model_name": "极狐 阿尔法S5",
+                    "units_sold": 4459
+                },
+                {
+                    "model_name": "极狐 阿尔法T5",
+                    "units_sold": 4310
+                },
+                {
+                    "model_name": "极狐考拉",
+                    "units_sold": 2126
+                },
+                {
+                    "model_name": "享界S9",
+                    "units_sold": 1058
+                },
+                {
+                    "model_name": "极狐ARCFOX αS",
+                    "units_sold": 196
+                },
+                {
+                    "model_name": "极狐ARCFOX αT",
+                    "units_sold": 31
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/6_86.htm",
+            "total_units_sold": 12180,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽通用凯迪拉克",
+            "models": [
+                {
+                    "model_name": "凯迪拉克XT5",
+                    "units_sold": 5665
+                },
+                {
+                    "model_name": "凯迪拉克CT5",
+                    "units_sold": 4937
+                },
+                {
+                    "model_name": "凯迪拉克XT6",
+                    "units_sold": 695
+                },
+                {
+                    "model_name": "凯迪拉克CT6",
+                    "units_sold": 179
+                },
+                {
+                    "model_name": "凯迪拉克IQ傲歌",
+                    "units_sold": 61
+                },
+                {
+                    "model_name": "凯迪拉克LYRIQ锐歌",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "凯迪拉克XT4",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "凯迪拉克CT4",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "凯迪拉克GT4",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/60_86.htm",
+            "total_units_sold": 11539,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "智界汽车",
+            "models": [
+                {
+                    "model_name": "智界R7",
+                    "units_sold": 11086
+                },
+                {
+                    "model_name": "智界S7",
+                    "units_sold": 315
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/147_86.htm",
+            "total_units_sold": 11401,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "岚图汽车",
+            "models": [
+                {
+                    "model_name": "岚图梦想家PHEV",
+                    "units_sold": 7498
+                },
+                {
+                    "model_name": "岚图知音",
+                    "units_sold": 1347
+                },
+                {
+                    "model_name": "岚图FREE",
+                    "units_sold": 1102
+                },
+                {
+                    "model_name": "岚图梦想家 EV",
+                    "units_sold": 541
+                },
+                {
+                    "model_name": "岚图追光 PHEV",
+                    "units_sold": 268
+                },
+                {
+                    "model_name": "岚图追光 EV",
+                    "units_sold": 100
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/119_86.htm",
+            "total_units_sold": 10856,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "智己汽车",
+            "models": [
+                {
+                    "model_name": "智己LS6",
+                    "units_sold": 7329
+                },
+                {
+                    "model_name": "智己L6",
+                    "units_sold": 1359
+                },
+                {
+                    "model_name": "智己LS7",
+                    "units_sold": 1302
+                },
+                {
+                    "model_name": "智己L7",
+                    "units_sold": 17
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/134_86.htm",
+            "total_units_sold": 10007,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "腾势汽车",
+            "models": [
+                {
+                    "model_name": "腾势D9 DM-i",
+                    "units_sold": 5795
+                },
+                {
+                    "model_name": "腾势Z9GT DM-i",
+                    "units_sold": 2846
+                },
+                {
+                    "model_name": "腾势Z9GT EV",
+                    "units_sold": 711
+                },
+                {
+                    "model_name": "腾势D9 EV",
+                    "units_sold": 305
+                },
+                {
+                    "model_name": "腾势N8 DM",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/64_86.htm",
+            "total_units_sold": 9657,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安林肯",
+            "models": [
+                {
+                    "model_name": "林肯航海家",
+                    "units_sold": 7067
+                },
+                {
+                    "model_name": "林肯Z",
+                    "units_sold": 1395
+                },
+                {
+                    "model_name": "林肯冒险家",
+                    "units_sold": 628
+                },
+                {
+                    "model_name": "林肯飞行家",
+                    "units_sold": 262
+                },
+                {
+                    "model_name": "林肯冒险家PHEV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/105_86.htm",
+            "total_units_sold": 9352,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北京汽车",
+            "models": [
+                {
+                    "model_name": "北京BJ40",
+                    "units_sold": 3993
+                },
+                {
+                    "model_name": "北京EU5",
+                    "units_sold": 3784
+                },
+                {
+                    "model_name": "北京BJ60",
+                    "units_sold": 654
+                },
+                {
+                    "model_name": "北京X7",
+                    "units_sold": 475
+                },
+                {
+                    "model_name": "北汽魔方",
+                    "units_sold": 258
+                },
+                {
+                    "model_name": "北京BJ80",
+                    "units_sold": 4
+                },
+                {
+                    "model_name": "北京BJ90",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "北京X3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "北京X7 PHEV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/3_86.htm",
+            "total_units_sold": 9168,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安马自达",
+            "models": [
+                {
+                    "model_name": "马自达CX-5",
+                    "units_sold": 3275
+                },
+                {
+                    "model_name": "马自达EZ-6",
+                    "units_sold": 2445
+                },
+                {
+                    "model_name": "马自达3昂克赛拉",
+                    "units_sold": 2334
+                },
+                {
+                    "model_name": "马自达CX-50行也",
+                    "units_sold": 592
+                },
+                {
+                    "model_name": "马自达CX-30",
+                    "units_sold": 402
+                },
+                {
+                    "model_name": "马自达CX-8",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "马自达CX-30 EV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/83_86.htm",
+            "total_units_sold": 9048,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "方程豹",
+            "models": [
+                {
+                    "model_name": "豹5",
+                    "units_sold": 6058
+                },
+                {
+                    "model_name": "豹8",
+                    "units_sold": 2463
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/145_86.htm",
+            "total_units_sold": 8521,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风风行",
+            "models": [
+                {
+                    "model_name": "风行星海S7",
+                    "units_sold": 2233
+                },
+                {
+                    "model_name": "东风风行菱智",
+                    "units_sold": 2051
+                },
+                {
+                    "model_name": "东风风行T5",
+                    "units_sold": 2015
+                },
+                {
+                    "model_name": "东风风行T5 EVO",
+                    "units_sold": 544
+                },
+                {
+                    "model_name": "东风风行景逸S50新能源",
+                    "units_sold": 521
+                },
+                {
+                    "model_name": "东风风行星海V9",
+                    "units_sold": 337
+                },
+                {
+                    "model_name": "东风风行游艇",
+                    "units_sold": 191
+                },
+                {
+                    "model_name": "东风风行菱智新能源",
+                    "units_sold": 173
+                },
+                {
+                    "model_name": "东风风行景逸S50",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "风行雷霆",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/16_86.htm",
+            "total_units_sold": 8065,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风汽车",
+            "models": [
+                {
+                    "model_name": "纳米01",
+                    "units_sold": 7000
+                },
+                {
+                    "model_name": "纳米BOX",
+                    "units_sold": 100
+                },
+                {
+                    "model_name": "纳米EX1",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/94_86.htm",
+            "total_units_sold": 7100,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "睿蓝汽车",
+            "models": [
+                {
+                    "model_name": "睿蓝X3 PRO",
+                    "units_sold": 6286
+                },
+                {
+                    "model_name": "睿蓝7",
+                    "units_sold": 426
+                },
+                {
+                    "model_name": "枫叶60s",
+                    "units_sold": 214
+                },
+                {
+                    "model_name": "睿蓝8",
+                    "units_sold": 101
+                },
+                {
+                    "model_name": "枫叶80V",
+                    "units_sold": 30
+                },
+                {
+                    "model_name": "睿蓝9",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/114_86.htm",
+            "total_units_sold": 7057,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北京越野",
+            "models": [
+                {
+                    "model_name": "北京BJ30",
+                    "units_sold": 6756
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/107_86.htm",
+            "total_units_sold": 6756,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "江淮汽车",
+            "models": [
+                {
+                    "model_name": "江淮X8 PLUS",
+                    "units_sold": 5861
+                },
+                {
+                    "model_name": "思皓E10X花仙子",
+                    "units_sold": 530
+                },
+                {
+                    "model_name": "江淮爱跑",
+                    "units_sold": 147
+                },
+                {
+                    "model_name": "思皓X8 PLUS",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "思皓A5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "思皓X8",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/113_86.htm",
+            "total_units_sold": 6538,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "凯翼汽车",
+            "models": [
+                {
+                    "model_name": "凯翼轩度",
+                    "units_sold": 1804
+                },
+                {
+                    "model_name": "凯翼昆仑iHD",
+                    "units_sold": 1713
+                },
+                {
+                    "model_name": "凯翼炫界",
+                    "units_sold": 1118
+                },
+                {
+                    "model_name": "凯翼拾月",
+                    "units_sold": 950
+                },
+                {
+                    "model_name": "凯翼昆仑",
+                    "units_sold": 555
+                },
+                {
+                    "model_name": "凯翼炫界EV",
+                    "units_sold": 57
+                },
+                {
+                    "model_name": "凯翼X3",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/47_86.htm",
+            "total_units_sold": 6197,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "江汽集团",
+            "models": [
+                {
+                    "model_name": "江淮A5 PLUS",
+                    "units_sold": 2553
+                },
+                {
+                    "model_name": "江淮钇为3",
+                    "units_sold": 1893
+                },
+                {
+                    "model_name": "瑞风M3",
+                    "units_sold": 858
+                },
+                {
+                    "model_name": "江淮QX PHEV",
+                    "units_sold": 152
+                },
+                {
+                    "model_name": "瑞风RF8 PHEV",
+                    "units_sold": 140
+                },
+                {
+                    "model_name": "瑞风E3",
+                    "units_sold": 97
+                },
+                {
+                    "model_name": "江淮X8 E家",
+                    "units_sold": 77
+                },
+                {
+                    "model_name": "瑞风RF8",
+                    "units_sold": 63
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/43_86.htm",
+            "total_units_sold": 5833,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "赛力斯蓝电",
+            "models": [
+                {
+                    "model_name": "蓝电E5",
+                    "units_sold": 4868
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/140_86.htm",
+            "total_units_sold": 4868,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽奥迪",
+            "models": [
+                {
+                    "model_name": "奥迪A7L",
+                    "units_sold": 3475
+                },
+                {
+                    "model_name": "奥迪Q5 e-tron",
+                    "units_sold": 1000
+                },
+                {
+                    "model_name": "奥迪Q6",
+                    "units_sold": 325
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/129_86.htm",
+            "total_units_sold": 4800,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "smart",
+            "models": [
+                {
+                    "model_name": "smart精灵#1",
+                    "units_sold": 2644
+                },
+                {
+                    "model_name": "smart精灵#3",
+                    "units_sold": 1621
+                },
+                {
+                    "model_name": "smart精灵#5",
+                    "units_sold": 300
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/138_86.htm",
+            "total_units_sold": 4565,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "雷诺 江铃集团",
+            "models": [
+                {
+                    "model_name": "小麒麟",
+                    "units_sold": 3186
+                },
+                {
+                    "model_name": "雷诺江铃羿",
+                    "units_sold": 189
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/121_86.htm",
+            "total_units_sold": 3375,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风小康",
+            "models": [
+                {
+                    "model_name": "东风风光ix5",
+                    "units_sold": 1200
+                },
+                {
+                    "model_name": "东风风光580",
+                    "units_sold": 684
+                },
+                {
+                    "model_name": "东风风光500",
+                    "units_sold": 470
+                },
+                {
+                    "model_name": "东风风光330",
+                    "units_sold": 459
+                },
+                {
+                    "model_name": "东风风光380",
+                    "units_sold": 297
+                },
+                {
+                    "model_name": "东风风光S560",
+                    "units_sold": 176
+                },
+                {
+                    "model_name": "风光MINI EV",
+                    "units_sold": 20
+                },
+                {
+                    "model_name": "东风风光ix7",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/22_86.htm",
+            "total_units_sold": 3306,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽大通",
+            "models": [
+                {
+                    "model_name": "上汽MAXUS G50",
+                    "units_sold": 1167
+                },
+                {
+                    "model_name": "上汽MAXUS G10",
+                    "units_sold": 548
+                },
+                {
+                    "model_name": "上汽大通 领地",
+                    "units_sold": 361
+                },
+                {
+                    "model_name": "上汽大通 大家7超混",
+                    "units_sold": 353
+                },
+                {
+                    "model_name": "上汽MAXUS 大家9",
+                    "units_sold": 205
+                },
+                {
+                    "model_name": "上汽MAXUS G90",
+                    "units_sold": 88
+                },
+                {
+                    "model_name": "上汽大通 大家9超混",
+                    "units_sold": 80
+                },
+                {
+                    "model_name": "上汽大通 大家7",
+                    "units_sold": 77
+                },
+                {
+                    "model_name": "上汽大通G70",
+                    "units_sold": 51
+                },
+                {
+                    "model_name": "上汽大通 大家5",
+                    "units_sold": 29
+                },
+                {
+                    "model_name": "大通大家5 PLUG IN",
+                    "units_sold": 9
+                },
+                {
+                    "model_name": "上汽大通 大家MIFA氢",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "上汽MAXUS D90",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "上汽MAXUS EUNIQ 6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "上汽MAXUS D60",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "上汽大通G20",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/55_86.htm",
+            "total_units_sold": 2970,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "江铃福特",
+            "models": [
+                {
+                    "model_name": "福特领睿",
+                    "units_sold": 1714
+                },
+                {
+                    "model_name": "福特烈马",
+                    "units_sold": 880
+                },
+                {
+                    "model_name": "福特领裕",
+                    "units_sold": 309
+                },
+                {
+                    "model_name": "福特途睿欧",
+                    "units_sold": 58
+                },
+                {
+                    "model_name": "福特撼路者",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "福特领界",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/44_86.htm",
+            "total_units_sold": 2961,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风雪铁龙",
+            "models": [
+                {
+                    "model_name": "雪铁龙凡尔赛C5 X",
+                    "units_sold": 2208
+                },
+                {
+                    "model_name": "雪铁龙天逸",
+                    "units_sold": 218
+                },
+                {
+                    "model_name": "雪铁龙C3-XR",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪铁龙C6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪铁龙天逸新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/20_86.htm",
+            "total_units_sold": 2426,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "华晨鑫源",
+            "models": [
+                {
+                    "model_name": "SRM鑫源金海狮",
+                    "units_sold": 2247
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/39_86.htm",
+            "total_units_sold": 2247,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "知豆电动车",
+            "models": [
+                {
+                    "model_name": "知豆彩虹",
+                    "units_sold": 2200
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/87_86.htm",
+            "total_units_sold": 2200,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "奇瑞捷豹路虎",
+            "models": [
+                {
+                    "model_name": "路虎揽胜极光",
+                    "units_sold": 1331
+                },
+                {
+                    "model_name": "路虎发现运动版",
+                    "units_sold": 672
+                },
+                {
+                    "model_name": "捷豹E-PACE",
+                    "units_sold": 73
+                },
+                {
+                    "model_name": "捷豹XFL",
+                    "units_sold": 12
+                },
+                {
+                    "model_name": "捷豹XEL",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "路虎发现运动版新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "路虎揽胜极光新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/53_86.htm",
+            "total_units_sold": 2088,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风启辰",
+            "models": [
+                {
+                    "model_name": "启辰D60",
+                    "units_sold": 1449
+                },
+                {
+                    "model_name": "启辰大V",
+                    "units_sold": 457
+                },
+                {
+                    "model_name": "启辰D60新能源",
+                    "units_sold": 105
+                },
+                {
+                    "model_name": "启辰星",
+                    "units_sold": 30
+                },
+                {
+                    "model_name": "启辰T60",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "启辰T60新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/18_86.htm",
+            "total_units_sold": 2041,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "极越",
+            "models": [
+                {
+                    "model_name": "极越07",
+                    "units_sold": 1030
+                },
+                {
+                    "model_name": "极越01",
+                    "units_sold": 902
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/149_86.htm",
+            "total_units_sold": 1932,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "合众新能源",
+            "models": [
+                {
+                    "model_name": "哪吒X",
+                    "units_sold": 878
+                },
+                {
+                    "model_name": "哪吒AYA",
+                    "units_sold": 545
+                },
+                {
+                    "model_name": "哪吒L",
+                    "units_sold": 201
+                },
+                {
+                    "model_name": "哪吒S",
+                    "units_sold": 177
+                },
+                {
+                    "model_name": "哪吒U",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "哪吒GT",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/95_86.htm",
+            "total_units_sold": 1801,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "北汽制造",
+            "models": [
+                {
+                    "model_name": "北汽锐胜王牌M7",
+                    "units_sold": 1502
+                },
+                {
+                    "model_name": "北汽元宝",
+                    "units_sold": 142
+                },
+                {
+                    "model_name": "北汽制造勇士",
+                    "units_sold": 123
+                },
+                {
+                    "model_name": "北汽家宝",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "北汽制造212",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/8_86.htm",
+            "total_units_sold": 1767,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽斯柯达",
+            "models": [
+                {
+                    "model_name": "斯柯达速派",
+                    "units_sold": 1027
+                },
+                {
+                    "model_name": "斯柯达柯米克",
+                    "units_sold": 242
+                },
+                {
+                    "model_name": "斯柯达柯珞克",
+                    "units_sold": 184
+                },
+                {
+                    "model_name": "斯柯达柯迪亚克",
+                    "units_sold": 183
+                },
+                {
+                    "model_name": "斯柯达明锐",
+                    "units_sold": 74
+                },
+                {
+                    "model_name": "斯柯达昕锐",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/58_86.htm",
+            "total_units_sold": 1710,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "Polestar",
+            "models": [
+                {
+                    "model_name": "Polestar 4",
+                    "units_sold": 1182
+                },
+                {
+                    "model_name": "Polestar 3",
+                    "units_sold": 419
+                },
+                {
+                    "model_name": "Polestar 2",
+                    "units_sold": 55
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/151_86.htm",
+            "total_units_sold": 1656,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "二一二",
+            "models": [
+                {
+                    "model_name": "212 T01",
+                    "units_sold": 1425
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/155_86.htm",
+            "total_units_sold": 1425,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "曹操汽车",
+            "models": [
+                {
+                    "model_name": "曹操60",
+                    "units_sold": 1371
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/141_86.htm",
+            "total_units_sold": 1371,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "几何汽车",
+            "models": [
+                {
+                    "model_name": "几何A",
+                    "units_sold": 1101
+                },
+                {
+                    "model_name": "几何E",
+                    "units_sold": 130
+                },
+                {
+                    "model_name": "几何C",
+                    "units_sold": 40
+                },
+                {
+                    "model_name": "几何G6",
+                    "units_sold": 3
+                },
+                {
+                    "model_name": "几何M6",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/126_86.htm",
+            "total_units_sold": 1274,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "江铃汽车",
+            "models": [
+                {
+                    "model_name": "江铃易至EV3",
+                    "units_sold": 1256
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/45_86.htm",
+            "total_units_sold": 1256,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "吉麦新能源",
+            "models": [
+                {
+                    "model_name": "凌宝BOX",
+                    "units_sold": 906
+                },
+                {
+                    "model_name": "凌宝Uni",
+                    "units_sold": 293
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/112_86.htm",
+            "total_units_sold": 1199,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风标致",
+            "models": [
+                {
+                    "model_name": "标致408",
+                    "units_sold": 763
+                },
+                {
+                    "model_name": "标致508",
+                    "units_sold": 140
+                },
+                {
+                    "model_name": "标致4008",
+                    "units_sold": 121
+                },
+                {
+                    "model_name": "标致408X",
+                    "units_sold": 64
+                },
+                {
+                    "model_name": "标致5008",
+                    "units_sold": 40
+                },
+                {
+                    "model_name": "标致2008",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "标致508L新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "标致4008新能源",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/14_86.htm",
+            "total_units_sold": 1128,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "福建戴姆勒",
+            "models": [
+                {
+                    "model_name": "奔驰V级",
+                    "units_sold": 565
+                },
+                {
+                    "model_name": "奔驰威霆",
+                    "units_sold": 417
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/26_86.htm",
+            "total_units_sold": 982,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "飞凡汽车",
+            "models": [
+                {
+                    "model_name": "飞凡R7",
+                    "units_sold": 606
+                },
+                {
+                    "model_name": "飞凡F7",
+                    "units_sold": 276
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/135_86.htm",
+            "total_units_sold": 882,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽通用雪佛兰",
+            "models": [
+                {
+                    "model_name": "探界者Plus",
+                    "units_sold": 405
+                },
+                {
+                    "model_name": "雪佛兰创酷",
+                    "units_sold": 250
+                },
+                {
+                    "model_name": "雪佛兰科鲁泽",
+                    "units_sold": 82
+                },
+                {
+                    "model_name": "雪佛兰开拓者",
+                    "units_sold": 15
+                },
+                {
+                    "model_name": "雪佛兰星迈罗",
+                    "units_sold": 1
+                },
+                {
+                    "model_name": "雪佛兰沃兰多",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪佛兰迈锐宝XL",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪佛兰探界者",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪佛兰畅巡",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "雪佛兰创界",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/62_86.htm",
+            "total_units_sold": 753,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "极石汽车",
+            "models": [
+                {
+                    "model_name": "极石01",
+                    "units_sold": 650
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/144_86.htm",
+            "total_units_sold": 650,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "斯威汽车",
+            "models": [
+                {
+                    "model_name": "斯威大虎",
+                    "units_sold": 258
+                },
+                {
+                    "model_name": "斯威G05",
+                    "units_sold": 138
+                },
+                {
+                    "model_name": "斯威G01",
+                    "units_sold": 135
+                },
+                {
+                    "model_name": "斯威X3",
+                    "units_sold": 12
+                },
+                {
+                    "model_name": "斯威X7",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/63_86.htm",
+            "total_units_sold": 543,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "LEVC",
+            "models": [
+                {
+                    "model_name": "翼真L380",
+                    "units_sold": 401
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/154_86.htm",
+            "total_units_sold": 401,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "创维汽车",
+            "models": [
+                {
+                    "model_name": "创维HT-i",
+                    "units_sold": 171
+                },
+                {
+                    "model_name": "创维EV6",
+                    "units_sold": 113
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/117_86.htm",
+            "total_units_sold": 284,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "仰望",
+            "models": [
+                {
+                    "model_name": "仰望U8",
+                    "units_sold": 278
+                },
+                {
+                    "model_name": "仰望U9",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/146_86.htm",
+            "total_units_sold": 278,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "中国重汽VGV",
+            "models": [
+                {
+                    "model_name": "中国重汽VGV U70 PRO",
+                    "units_sold": 272
+                },
+                {
+                    "model_name": "中国重汽VGV U75 PLUS",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/66_86.htm",
+            "total_units_sold": 272,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "神龙汽车",
+            "models": [
+                {
+                    "model_name": "东风富康e爱丽舍",
+                    "units_sold": 256
+                },
+                {
+                    "model_name": "富康ES600",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/131_86.htm",
+            "total_units_sold": 256,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东风英菲尼迪",
+            "models": [
+                {
+                    "model_name": "英菲尼迪QX60",
+                    "units_sold": 196
+                },
+                {
+                    "model_name": "英菲尼迪QX50",
+                    "units_sold": 45
+                },
+                {
+                    "model_name": "英菲尼迪Q50L",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/21_86.htm",
+            "total_units_sold": 241,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "郑州日产",
+            "models": [
+                {
+                    "model_name": "帕拉丁",
+                    "units_sold": 215
+                },
+                {
+                    "model_name": "日产途达",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/86_86.htm",
+            "total_units_sold": 215,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽海马",
+            "models": [
+                {
+                    "model_name": "红旗HQ9",
+                    "units_sold": 94
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/74_86.htm",
+            "total_units_sold": 94,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "合创汽车",
+            "models": [
+                {
+                    "model_name": "合创V09",
+                    "units_sold": 92
+                },
+                {
+                    "model_name": "合创007",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "合创A06",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "合创Z03",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/106_86.htm",
+            "total_units_sold": 92,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽吉林",
+            "models": [
+                {
+                    "model_name": "一汽森雅R7",
+                    "units_sold": 30
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/76_86.htm",
+            "total_units_sold": 30,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "海马汽车",
+            "models": [
+                {
+                    "model_name": "海马7X",
+                    "units_sold": 11
+                },
+                {
+                    "model_name": "海马8S",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "海马7X-E",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/36_86.htm",
+            "total_units_sold": 11,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "福汽新龙马",
+            "models": [
+                {
+                    "model_name": "新龙马启腾EX-80",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/27_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "东南汽车",
+            "models": [
+                {
+                    "model_name": "东南DX3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "东南A5翼舞",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "东南DX7",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "东南DX5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "东南DX8",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/25_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "一汽马自达",
+            "models": [
+                {
+                    "model_name": "马自达阿特兹",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "马自达CX-4",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/77_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "云雀汽车",
+            "models": [
+                {
+                    "model_name": "全界Q1",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/79_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安标致雪铁龙",
+            "models": [
+                {
+                    "model_name": "DS 7",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "DS 9 PHEV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "DS 9",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/80_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "国机智骏",
+            "models": [
+                {
+                    "model_name": "国机智骏GX5",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/102_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "大运汽车",
+            "models": [
+                {
+                    "model_name": "大运悦虎",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "远志M1",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/118_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "爱驰汽车",
+            "models": [
+                {
+                    "model_name": "爱驰U6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "爱驰U5",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/108_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "国金汽车",
+            "models": [
+                {
+                    "model_name": "国金骏行",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/133_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "小虎汽车",
+            "models": [
+                {
+                    "model_name": "小虎FEV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/122_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "电动屋",
+            "models": [
+                {
+                    "model_name": "电动屋YOUNG光小新",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/128_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "福特新能源",
+            "models": [
+                {
+                    "model_name": "福特电马",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/137_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "进口DS",
+            "models": [
+                {
+                    "model_name": "DS 3 EV",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/139_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "华人运通",
+            "models": [
+                {
+                    "model_name": "高合HiPhi Y",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "高合HiPhi Z",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "高合HiPhi X",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/143_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "远航汽车",
+            "models": [
+                {
+                    "model_name": "远航Y6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "远航H8",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/153_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "比亚迪",
+            "models": [
+                {
+                    "model_name": "比亚迪海鸥",
+                    "units_sold": 54081
+                },
+                {
+                    "model_name": "比亚迪秦L DM-i",
+                    "units_sold": 50087
+                },
+                {
+                    "model_name": "比亚迪海豹06 DM-i",
+                    "units_sold": 45900
+                },
+                {
+                    "model_name": "比亚迪宋PLUS DM-i",
+                    "units_sold": 37540
+                },
+                {
+                    "model_name": "比亚迪元PLUS",
+                    "units_sold": 32447
+                },
+                {
+                    "model_name": "比亚迪宋Pro DM-i",
+                    "units_sold": 31780
+                },
+                {
+                    "model_name": "比亚迪宋L DM-i",
+                    "units_sold": 28063
+                },
+                {
+                    "model_name": "比亚迪秦PLUS DM-i",
+                    "units_sold": 27097
+                },
+                {
+                    "model_name": "比亚迪元UP",
+                    "units_sold": 23591
+                },
+                {
+                    "model_name": "比亚迪驱逐舰05",
+                    "units_sold": 22556
+                },
+                {
+                    "model_name": "比亚迪海豚",
+                    "units_sold": 21710
+                },
+                {
+                    "model_name": "比亚迪汉DM-i",
+                    "units_sold": 20838
+                },
+                {
+                    "model_name": "比亚迪宋PLUS EV",
+                    "units_sold": 14075
+                },
+                {
+                    "model_name": "比亚迪唐DM-i",
+                    "units_sold": 13218
+                },
+                {
+                    "model_name": "比亚迪海狮05 DM-i",
+                    "units_sold": 10525
+                },
+                {
+                    "model_name": "比亚迪汉EV",
+                    "units_sold": 9299
+                },
+                {
+                    "model_name": "比亚迪秦PLUS EV",
+                    "units_sold": 9125
+                },
+                {
+                    "model_name": "比亚迪海狮07 EV",
+                    "units_sold": 8707
+                },
+                {
+                    "model_name": "比亚迪海豹07 DM-i",
+                    "units_sold": 6657
+                },
+                {
+                    "model_name": "比亚迪海豹",
+                    "units_sold": 4836
+                },
+                {
+                    "model_name": "比亚迪宋L EV",
+                    "units_sold": 3480
+                },
+                {
+                    "model_name": "比亚迪海豹06GT",
+                    "units_sold": 2500
+                },
+                {
+                    "model_name": "比亚迪唐EV",
+                    "units_sold": 1785
+                },
+                {
+                    "model_name": "比亚迪e2",
+                    "units_sold": 399
+                },
+                {
+                    "model_name": "腾势N7",
+                    "units_sold": 311
+                },
+                {
+                    "model_name": "比亚迪秦EV",
+                    "units_sold": 280
+                },
+                {
+                    "model_name": "比亚迪护卫舰07",
+                    "units_sold": 265
+                },
+                {
+                    "model_name": "比亚迪元Pro",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪e3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪宋MAX新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪D1",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "比亚迪海豹DM-i",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/10_85.htm",
+            "total_units_sold": 481152,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "奇瑞汽车",
+            "models": [
+                {
+                    "model_name": "奇瑞瑞虎8",
+                    "units_sold": 38304
+                },
+                {
+                    "model_name": "奇瑞瑞虎7",
+                    "units_sold": 33530
+                },
+                {
+                    "model_name": "捷途X70",
+                    "units_sold": 18625
+                },
+                {
+                    "model_name": "捷途旅行者",
+                    "units_sold": 15439
+                },
+                {
+                    "model_name": "奇瑞欧萌达",
+                    "units_sold": 15120
+                },
+                {
+                    "model_name": "奇瑞艾瑞泽8",
+                    "units_sold": 14022
+                },
+                {
+                    "model_name": "奇瑞瑞虎5X",
+                    "units_sold": 13085
+                },
+                {
+                    "model_name": "奇瑞风云T9",
+                    "units_sold": 11156
+                },
+                {
+                    "model_name": "奇瑞瑞虎3x",
+                    "units_sold": 11027
+                },
+                {
+                    "model_name": "捷途大圣",
+                    "units_sold": 10124
+                },
+                {
+                    "model_name": "奇瑞瑞虎9",
+                    "units_sold": 6941
+                },
+                {
+                    "model_name": "捷途山海T2",
+                    "units_sold": 5836
+                },
+                {
+                    "model_name": "捷途X90",
+                    "units_sold": 4285
+                },
+                {
+                    "model_name": "奇瑞风云A8",
+                    "units_sold": 4222
+                },
+                {
+                    "model_name": "奇瑞艾瑞泽5",
+                    "units_sold": 3585
+                },
+                {
+                    "model_name": "奇瑞瑞虎7 PLUS PHEV",
+                    "units_sold": 3075
+                },
+                {
+                    "model_name": "捷途山海T1",
+                    "units_sold": 2856
+                },
+                {
+                    "model_name": "捷途山海L7",
+                    "units_sold": 2762
+                },
+                {
+                    "model_name": "捷途山海L6",
+                    "units_sold": 1536
+                },
+                {
+                    "model_name": "奇瑞瑞虎9 C-DM",
+                    "units_sold": 1475
+                },
+                {
+                    "model_name": "捷途山海L9",
+                    "units_sold": 1128
+                },
+                {
+                    "model_name": "奇瑞风云T10",
+                    "units_sold": 826
+                },
+                {
+                    "model_name": "捷途大圣i-DM",
+                    "units_sold": 2
+                },
+                {
+                    "model_name": "奇瑞瑞虎3",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "捷途X70S EV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奇瑞瑞虎8 PLUS鲲鹏e+",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "探索06 C-DM",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "探索06",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "奇瑞瑞虎8L",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/54_85.htm",
+            "total_units_sold": 218961,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "吉利汽车",
+            "models": [
+                {
+                    "model_name": "吉利星越L",
+                    "units_sold": 25725
+                },
+                {
+                    "model_name": "吉利博越L",
+                    "units_sold": 24668
+                },
+                {
+                    "model_name": "吉利缤越",
+                    "units_sold": 20434
+                },
+                {
+                    "model_name": "吉利熊猫",
+                    "units_sold": 15621
+                },
+                {
+                    "model_name": "吉利星瑞",
+                    "units_sold": 15415
+                },
+                {
+                    "model_name": "吉利星愿",
+                    "units_sold": 15130
+                },
+                {
+                    "model_name": "吉利帝豪",
+                    "units_sold": 13865
+                },
+                {
+                    "model_name": "吉利豪越",
+                    "units_sold": 2668
+                },
+                {
+                    "model_name": "吉利缤瑞",
+                    "units_sold": 2098
+                },
+                {
+                    "model_name": "吉利ICON",
+                    "units_sold": 1210
+                },
+                {
+                    "model_name": "吉利星瑞L",
+                    "units_sold": 300
+                },
+                {
+                    "model_name": "吉利嘉际",
+                    "units_sold": 232
+                },
+                {
+                    "model_name": "吉利帝豪L 雷神Hi·P",
+                    "units_sold": 189
+                },
+                {
+                    "model_name": "吉利帝豪EV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利远景X6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利博越",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利嘉际新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利星越S",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利帝豪S",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利星越L增程电动版",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/42_85.htm",
+            "total_units_sold": 137555,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽大众",
+            "models": [
+                {
+                    "model_name": "大众帕萨特",
+                    "units_sold": 29379
+                },
+                {
+                    "model_name": "大众朗逸",
+                    "units_sold": 25792
+                },
+                {
+                    "model_name": "大众途观L",
+                    "units_sold": 15196
+                },
+                {
+                    "model_name": "大众途岳",
+                    "units_sold": 13810
+                },
+                {
+                    "model_name": "大众ID.3",
+                    "units_sold": 11423
+                },
+                {
+                    "model_name": "大众凌渡",
+                    "units_sold": 4309
+                },
+                {
+                    "model_name": "大众途昂",
+                    "units_sold": 4008
+                },
+                {
+                    "model_name": "大众ID.4 X",
+                    "units_sold": 3431
+                },
+                {
+                    "model_name": "大众威然",
+                    "units_sold": 193
+                },
+                {
+                    "model_name": "大众途安",
+                    "units_sold": 28
+                },
+                {
+                    "model_name": "大众POLO",
+                    "units_sold": 24
+                },
+                {
+                    "model_name": "大众帕萨特新能源",
+                    "units_sold": 6
+                },
+                {
+                    "model_name": "大众ID.6 X",
+                    "units_sold": 1
+                },
+                {
+                    "model_name": "大众桑塔纳",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众辉昂",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众途观L新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "大众途铠T-Cross",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/56_85.htm",
+            "total_units_sold": 107600,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "长安汽车",
+            "models": [
+                {
+                    "model_name": "长安CS75 PLUS",
+                    "units_sold": 19770
+                },
+                {
+                    "model_name": "长安Lumin",
+                    "units_sold": 16537
+                },
+                {
+                    "model_name": "长安逸动",
+                    "units_sold": 16429
+                },
+                {
+                    "model_name": "长安CS55 PLUS",
+                    "units_sold": 15242
+                },
+                {
+                    "model_name": "长安UNI-Z PHEV",
+                    "units_sold": 11988
+                },
+                {
+                    "model_name": "长安欧尚X5 PLUS",
+                    "units_sold": 8189
+                },
+                {
+                    "model_name": "长安UNI-V",
+                    "units_sold": 5198
+                },
+                {
+                    "model_name": "长安CS35 PLUS",
+                    "units_sold": 2890
+                },
+                {
+                    "model_name": "长安欧尚X7 PLUS",
+                    "units_sold": 2249
+                },
+                {
+                    "model_name": "长安欧诺",
+                    "units_sold": 1977
+                },
+                {
+                    "model_name": "长安UNI-K",
+                    "units_sold": 1859
+                },
+                {
+                    "model_name": "长安逸达",
+                    "units_sold": 1496
+                },
+                {
+                    "model_name": "长安欧尚Z6",
+                    "units_sold": 890
+                },
+                {
+                    "model_name": "长安欧尚Z6 iDD",
+                    "units_sold": 480
+                },
+                {
+                    "model_name": "长安逸动EV",
+                    "units_sold": 389
+                },
+                {
+                    "model_name": "长安UNI-T",
+                    "units_sold": 318
+                },
+                {
+                    "model_name": "长安CS95",
+                    "units_sold": 275
+                },
+                {
+                    "model_name": "长安UNI-K 智电iDD",
+                    "units_sold": 70
+                },
+                {
+                    "model_name": "长安逸动DT",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安奔奔E-Star",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安悦翔",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安锐程CC",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS15",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS85 COUPE",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安锐程PLUS",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安UNI-V智电iDD",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安欧尚X5",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安CS75 PLUS 智电iDD",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "长安UNI-Z",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/84_85.htm",
+            "total_units_sold": 106246,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "上汽通用五菱",
+            "models": [
+                {
+                    "model_name": "五菱宏光MINIEV",
+                    "units_sold": 31140
+                },
+                {
+                    "model_name": "五菱缤果",
+                    "units_sold": 29547
+                },
+                {
+                    "model_name": "五菱星光S PHEV",
+                    "units_sold": 6724
+                },
+                {
+                    "model_name": "五菱宏光",
+                    "units_sold": 6626
+                },
+                {
+                    "model_name": "五菱缤果PLUS",
+                    "units_sold": 5298
+                },
+                {
+                    "model_name": "宝骏云朵",
+                    "units_sold": 4607
+                },
+                {
+                    "model_name": "宝骏云海EV",
+                    "units_sold": 3860
+                },
+                {
+                    "model_name": "五菱星光S EV",
+                    "units_sold": 3645
+                },
+                {
+                    "model_name": "五菱佳辰",
+                    "units_sold": 2141
+                },
+                {
+                    "model_name": "五菱Air ev晴空",
+                    "units_sold": 1608
+                },
+                {
+                    "model_name": "五菱星光PHEV",
+                    "units_sold": 1466
+                },
+                {
+                    "model_name": "五菱星驰",
+                    "units_sold": 1407
+                },
+                {
+                    "model_name": "宝骏云海PHEV",
+                    "units_sold": 1168
+                },
+                {
+                    "model_name": "五菱星辰",
+                    "units_sold": 556
+                },
+                {
+                    "model_name": "宝骏悦也",
+                    "units_sold": 368
+                },
+                {
+                    "model_name": "五菱星光EV",
+                    "units_sold": 348
+                },
+                {
+                    "model_name": "五菱征程",
+                    "units_sold": 278
+                },
+                {
+                    "model_name": "宝骏KiWi EV",
+                    "units_sold": 13
+                },
+                {
+                    "model_name": "五菱凯捷",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "宝骏悦也Plus",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "五菱星云",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/61_85.htm",
+            "total_units_sold": 100800,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "福特",
+            "models": [
+                {
+                    "model_name": "福特电马",
+                    "units_sold": 0
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/137_86.htm",
+            "total_units_sold": 0,
+            "year": 2024
+        },
+        {
+            "manufacturer_name": "吉利",
+            "models": [
+                {
+                    "model_name": "吉利星越L",
+                    "units_sold": 25725
+                },
+                {
+                    "model_name": "吉利博越L",
+                    "units_sold": 24668
+                },
+                {
+                    "model_name": "吉利缤越",
+                    "units_sold": 20434
+                },
+                {
+                    "model_name": "吉利熊猫",
+                    "units_sold": 15621
+                },
+                {
+                    "model_name": "吉利星瑞",
+                    "units_sold": 15415
+                },
+                {
+                    "model_name": "吉利星愿",
+                    "units_sold": 15130
+                },
+                {
+                    "model_name": "吉利帝豪",
+                    "units_sold": 13865
+                },
+                {
+                    "model_name": "吉利豪越",
+                    "units_sold": 2668
+                },
+                {
+                    "model_name": "吉利缤瑞",
+                    "units_sold": 2098
+                },
+                {
+                    "model_name": "吉利ICON",
+                    "units_sold": 1210
+                },
+                {
+                    "model_name": "吉利星瑞L",
+                    "units_sold": 300
+                },
+                {
+                    "model_name": "吉利嘉际",
+                    "units_sold": 232
+                },
+                {
+                    "model_name": "吉利帝豪L 雷神Hi·P",
+                    "units_sold": 189
+                },
+                {
+                    "model_name": "吉利帝豪EV",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利远景X6",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利博越",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利嘉际新能源",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利星越S",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利帝豪S",
+                    "units_sold": 0
+                },
+                {
+                    "model_name": "吉利星越L增程电动版",
+                    "units_sold": 0
+                }
+            ],
+            "month": 10,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/42_85.htm",
+            "total_units_sold": 137555,
+            "year": 2024
+        }
+    ]
+}

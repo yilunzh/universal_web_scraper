@@ -283,11 +283,12 @@ def scrape(url, data_points, links_scraped):
     try:
         # Add delay between requests to avoid overwhelming the server
         time.sleep(2)
-        
+
         # Set longer timeout in FirecrawlApp configuration if possible
         scraped_data = app.scrape_url(url)  # Adjust timeout as needed
         markdown = scraped_data["markdown"][: (max_token * 2)]
         links_scraped.append(url)
+
 
         extracted_data = extract_data_from_content(markdown, data_points, links_scraped, url)
 
@@ -590,7 +591,29 @@ def run_research(entity_name, website, data_points, special_instruction):
     response1 = website_search(entity_name, website, data_points, links_scraped, special_instruction)
     # response2 = internet_search(entity_name, website, data_points, links_scraped)
 
-    return data_points
+    return [data_points, links_scraped]
+
+def generate_paginated_urls(base_url: str, num_pages: int, start_page: int = 0) -> list:
+    """
+    Generate a list of paginated URLs by incrementing the offset by 30.
+
+    Args:
+        base_url (str): The base URL with format 'http://www.myhomeok.com/xiaoliang/liebiao/80_0.htm'
+        num_pages (int): Number of pages to generate URLs for
+        start_page (int): The page number to start from (default: 0)
+
+    Returns:
+        list: List of URLs with incremented pagination values
+    """
+    urls = []
+    base_path = base_url.rsplit('_', 1)[0]  # Split at last underscore to get 'http://www.myhomeok.com/xiaoliang/liebiao/80'
+
+    for page in range(start_page, start_page + num_pages):
+        offset = page * 30
+        current_url = f"{base_path}_{offset}.htm"
+        urls.append(current_url)
+
+    return urls
 
 def pretty_print_conversation(message):
     """
@@ -638,28 +661,82 @@ tools_list = {
     "file_reader": llama_parser,
 }
 
-# Function to save JSON array to a file in a pretty-printed format
+# Function to save JSON array to a file in a pretty-printed format, loading and merging with existing data if present.
 def save_json_pretty(data, filename):
     """
-    Save a JSON array to a file in a pretty-printed format.
-
-    Args:
-        data: The data to be saved as JSON.
-        filename (str): The name of the file to save the data to.
+    Save a JSON object to a file in a pretty-printed format, loading and merging with existing data if present.
+    The 'value' field contains an array of manufacturer data.
     """
     try:
-        print(f"Saving data to {filename}")
+        # Load existing data if file exists
+        existing_data = {}
+        if os.path.exists(filename):
+            try:
+                with open(filename, "r", encoding="utf-8") as file:
+                    file_content = file.read()
+                    if file_content.strip():  # Check if file is not empty
+                        existing_data = json.loads(file_content)
+                    print(f"Loaded existing data: {len(existing_data.get('value', [])) if existing_data else 0} records")
+            except json.JSONDecodeError as e:
+                print(f"Error reading existing file: {e}. Starting fresh.")
+                existing_data = {}
+
+        # Initialize the structure if it doesn't exist
+        if not existing_data:
+            existing_data = {
+                "description": "A list of sales data grouped by manufacturer.",
+                "name": "manufacturers",
+                "reference": None,
+                "value": []
+            }
+
+        # Create a dictionary of existing manufacturer records for easy lookup and update
+        existing_records = {}
+        for idx, mfr in enumerate(existing_data['value']):
+            if all(key in mfr for key in ['manufacturer_name', 'month', 'year']):
+                key = (mfr['manufacturer_name'], mfr['month'], mfr['year'])
+                existing_records[key] = idx
+        
+        # Process new records
+        for new_record in data:
+            if 'value' in new_record and isinstance(new_record['value'], list):
+                for mfr in new_record['value']:
+                    if all(key in mfr for key in ['manufacturer_name', 'month', 'year']):
+                        key = (mfr['manufacturer_name'], mfr['month'], mfr['year'])
+                        
+                        if key in existing_records:
+                            existing_idx = existing_records[key]
+                            existing_record = existing_data['value'][existing_idx]
+                            
+                            # Update the record if new data has models or if existing record lacks models
+                            if 'models' in mfr or 'models' not in existing_record:
+                                existing_data['value'][existing_idx].update(mfr)
+                        else:
+                            # Add new record if it doesn't exist
+                            existing_data['value'].append(mfr)
+                            existing_records[key] = len(existing_data['value']) - 1
+        
+        print(f"Saving data with {len(existing_data['value'])} manufacturers to {filename}")
         with open(filename, "w", encoding="utf-8") as file:
-            json.dump(data, file, indent=4, sort_keys=True, ensure_ascii=False)
+            json.dump(existing_data, file, indent=4, sort_keys=True, ensure_ascii=False)
         print(f"Data successfully saved to {filename}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred while saving: {str(e)}")
+        print(f"Data type: {type(data)}")
+        print(f"Data preview: {str(data)[:200]}")
 
 # REPLACE DATA BELOW FOR WEBSITE TO SCRAPE
 entity_name = "china_monthly_auto_sales_data"
 website = "http://www.myhomeok.com/xiaoliang/liebiao/80_30.htm" #landing page
 monthly_sales_page = "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm"
-special_instruction = "This is a website that publish auto sales data by manufacturer in China. there are numerous links on the initial landing page. Each link links to separate webpage with sales data of a specific auto manufacturer, broken out by models, for a specific month. You should extract the sales data of the manufacturer's models and the total sales for that month. Only scrape links on this page under 厂商销量, and before [第一页]. when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn. Do NOT translate data to english."
+special_instruction = '''
+This is a website that publish auto sales data by manufacturer in China.
+There are numerous links on the initial landing page. Each link links to separate webpage with sales data of a specific auto manufacturer,
+broken out by models, for a specific month. You should extract the sales data of the manufacturer's models and the total sales for that month.
+Only scrape links on this page under 厂商销量, and before [第一页]. There should be 30 results per page. 
+when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn.
+Do NOT translate data to english."
+'''
 
 # REPLACE PYDANTIC MODEL BELOW TO DATA STRUCTURE YOU WANT TO EXTRACT
 class ModelSales(BaseModel):
@@ -676,20 +753,43 @@ class ManufacturerSales(BaseModel):
 class DataPoints(BaseModel):
     manufacturers: List[ManufacturerSales] = Field(..., description="A list of sales data grouped by manufacturer.")
 
+class MonthlySalesUrls(BaseModel):
+    manufacturer_sales_url: str = Field(..., description="The url of the manufacturer sales page to scrape")
+    month: int = Field(..., description="The month for which the sales data is reported, e.g., '10'.")
+    year: int = Field(..., description="The year for which the sales data is reported, e.g., 2024.")
+    manufacturer_name: str = Field(..., description="The name of the car manufacturer.")
+    monthly_units_sold: int = Field(..., description="The total number of units sold by manufacturer in the given month.")
+
+all_data = []
+paginated_urls = generate_paginated_urls(website, 2, 3)
+filename = f"{entity_name}.json"
 
 data_keys = list(DataPoints.__fields__.keys())
 data_fields = DataPoints.__fields__
 
+
 data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
+manufacturer_sales_data = []
+
+for url in paginated_urls:
+    print(f"Scraping {url}")
+    data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
+
+    if data and data[0]:  # Check if data exists
+        all_data.extend(data[0])
+        # Save after each iteration to ensure data is preserved
+        save_json_pretty(all_data, filename)
+    else:
+        print(f"No data returned for URL: {url}")
+
+print(f"Total records collected: {len(all_data)}")
+
 # sample = scrape(monthly_sales_page, data_points, [])
 # sample_data = json.loads(sample)  # Parse the JSON string into a Python object
 # sample_filename = "sample.json"
 # save_json_pretty(sample_data, sample_filename)
 
-data = run_research(entity_name, website, data_points, special_instruction)
+# data = run_research(entity_name, website, data_points, special_instruction)
 
-# Specify the filename
-filename = f"{entity_name}.json"
-
-# Save the data
-save_json_pretty(data_points, filename)
+# # Save the data
+# save_json_pretty(data_points, filename)
