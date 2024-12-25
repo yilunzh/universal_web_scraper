@@ -696,18 +696,18 @@ def save_json_pretty(data, filename):
             if all(key in mfr for key in ['manufacturer_name', 'month', 'year']):
                 key = (mfr['manufacturer_name'], mfr['month'], mfr['year'])
                 existing_records[key] = idx
-        
+
         # Process new records
         for new_record in data:
             if 'value' in new_record and isinstance(new_record['value'], list):
                 for mfr in new_record['value']:
                     if all(key in mfr for key in ['manufacturer_name', 'month', 'year']):
                         key = (mfr['manufacturer_name'], mfr['month'], mfr['year'])
-                        
+
                         if key in existing_records:
                             existing_idx = existing_records[key]
                             existing_record = existing_data['value'][existing_idx]
-                            
+
                             # Update the record if new data has models or if existing record lacks models
                             if 'models' in mfr or 'models' not in existing_record:
                                 existing_data['value'][existing_idx].update(mfr)
@@ -715,7 +715,7 @@ def save_json_pretty(data, filename):
                             # Add new record if it doesn't exist
                             existing_data['value'].append(mfr)
                             existing_records[key] = len(existing_data['value']) - 1
-        
+
         print(f"Saving data with {len(existing_data['value'])} manufacturers to {filename}")
         with open(filename, "w", encoding="utf-8") as file:
             json.dump(existing_data, file, indent=4, sort_keys=True, ensure_ascii=False)
@@ -730,12 +730,12 @@ entity_name = "china_monthly_auto_sales_data"
 website = "http://www.myhomeok.com/xiaoliang/liebiao/80_30.htm" #landing page
 monthly_sales_page = "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm"
 special_instruction = '''
-This is a website that publish auto sales data by manufacturer in China.
-There are numerous links on the initial landing page. Each link links to separate webpage with sales data of a specific auto manufacturer,
-broken out by models, for a specific month. You should extract the sales data of the manufacturer's models and the total sales for that month.
-Only scrape links on this page under 厂商销量, and before [第一页]. There should be 30 results per page. 
+This is a website that publish auto sales data by manufacturer in China. You are asked to extract monthly sales data of each manufacturer by model. You do this in 2 steps.
+Step 1: There are numerous links on the monthly sales page. Only scrape links on this page under 厂商销量, and before [第一页]. There should be 30 results for each sales page. You should extract those links.
+Step 2: Each of the extracted link links to separate webpage with sales data of a specific auto manufacturer, broken out by models, for a specific month (manufacturer monthly sales page).
+For each manufacturer monthly sales page, you should extract the sales data of the manufacturer's models and the total sales for that month.
 when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn.
-Do NOT translate data to english."
+Important: DO NOT translate any Chinese names to English. Keep all manufacturer and model names in their original Chinese characters."
 '''
 
 # REPLACE PYDANTIC MODEL BELOW TO DATA STRUCTURE YOU WANT TO EXTRACT
@@ -761,18 +761,18 @@ class MonthlySalesUrls(BaseModel):
     monthly_units_sold: int = Field(..., description="The total number of units sold by manufacturer in the given month.")
 
 all_data = []
-paginated_urls = generate_paginated_urls(website, 2, 3)
+paginated_urls = generate_paginated_urls(website, 2, 10)
 filename = f"{entity_name}.json"
 
 data_keys = list(DataPoints.__fields__.keys())
 data_fields = DataPoints.__fields__
 
 
-data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
 manufacturer_sales_data = []
 
 for url in paginated_urls:
     print(f"Scraping {url}")
+    data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
     data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
 
     if data and data[0]:  # Check if data exists
