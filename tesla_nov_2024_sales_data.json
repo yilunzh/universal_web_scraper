@@ -1,0 +1,23 @@
+{
+    "description": "A list of sales data grouped by manufacturer.",
+    "name": "manufacturers",
+    "reference": null,
+        {
+            "manufacturer_name": "Tesla",
+            "models": [
+                {
+                    "model_name": "Model Y",
+                    "units_sold": 46595
+                },
+                {
+                    "model_name": "Model 3",
+                    "units_sold": 32261
+                }
+            ],
+            "month": 11,
+            "reference": "http://www.myhomeok.com/xiaoliang/changshang/104_86.htm",
+            "total_units_sold": 78856,
+            "year": 2024
+        }
+    ]
+}

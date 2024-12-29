@@ -16,6 +16,8 @@ from pydantic import BaseModel, Field, create_model
 from typing import List, Optional, Dict, Any, Type, get_type_hints, Union
 
 import pdb
+import csv
+import json
 
 # Load environment variables
 load_dotenv()
@@ -169,21 +171,11 @@ def update_data(data_points, datas_update):
         for data in datas_update:
             for obj in data_points:
                 if obj["name"] == data["name"]:
-                    if data["type"].lower() == "dict":
-                        obj["reference"] = data["reference"] if data["reference"] else "None"
-                        obj["value"] = json.loads(data["value"])
-                    elif data["type"].lower() == "str":
-                        obj["reference"] = data["reference"]
-                        obj["value"] = data["value"]
-                    elif data["type"].lower() == "int":
-                        obj["reference"] = data["reference"]
-                        obj["value"] = data["value"]
-                    elif data["type"].lower() == "list":
-                        if isinstance(data["value"], str):
-                            data_value = json.loads(data["value"])
-                        else:
-                            data_value = data["value"]
+                    obj["reference"] = data["reference"] if data["reference"] else "None"
 
+                    if data["type"].lower() == "list":
+                        # Handle list type specially
+                        data_value = json.loads(data["value"]) if isinstance(data["value"], str) else data["value"]
                         for item in data_value:
                             item["reference"] = data["reference"]
 
@@ -191,6 +183,9 @@ def update_data(data_points, datas_update):
                             obj["value"] = data_value
                         else:
                             obj["value"].extend(data_value)
+                    else:
+                        # Handle other types (dict, str, int) uniformly
+                        obj["value"] = json.loads(data["value"]) if data["type"].lower() == "dict" else data["value"]
 
         # Save interim updates to file
         save_json_pretty(data_points, f"{entity_name}.json")
@@ -725,18 +720,58 @@ def save_json_pretty(data, filename):
         print(f"Data type: {type(data)}")
         print(f"Data preview: {str(data)[:200]}")
 
+def export_to_csv(json_file_path: str, csv_file_path: str):
+    """
+    Transform JSON sales data into CSV format where each row represents monthly sales of a specific model.
+    
+    Args:
+        json_file_path (str): Path to the input JSON file
+        csv_file_path (str): Path to save the output CSV file
+    """
+    
+    # Read JSON file
+    with open(json_file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Open CSV file for writing
+    with open(csv_file_path, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f)
+        
+        # Write header
+        writer.writerow(['manufacturer', 'model_name', 'month', 'year', 'units_sold'])
+        
+        # Process each manufacturer's data
+        for manufacturer in data.get('value', []):
+            manufacturer_name = manufacturer.get('manufacturer_name')
+            month = manufacturer.get('month')
+            year = manufacturer.get('year')
+            reference = manufacturer.get('reference')
+            
+            # Write each model's sales data
+            for model in manufacturer.get('models', []):
+                writer.writerow([
+                    manufacturer_name,
+                    model.get('model_name'),
+                    month,
+                    year,
+                    model.get('units_sold'),
+                    reference
+                ])
+
 # REPLACE DATA BELOW FOR WEBSITE TO SCRAPE
 entity_name = "china_monthly_auto_sales_data"
+# entity_name = 'tesla_nov_2024_sales_data'
 website = "http://www.myhomeok.com/xiaoliang/liebiao/80_30.htm" #landing page
-monthly_sales_page = "http://www.myhomeok.com/xiaoliang/changshang/152_86.htm"
+monthly_sales_page = "http://www.myhomeok.com/xiaoliang/changshang/104_86.htm"
 special_instruction = '''
 This is a website that publish auto sales data by manufacturer in China. You are asked to extract monthly sales data of each manufacturer by model. You do this in 2 steps.
 Step 1: There are numerous links on the monthly sales page. Only scrape links on this page under 厂商销量, and before [第一页]. There should be 30 results for each sales page. You should extract those links.
-Step 2: Each of the extracted link links to separate webpage with sales data of a specific auto manufacturer, broken out by models, for a specific month (manufacturer monthly sales page).
+Step 2: Each of the extracted link links to separate webpage with specific auto manufacturer, broken out by models, for a specific month (manufacturer monthly sales page).
 For each manufacturer monthly sales page, you should extract the sales data of the manufacturer's models and the total sales for that month.
 when url path is relative, assume it's from domain http://www.myhomeok.com/. do NOT explore other pages outside of domain, especially ecar168.cn.
-Important: DO NOT translate any Chinese names to English. Keep all manufacturer and model names in their original Chinese characters."
+# Important: DO NOT translate any Chinese names to English. Keep all manufacturer and model names in their original Chinese characters.
 '''
+
 
 # REPLACE PYDANTIC MODEL BELOW TO DATA STRUCTURE YOU WANT TO EXTRACT
 class ModelSales(BaseModel):
@@ -761,35 +796,31 @@ class MonthlySalesUrls(BaseModel):
     monthly_units_sold: int = Field(..., description="The total number of units sold by manufacturer in the given month.")
 
 all_data = []
-paginated_urls = generate_paginated_urls(website, 2, 10)
-filename = f"{entity_name}.json"
 
 data_keys = list(DataPoints.__fields__.keys())
 data_fields = DataPoints.__fields__
+data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
 
+filename = f"{entity_name}.json"
 
-manufacturer_sales_data = []
+#scrape mothly sales page
+# scrape(monthly_sales_page, data_points, [])
 
-for url in paginated_urls:
-    print(f"Scraping {url}")
-    data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
-    data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
+#scrape manufacturer sales pages
+# paginated_urls = generate_paginated_urls(website, 4, 14)
 
-    if data and data[0]:  # Check if data exists
-        all_data.extend(data[0])
-        # Save after each iteration to ensure data is preserved
-        save_json_pretty(all_data, filename)
-    else:
-        print(f"No data returned for URL: {url}")
+# for url in paginated_urls:
+#     print(f"Scraping {url}")
+#     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
+#     data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
 
-print(f"Total records collected: {len(all_data)}")
+#     if data and data[0]:  # Check if data exists
+#         all_data.extend(data[0])
+#         # Save after each iteration to ensure data is preserved
+#         save_json_pretty(all_data, filename)
+#     else:
+#         print(f"No data returned for URL: {url}")
 
-# sample = scrape(monthly_sales_page, data_points, [])
-# sample_data = json.loads(sample)  # Parse the JSON string into a Python object
-# sample_filename = "sample.json"
-# save_json_pretty(sample_data, sample_filename)
+# print(f"Total records collected: {len(all_data)}")
 
-# data = run_research(entity_name, website, data_points, special_instruction)
-
-# # Save the data
-# save_json_pretty(data_points, filename)
+export_to_csv('china_monthly_auto_sales_data.json', 'china_monthly_auto_sales.csv')
