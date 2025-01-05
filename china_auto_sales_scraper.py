@@ -967,7 +967,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(13,14):
+            if mfr_code in range(45,46):
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
                 for month_code in range(first_valid_month, last_valid_month + 1):
@@ -1138,12 +1138,12 @@ print(len(urls))
 for url in urls:
     print(f"Scraping {url}")
     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
+    
+    # scrape using landing page
+    # data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
 
     i = 0
     while i < 3:
-        # scrape using landing page
-        # data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
-
         # scrape using monthly sales page
         # data = run_research(entity_name, url, data_points, monthly_sales_page_instruction)
         data = json.loads(scrape(url, data_points, []))
