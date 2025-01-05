@@ -10,6 +10,7 @@ from langsmith import traceable
 from langsmith.wrappers import wrap_openai
 import tempfile, requests
 from openai import OpenAI
+import subprocess
 
 import instructor
 from pydantic import BaseModel, Field, create_model
@@ -967,7 +968,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(45,46):
+            if mfr_code in range(47,50):
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
                 for month_code in range(first_valid_month, last_valid_month + 1):
@@ -1007,6 +1008,18 @@ def validate_entry(entry, url):
         print("-" * 50)
 
     return found_mismatch
+
+
+def send_mac_notification(title, message):
+    """
+    Send a push notification on macOS.
+    
+    Args:
+        title (str): The notification title
+        message (str): The notification message
+    """
+    apple_script = f'display notification "{message}" with title "{title}"'
+    subprocess.run(['osascript', '-e', apple_script])
 
 # def validate_and_update_data():
 #     updated = False
@@ -1161,8 +1174,13 @@ for url in urls:
             print(f"No data returned for URL: {url}")
 
 print(f"Total records collected: {len(all_data)}")
-
 export_to_csv('china_monthly_auto_sales_data_v2.json', 'china_monthly_auto_sales_v2.csv')
+
+# Send notification when complete
+send_mac_notification(
+    "Web Scraping Complete", 
+    f"Collected {len(all_data)} records and exported to CSV"
+)
 
 #validation code
 # first_month = find_first_valid_month_code(12)
@@ -1178,3 +1196,4 @@ export_to_csv('china_monthly_auto_sales_data_v2.json', 'china_monthly_auto_sales
 # # Clear the alarm
 # signal.alarm(0)
 # return extracted_data
+
