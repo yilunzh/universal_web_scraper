@@ -968,7 +968,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(47,50):
+            if mfr_code in range(57,58):
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
                 for month_code in range(first_valid_month, last_valid_month + 1):
