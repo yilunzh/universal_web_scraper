@@ -43,7 +43,7 @@ async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[st
                     if scraped_data["metadata"]["statusCode"] == 200:
                         markdown = scraped_data["markdown"][: (MAX_TOKEN * 2)]
                         links_scraped.append(url)
-                        return extract_data_from_content(markdown, data_points, links_scraped, url)
+                        return await extract_data_from_content(markdown, data_points, links_scraped, url)
                     else:
                         status_code = scraped_data["metadata"]["statusCode"]
                         if status_code == 404:

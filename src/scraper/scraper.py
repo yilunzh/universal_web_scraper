@@ -5,14 +5,14 @@ from langsmith import traceable
 from firecrawl import FirecrawlApp
 from src.config.settings import MAX_TOKEN, FIRECRAWL_API_KEY
 import instructor
-from openai import OpenAI
+from openai import AsyncOpenAI
 from src.models.data_models import DataPoints
 
-# Initialize OpenAI client with instructor
-client = instructor.patch(OpenAI())
+# Initialize OpenAI client with instructor for async operations
+client = instructor.patch(AsyncOpenAI())
 
 @traceable(run_type="tool", name="Extract Data")
-def extract_data_from_content(content: str, data_points: List[Dict], links_scraped: List[str], url: str) -> Dict:
+async def extract_data_from_content(content: str, data_points: List[Dict], links_scraped: List[str], url: str) -> Dict:
     """
     Extract structured data from parsed content using the GPT model.
     
@@ -32,8 +32,8 @@ def extract_data_from_content(content: str, data_points: List[Dict], links_scrap
             if point["name"] == "manufacturers":
                 fields[point["name"]] = (List[Dict], point["description"])
 
-        # Extract data using the GPT model
-        response = client.chat.completions.create(
+        # Extract data using the GPT model asynchronously
+        response = await client.chat.completions.create(
             model="gpt-4",
             response_model=DataPoints,
             messages=[
@@ -43,7 +43,7 @@ def extract_data_from_content(content: str, data_points: List[Dict], links_scrap
         )
 
         # Get the data and add reference
-        extracted_data = response.dict()
+        extracted_data = response.model_dump()
         
         # Add reference URL to each manufacturer in the list
         if "manufacturers" in extracted_data and isinstance(extracted_data["manufacturers"], list):

@@ -1,7 +1,0 @@
-2025-02-17 16:58:44,744 - china_auto_sales_scraper - INFO - Starting web scraping process
-2025-02-17 16:58:44,744 - china_auto_sales_scraper - INFO - Directory structure verified
-2025-02-17 16:58:44,744 - china_auto_sales_scraper - INFO - Required input files found
-2025-02-17 16:58:44,746 - china_auto_sales_scraper - INFO - Generated 2 URLs to process
-2025-02-17 16:59:23,326 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-02-17 17:00:03,122 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-02-17 17:00:03,446 - china_auto_sales_scraper - INFO - Scraping process completed successfully

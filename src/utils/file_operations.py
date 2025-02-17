@@ -57,11 +57,10 @@ def save_json_pretty(data: List[Dict], filename: str) -> None:
                     existing_data['value'].append(new_record)
                     existing_records[key] = len(existing_data['value']) - 1
 
-        # Sort the data by manufacturer_name, year, and month
+        # Sort the data by manufacturer code, then month code from URL
         existing_data['value'].sort(key=lambda x: (
-            x['manufacturer_name'],
-            x.get('year', 0),
-            x.get('month', 0)
+            int(x['reference'].split('_')[0].split('/')[-1]),  # manufacturer code
+            int(x['reference'].split('_')[-1].split('.')[0])   # month code
         ))
 
         print(f"Saving data with {len(existing_data['value'])} manufacturers to {filename}")
