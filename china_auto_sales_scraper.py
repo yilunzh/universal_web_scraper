@@ -281,6 +281,7 @@ def timeout_handler(signum, frame):
     stop=stop_after_attempt(3),
     retry=(retry_if_exception_type(TimeoutError) | retry_if_exception_type(Exception))  # Explicitly specify which exceptions to retry
 )
+
 def scrape(url, data_points, links_scraped):
     """
     Scrape a given URL and extract structured data with retry logic and timeout.
@@ -979,7 +980,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(59,60):
+            if mfr_code in range(61,62):
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
                 for month_code in range(first_valid_month, last_valid_month + 1):
@@ -1147,22 +1148,6 @@ class MonthlySalesUrls(BaseModel):
     manufacturer_name: str = Field(..., description="The name of the car manufacturer.")
     monthly_units_sold: int = Field(..., description="The total number of units sold by manufacturer in the given month.")
 
-all_data = []
-
-data_keys = list(DataPoints.__fields__.keys())
-data_fields = DataPoints.__fields__
-data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
-
-entity_name = 'china_monthly_auto_sales_data_v2'
-filename = f"{entity_name}.json"
-
-# scrape manufacturer sales pages
-urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
-# paginated_urls = generate_paginated_urls(website, 4, 14)
-
-print(urls)
-print(len(urls))
-
 async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[str], semaphore: Semaphore) -> Dict:
     """
     Asynchronously scrape a given URL and extract structured data.
@@ -1219,104 +1204,112 @@ async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[st
         print(f"Failed to scrape {url}: {e}")
         return {"error": str(e)}
 
+class ScrapingState:
+    def __init__(self):
+        self.links_scraped = []
+        self.all_data = []
+        self.results = {
+            "successful": [],
+            "failed": []
+        }
+        self.semaphore = Semaphore(5)
+
+@traceable(run_type="chain", name="Process single URL")
+async def process_url(url: str, data_points: List[Dict], filename: str, state: ScrapingState) -> None:
+    """
+    Process a single URL with proper error handling.
+    
+    Args:
+        url (str): The URL to process
+        data_points (List[Dict]): The data points to extract
+        filename (str): The output filename
+        state (ScrapingState): Shared state for the scraping process
+    """
+    print(f"Processing {url}")
+    try:
+        data = await async_scrape(url, data_points, state.links_scraped, state.semaphore)
+        
+        if isinstance(data, dict):
+            if "manufacturers" in data and isinstance(data["manufacturers"], list):
+                manufacturer_data = data["manufacturers"][0]
+                try:
+                    if validate_entry(manufacturer_data, url):
+                        state.all_data.extend([manufacturer_data])
+                        save_json_pretty(state.all_data, filename)
+                        state.results["successful"].append(url)
+                        print(f"Successfully processed {url}")
+                    else:
+                        state.results["failed"].append({"url": url, "reason": "Failed validation"})
+                except Exception as save_error:
+                    print(f"Error saving data for {url}: {str(save_error)}")
+                    state.results["failed"].append({"url": url, "reason": f"Save error: {str(save_error)}"})
+            else:
+                error_msg = data.get("error", "Invalid data format - missing manufacturers data")
+                state.results["failed"].append({"url": url, "reason": error_msg})
+                print(f"Invalid data format for {url}: {data}")
+        else:
+            state.results["failed"].append({"url": url, "reason": f"Invalid response format: {type(data)}"})
+            print(f"Invalid response type for {url}: {type(data)}, Data: {data}")
+        
+    except Exception as e:
+        print(f"Error processing {url}: {str(e)}")
+        state.results["failed"].append({"url": url, "reason": str(e)})
+
+@traceable(run_type="chain", name="Process URLs")
 async def process_urls(urls: List[str], data_points: List[Dict], filename: str) -> None:
     """
     Process multiple URLs concurrently with a limit on concurrent requests.
-    
-    Args:
-        urls (List[str]): List of URLs to process
-        data_points (List[Dict]): The list of data points to extract
-        filename (str): Name of the file to save results
     """
-    semaphore = Semaphore(5)  # Limit to 5 concurrent requests
-    links_scraped = []
-    all_data = []
-    results = {
-        "successful": [],
-        "failed": []
-    }
-    
-    async def process_url(url: str) -> None:
-        """
-        Process a single URL with proper error handling.
-        
-        Args:
-            url (str): The URL to process
-        """
-        print(f"Processing {url}")
-        try:
-            data = await async_scrape(url, data_points, links_scraped, semaphore)
-            
-            if isinstance(data, dict):  # Ensure data is a dictionary
-                if "manufacturers" in data and isinstance(data["manufacturers"], list):
-                    manufacturer_data = data["manufacturers"][0]
-                    try:
-                        if validate_entry(manufacturer_data, url):
-                            all_data.extend([manufacturer_data])
-                            # Save after each successful scrape
-                            save_json_pretty(all_data, filename)
-                            results["successful"].append(url)
-                            print(f"Successfully processed {url}")
-                        else:
-                            results["failed"].append({"url": url, "reason": "Failed validation"})
-                    except Exception as save_error:
-                        print(f"Error saving data for {url}: {str(save_error)}")
-                        results["failed"].append({"url": url, "reason": f"Save error: {str(save_error)}"})
-                else:
-                    error_msg = data.get("error", "Invalid data format - missing manufacturers data")
-                    results["failed"].append({"url": url, "reason": error_msg})
-                    print(f"Invalid data format for {url}: {data}")
-            else:
-                results["failed"].append({"url": url, "reason": f"Invalid response format: {type(data)}"})
-                print(f"Invalid response type for {url}: {type(data)}, Data: {data}")
-            
-        except Exception as e:
-            print(f"Error processing {url}: {str(e)}")
-            results["failed"].append({"url": url, "reason": str(e)})
+    state = ScrapingState()
     
     # Create tasks for all URLs
-    tasks = [process_url(url) for url in urls]
+    tasks = [process_url(url, data_points, filename, state) for url in urls]
     
-    # Process URLs concurrently and wait for all to complete
+    # Process URLs concurrently
     await asyncio.gather(*tasks, return_exceptions=True)
     
     # Generate summary report
     print("\n=== Scraping Summary ===")
     print(f"Total URLs processed: {len(urls)}")
-    print(f"Successful: {len(results['successful'])}")
-    print(f"Failed: {len(results['failed'])}")
+    print(f"Successful: {len(state.results['successful'])}")
+    print(f"Failed: {len(state.results['failed'])}")
     
-    if results["failed"]:
+    if state.results["failed"]:
         print("\nFailed URLs and reasons:")
-        for failure in results["failed"]:
+        for failure in state.results["failed"]:
             print(f"URL: {failure['url']}")
             print(f"Reason: {failure['reason']}")
             print("-" * 50)
     
-    print(f"\nTotal records collected: {len(all_data)}")
+    print(f"\nTotal records collected: {len(state.all_data)}")
     export_to_csv(filename, filename.replace('.json', '.csv'))
     
-    # Save the results report to a file
+    # Save the results report
     report_filename = f"scraping_report_{time.strftime('%Y%m%d_%H%M%S')}.json"
     with open(report_filename, 'w', encoding='utf-8') as f:
-        json.dump(results, f, indent=4, ensure_ascii=False)
+        json.dump(state.results, f, indent=4, ensure_ascii=False)
     print(f"\nDetailed report saved to {report_filename}")
     
-    # Send notification when complete
+    # Send notification
     send_mac_notification(
         "Web Scraping Complete", 
-        f"Collected {len(all_data)} records. Success: {len(results['successful'])}, Failed: {len(results['failed'])}"
+        f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
     )
 
-# Modify the main execution code
 def main():
+    """
+    Main execution function that handles the web scraping process.
+    """
+    # Generate URLs to process
     urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
     print(f"Generated {len(urls)} URLs to process")
     
+    # Initialize data points from Pydantic model
     data_keys = list(DataPoints.__fields__.keys())
     data_fields = DataPoints.__fields__
     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
     
+    # Set up output filename
     entity_name = 'china_monthly_auto_sales_data_v2'
     filename = f"{entity_name}.json"
     
