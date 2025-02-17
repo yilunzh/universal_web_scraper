@@ -1,0 +1,5 @@
+2025-02-17 16:30:04,845 - china_auto_sales_scraper - INFO - Starting web scraping process
+2025-02-17 16:30:04,845 - china_auto_sales_scraper - INFO - Directory structure verified
+2025-02-17 16:30:04,846 - china_auto_sales_scraper - INFO - Required input files found
+2025-02-17 16:30:04,848 - china_auto_sales_scraper - INFO - Generated 2 URLs to process
+2025-02-17 16:30:08,227 - china_auto_sales_scraper - INFO - Scraping process completed successfully
