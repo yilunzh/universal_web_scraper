@@ -11,11 +11,14 @@ from langsmith.wrappers import wrap_openai
 import tempfile, requests
 from openai import OpenAI
 import subprocess
+import asyncio
+import aiohttp
+from aiohttp import ClientTimeout
+from asyncio import Semaphore
+from typing import List, Optional, Dict, Any, Type, get_type_hints, Union
 
 import instructor
 from pydantic import BaseModel, Field, create_model
-from typing import List, Optional, Dict, Any, Type, get_type_hints, Union
-
 import pdb
 import csv
 import json
@@ -25,6 +28,9 @@ from functools import wraps
 # Load environment variables
 load_dotenv()
 
+# Load environment variables from .env.local
+load_dotenv('.env.local')
+
 # Initialize OpenAI client with LangSmith wrapper and instructor
 client = wrap_openai(openai.Client())
 instructor_client = instructor.from_openai(client, mode=instructor.Mode.TOOLS)
@@ -33,6 +39,11 @@ instructor_client = instructor.from_openai(client, mode=instructor.Mode.TOOLS)
 GPT_MODEL = "gpt-4o"
 max_token = 100000
 llama_api_key = os.getenv("LLAMA_API_KEY")
+
+# Initialize FirecrawlApp with API key from environment
+firecrawl_api_key = os.getenv("FIRECRAWL_API_KEY")
+if not firecrawl_api_key:
+    raise ValueError("FIRECRAWL_API_KEY not found in environment variables")
 
 def filter_empty_fields(model_instance: BaseModel) -> dict:
     """
@@ -968,7 +979,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(57,58):
+            if mfr_code in range(59,60):
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
                 for month_code in range(first_valid_month, last_valid_month + 1):
@@ -999,15 +1010,19 @@ def validate_entry(entry, url):
 
     expected_name = manufacturer_lookup.get(manufacturer_code)
 
-    if expected_name and entry["manufacturer_name"] != expected_name:
-        print(f"Mismatch found for {url}")
-        print(f"Current: {entry['manufacturer_name']}")
-        print(f"Expected: {expected_name}")
+    print(f"Validating entry for {url}")
+    print(f"Entry: {entry}")
+    print(f"Expected name: {expected_name}")
+    print(f"Current name: {entry.get('manufacturer_name')}")
 
+    if expected_name and entry.get("manufacturer_name") != expected_name:
+        print(f"Mismatch found for {url}")
+        print(f"Current: {entry.get('manufacturer_name')}")
+        print(f"Expected: {expected_name}")
         found_mismatch = True
         print("-" * 50)
 
-    return found_mismatch
+    return not found_mismatch  # Return True if validation passes (no mismatch)
 
 
 def send_mac_notification(title, message):
@@ -1148,39 +1163,168 @@ urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
 print(urls)
 print(len(urls))
 
-for url in urls:
-    print(f"Scraping {url}")
+async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[str], semaphore: Semaphore) -> Dict:
+    """
+    Asynchronously scrape a given URL and extract structured data.
+    
+    Args:
+        url (str): The URL to scrape
+        data_points (List[Dict]): The list of data points to extract
+        links_scraped (List[str]): List of already scraped links
+        semaphore (Semaphore): Semaphore to limit concurrent requests
+        
+    Returns:
+        Dict: The extracted structured data or an error message
+    """
+    app = FirecrawlApp()
+    
+    try:
+        # Add small delay between requests
+        await asyncio.sleep(1)
+        
+        async with semaphore:  # Limit concurrent requests
+            try:
+                # Use run_in_executor to run the synchronous scrape_url method asynchronously
+                loop = asyncio.get_event_loop()
+                scraped_data = await loop.run_in_executor(None, app.scrape_url, url)
+
+                if scraped_data["metadata"]["statusCode"] == 200:
+                    markdown = scraped_data["markdown"][: (max_token * 2)]
+                    links_scraped.append(url)
+
+                    extracted_data = extract_data_from_content(markdown, data_points, links_scraped, url)
+                    # Convert JSON string to dictionary if needed
+                    if isinstance(extracted_data, str):
+                        try:
+                            extracted_data = json.loads(extracted_data)
+                        except json.JSONDecodeError:
+                            return {"error": "Failed to parse JSON response"}
+                    return extracted_data
+                else:
+                    status_code = scraped_data["metadata"]["statusCode"]
+                    print(f"HTTP Error {status_code} while scraping URL: {url}")
+
+                    if status_code == 404:
+                        print("Page not found - skipping retry")
+                        return {"error": f"Page not found (404) for URL: {url}"}
+
+                    raise Exception(f"HTTP {status_code} error")
+
+            except Exception as e:
+                print(f"Error scraping URL {url}")
+                print(f"Exception: {e}")
+                raise
+
+    except Exception as e:
+        print(f"Failed to scrape {url}: {e}")
+        return {"error": str(e)}
+
+async def process_urls(urls: List[str], data_points: List[Dict], filename: str) -> None:
+    """
+    Process multiple URLs concurrently with a limit on concurrent requests.
+    
+    Args:
+        urls (List[str]): List of URLs to process
+        data_points (List[Dict]): The list of data points to extract
+        filename (str): Name of the file to save results
+    """
+    semaphore = Semaphore(5)  # Limit to 5 concurrent requests
+    links_scraped = []
+    all_data = []
+    results = {
+        "successful": [],
+        "failed": []
+    }
+    
+    async def process_url(url: str) -> None:
+        """
+        Process a single URL with proper error handling.
+        
+        Args:
+            url (str): The URL to process
+        """
+        print(f"Processing {url}")
+        try:
+            data = await async_scrape(url, data_points, links_scraped, semaphore)
+            
+            if isinstance(data, dict):  # Ensure data is a dictionary
+                if "manufacturers" in data and isinstance(data["manufacturers"], list):
+                    manufacturer_data = data["manufacturers"][0]
+                    try:
+                        if validate_entry(manufacturer_data, url):
+                            all_data.extend([manufacturer_data])
+                            # Save after each successful scrape
+                            save_json_pretty(all_data, filename)
+                            results["successful"].append(url)
+                            print(f"Successfully processed {url}")
+                        else:
+                            results["failed"].append({"url": url, "reason": "Failed validation"})
+                    except Exception as save_error:
+                        print(f"Error saving data for {url}: {str(save_error)}")
+                        results["failed"].append({"url": url, "reason": f"Save error: {str(save_error)}"})
+                else:
+                    error_msg = data.get("error", "Invalid data format - missing manufacturers data")
+                    results["failed"].append({"url": url, "reason": error_msg})
+                    print(f"Invalid data format for {url}: {data}")
+            else:
+                results["failed"].append({"url": url, "reason": f"Invalid response format: {type(data)}"})
+                print(f"Invalid response type for {url}: {type(data)}, Data: {data}")
+            
+        except Exception as e:
+            print(f"Error processing {url}: {str(e)}")
+            results["failed"].append({"url": url, "reason": str(e)})
+    
+    # Create tasks for all URLs
+    tasks = [process_url(url) for url in urls]
+    
+    # Process URLs concurrently and wait for all to complete
+    await asyncio.gather(*tasks, return_exceptions=True)
+    
+    # Generate summary report
+    print("\n=== Scraping Summary ===")
+    print(f"Total URLs processed: {len(urls)}")
+    print(f"Successful: {len(results['successful'])}")
+    print(f"Failed: {len(results['failed'])}")
+    
+    if results["failed"]:
+        print("\nFailed URLs and reasons:")
+        for failure in results["failed"]:
+            print(f"URL: {failure['url']}")
+            print(f"Reason: {failure['reason']}")
+            print("-" * 50)
+    
+    print(f"\nTotal records collected: {len(all_data)}")
+    export_to_csv(filename, filename.replace('.json', '.csv'))
+    
+    # Save the results report to a file
+    report_filename = f"scraping_report_{time.strftime('%Y%m%d_%H%M%S')}.json"
+    with open(report_filename, 'w', encoding='utf-8') as f:
+        json.dump(results, f, indent=4, ensure_ascii=False)
+    print(f"\nDetailed report saved to {report_filename}")
+    
+    # Send notification when complete
+    send_mac_notification(
+        "Web Scraping Complete", 
+        f"Collected {len(all_data)} records. Success: {len(results['successful'])}, Failed: {len(results['failed'])}"
+    )
+
+# Modify the main execution code
+def main():
+    urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
+    print(f"Generated {len(urls)} URLs to process")
+    
+    data_keys = list(DataPoints.__fields__.keys())
+    data_fields = DataPoints.__fields__
     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
     
-    # scrape using landing page
-    # data = run_research(entity_name, url, data_points, special_instruction)  # Note: changed website to url
+    entity_name = 'china_monthly_auto_sales_data_v2'
+    filename = f"{entity_name}.json"
+    
+    # Run the async scraping
+    asyncio.run(process_urls(urls, data_points, filename))
 
-    i = 0
-    while i < 3:
-        # scrape using monthly sales page
-        # data = run_research(entity_name, url, data_points, monthly_sales_page_instruction)
-        data = json.loads(scrape(url, data_points, []))
-
-        if data and data["manufacturers"]:  # Check if data exists
-            validate_entry(data["manufacturers"][0], url)
-            if validate_entry:
-                all_data.extend(data["manufacturers"][0])
-                # Save after each iteration to ensure data is preserved
-                save_json_pretty(all_data, filename)
-                break
-            else:
-                i += 1
-        else:
-            print(f"No data returned for URL: {url}")
-
-print(f"Total records collected: {len(all_data)}")
-export_to_csv('china_monthly_auto_sales_data_v2.json', 'china_monthly_auto_sales_v2.csv')
-
-# Send notification when complete
-send_mac_notification(
-    "Web Scraping Complete", 
-    f"Collected {len(all_data)} records and exported to CSV"
-)
+if __name__ == "__main__":
+    main()
 
 #validation code
 # first_month = find_first_valid_month_code(12)
