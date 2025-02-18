@@ -39,10 +39,10 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
         # Generate URLs by combining codes
         for mfr_code in manufacturer_codes:
-            if mfr_code in range(61,62):  # Adjust range as needed
+            if mfr_code in range(62,63):  # Adjust range as needed
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
-                for month_code in range(first_valid_month, last_valid_month + 1):
+                for month_code in range(85, last_valid_month + 1):
                     url = base_url.format(mfr_code, month_code)
                     urls.append(url)
 
