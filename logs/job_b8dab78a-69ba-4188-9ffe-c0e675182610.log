@@ -1,9 +1,0 @@
-2025-02-17 22:31:59,023 - INFO - Starting job b8dab78a-69ba-4188-9ffe-c0e675182610
-2025-02-17 22:31:59,023 - INFO - Request parameters: {'manufacturer_codes': [62], 'start_month': None, 'end_month': None}
-2025-02-17 22:31:59,023 - INFO - Manufacturer 62:
-2025-02-17 22:31:59,023 - INFO -   - Start month: 1
-2025-02-17 22:31:59,023 - INFO -   - End month: 86
-2025-02-17 22:31:59,023 - INFO -   - Max allowed: 86
-2025-02-17 22:31:59,023 - INFO - Manufacturer 62: Scraping months 1 to 86
-2025-02-17 22:31:59,023 - INFO - Generated 86 URLs to scrape
-2025-02-17 22:36:22,635 - INFO - Job ended with status: JobStatus.RUNNING

@@ -1,7 +1,0 @@
-2025-02-17 21:28:12,917 - INFO - Starting job e01c1f15-a76b-4c6f-aa06-d7da0a749ef8
-2025-02-17 21:28:12,925 - INFO - Request parameters: {'manufacturer_codes': [62], 'start_month': 85, 'end_month': 86}
-2025-02-17 21:28:12,925 - INFO - Generated 2 URLs to scrape
-2025-02-17 21:28:12,926 - INFO - Output will be saved to /Users/yilunzhang/Projects/universal_web_scraper/data/output/job_e01c1f15-a76b-4c6f-aa06-d7da0a749ef8.json
-2025-02-17 21:28:58,205 - INFO - Scraping completed successfully
-2025-02-17 21:28:58,205 - INFO - Job completed successfully
-2025-02-17 21:28:58,206 - INFO - Job ended with status: JobStatus.COMPLETED

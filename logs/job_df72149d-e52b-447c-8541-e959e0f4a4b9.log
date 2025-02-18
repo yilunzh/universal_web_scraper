@@ -1,5 +1,0 @@
-2025-02-17 22:21:08,498 - INFO - Starting job df72149d-e52b-447c-8541-e959e0f4a4b9
-2025-02-17 22:21:08,498 - INFO - Request parameters: {'manufacturer_codes': [62], 'start_month': None, 'end_month': None}
-2025-02-17 22:21:08,498 - INFO - Manufacturer 62: Scraping months 1 to 999
-2025-02-17 22:21:08,499 - INFO - Generated 999 URLs to scrape
-2025-02-17 22:24:59,998 - INFO - Job ended with status: JobStatus.RUNNING
