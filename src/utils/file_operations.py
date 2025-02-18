@@ -3,6 +3,7 @@ import csv
 from typing import Dict, List
 import time
 from pathlib import Path
+import traceback
 
 def save_json_pretty(data: List[Dict], filename: str) -> None:
     """
@@ -73,15 +74,13 @@ def save_json_pretty(data: List[Dict], filename: str) -> None:
         print(f"Data preview: {str(data)[:200]}")
 
 def export_to_csv(json_file_path: str, csv_file_path: str) -> None:
-    """
-    Transform JSON sales data into CSV format.
-    
-    Args:
-        json_file_path (str): Path to the JSON file
-        csv_file_path (str): Path to save the CSV file
-    """
+    """Transform JSON sales data into CSV format."""
     try:
-        with open(json_file_path, 'r', encoding='utf-8') as f:
+        # Convert input paths to Path objects for consistency
+        json_path = Path(json_file_path)
+        csv_path = Path(csv_file_path)
+        
+        with json_path.open('r', encoding='utf-8') as f:
             data = json.load(f)
 
         manufacturers = data.get('value', [])
@@ -105,7 +104,7 @@ def export_to_csv(json_file_path: str, csv_file_path: str) -> None:
 
         # Write to CSV
         if rows:
-            with open(csv_file_path, 'w', newline='', encoding='utf-8') as f:
+            with csv_path.open('w', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=rows[0].keys())
                 writer.writeheader()
                 writer.writerows(rows)

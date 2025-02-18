@@ -1,0 +1,27 @@
+2025-02-17 22:16:50,251 - INFO - Starting job 129d7af2-2412-4992-a4f2-28cfcdf56387
+2025-02-17 22:16:50,251 - INFO - Request parameters: {'manufacturer_codes': [62], 'start_month': None, 'end_month': None}
+2025-02-17 22:16:50,251 - INFO - Manufacturer 62: Scraping months 1 to 999
+2025-02-17 22:16:50,252 - INFO - Generated 999 URLs to scrape
+2025-02-17 22:16:50,326 - ERROR - Scraping failed: process_urls() missing 1 required positional argument: 'filename'
+2025-02-17 22:16:50,345 - ERROR - Traceback: Traceback (most recent call last):
+  File "/Users/yilunzhang/Projects/universal_web_scraper/src/api/jobs.py", line 85, in run_scraper_job
+    scraped_data = await process_urls(urls, data_points)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yilunzhang/Projects/universal_web_scraper/.venv/lib/python3.13/site-packages/langsmith/run_helpers.py", line 534, in async_wrapper
+    raise e
+  File "/Users/yilunzhang/Projects/universal_web_scraper/.venv/lib/python3.13/site-packages/langsmith/run_helpers.py", line 518, in async_wrapper
+    fr_coro = func(*args, **kwargs)
+TypeError: process_urls() missing 1 required positional argument: 'filename'
+
+2025-02-17 22:16:50,346 - ERROR - Job failed: process_urls() missing 1 required positional argument: 'filename'
+Traceback: Traceback (most recent call last):
+  File "/Users/yilunzhang/Projects/universal_web_scraper/src/api/jobs.py", line 85, in run_scraper_job
+    scraped_data = await process_urls(urls, data_points)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yilunzhang/Projects/universal_web_scraper/.venv/lib/python3.13/site-packages/langsmith/run_helpers.py", line 534, in async_wrapper
+    raise e
+  File "/Users/yilunzhang/Projects/universal_web_scraper/.venv/lib/python3.13/site-packages/langsmith/run_helpers.py", line 518, in async_wrapper
+    fr_coro = func(*args, **kwargs)
+TypeError: process_urls() missing 1 required positional argument: 'filename'
+
+2025-02-17 22:16:50,346 - INFO - Job ended with status: JobStatus.FAILED

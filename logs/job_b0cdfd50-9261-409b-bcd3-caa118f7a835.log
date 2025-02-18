@@ -1,0 +1,10 @@
+2025-02-17 22:14:22,576 - INFO - Starting job b0cdfd50-9261-409b-bcd3-caa118f7a835
+2025-02-17 22:14:22,576 - INFO - Request parameters: {'manufacturer_codes': [62], 'start_month': None, 'end_month': None}
+2025-02-17 22:14:22,578 - ERROR - Job failed: name 'find_first_valid_month_code' is not defined
+Traceback: Traceback (most recent call last):
+  File "/Users/yilunzhang/Projects/universal_web_scraper/src/api/jobs.py", line 62, in run_scraper_job
+    start_month = request.start_month if request.start_month is not None else find_first_valid_month_code(mfr_code, 1)
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'find_first_valid_month_code' is not defined
+
+2025-02-17 22:14:22,578 - INFO - Job ended with status: JobStatus.FAILED

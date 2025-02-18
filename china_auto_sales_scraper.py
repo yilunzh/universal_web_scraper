@@ -1296,34 +1296,34 @@ async def process_urls(urls: List[str], data_points: List[Dict], filename: str) 
         f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
     )
 
-def main():
-    """
-    Main execution function that handles the web scraping process.
-    """
-    # Generate URLs to process
-    urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
-    print(f"Generated {len(urls)} URLs to process")
+# def main():
+#     """
+#     Main execution function that handles the web scraping process.
+#     """
+#     # Generate URLs to process
+#     urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
+#     print(f"Generated {len(urls)} URLs to process")
     
-    # Initialize data points from Pydantic model
-    data_keys = list(DataPoints.__fields__.keys())
-    data_fields = DataPoints.__fields__
-    data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
+#     # Initialize data points from Pydantic model
+#     data_keys = list(DataPoints.__fields__.keys())
+#     data_fields = DataPoints.__fields__
+#     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
     
-    # Set up output filename
-    entity_name = 'china_monthly_auto_sales_data_v2'
-    filename = f"{entity_name}.json"
+#     # Set up output filename
+#     entity_name = 'china_monthly_auto_sales_data_v2'
+#     filename = f"{entity_name}.json"
     
-    # Run the async scraping
-    asyncio.run(process_urls(urls, data_points, filename))
+#     # Run the async scraping
+#     asyncio.run(process_urls(urls, data_points, filename))
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 #validation code
-# first_month = find_first_valid_month_code(12)
-# print(first_month)
-# last_month = find_last_valid_month_code(12, 86)
-# print(last_month)
+first_month = find_first_valid_month_code(62)
+print(first_month)
+last_month = find_last_valid_month_code(62, 86)
+print(last_month)
 
 # entity_name = 'tesla_nov_2024_sales_data'
 # filename = f"{entity_name}.json"

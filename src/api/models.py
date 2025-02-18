@@ -8,11 +8,12 @@ class JobStatus(str, Enum):
     RUNNING = "running"
     COMPLETED = "completed"
     FAILED = "failed"
+    CANCELLED = "cancelled"
 
 class ScraperRequest(BaseModel):
     manufacturer_codes: List[int]
-    start_month: int
-    end_month: int
+    start_month: Optional[int] = None
+    end_month: Optional[int] = None
 
 class JobResponse(BaseModel):
     job_id: str

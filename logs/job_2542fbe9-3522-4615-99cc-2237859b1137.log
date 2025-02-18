@@ -1,0 +1,12 @@
+2025-02-17 23:08:26,492 - INFO - Starting job 2542fbe9-3522-4615-99cc-2237859b1137
+2025-02-17 23:08:26,493 - INFO - Request parameters: {'manufacturer_codes': [61], 'start_month': 84, 'end_month': 86}
+2025-02-17 23:08:26,493 - INFO - Manufacturer 61:
+2025-02-17 23:08:26,493 - INFO -   - Start month: 84
+2025-02-17 23:08:26,493 - INFO -   - End month: 86
+2025-02-17 23:08:26,493 - INFO -   - Max allowed: 86
+2025-02-17 23:08:26,493 - INFO - Manufacturer 61: Scraping months 84 to 86
+2025-02-17 23:08:26,493 - INFO - Generated 3 URLs to scrape
+2025-02-17 23:09:24,660 - INFO - Scraping completed successfully
+2025-02-17 23:09:25,044 - INFO - Data saved to /Users/yilunzhang/Projects/universal_web_scraper/data/output/china_monthly_auto_sales_data_v2.json and /Users/yilunzhang/Projects/universal_web_scraper/data/output/china_monthly_auto_sales_data_v2.csv
+2025-02-17 23:09:25,044 - INFO - Job completed successfully
+2025-02-17 23:09:25,044 - INFO - Job ended with status: JobStatus.COMPLETED

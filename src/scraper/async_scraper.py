@@ -1,6 +1,6 @@
 import json
 import time
-from typing import List, Dict
+from typing import List, Dict, Optional
 import asyncio
 from langsmith import traceable
 from .state import ScrapingState
@@ -70,14 +70,13 @@ async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[st
         return {"error": str(e)}
 
 @traceable(run_type="chain", name="Process single URL")
-async def process_url(url: str, data_points: List[Dict], filename: str, state: ScrapingState) -> None:
+async def process_url(url: str, data_points: List[Dict], state: ScrapingState) -> None:
     """
     Process a single URL with proper error handling.
     
     Args:
         url (str): The URL to process
         data_points (List[Dict]): The data points to extract
-        filename (str): The output filename
         state (ScrapingState): Shared state for the scraping process
     """
     print(f"Processing {url}")
@@ -91,7 +90,6 @@ async def process_url(url: str, data_points: List[Dict], filename: str, state: S
                     if validate_entry(manufacturer_data, url):
                         manufacturer_data["reference"] = url
                         state.all_data.extend([manufacturer_data])
-                        save_json_pretty(state.all_data, filename)
                         state.results["successful"].append(url)
                         print(f"Successfully processed {url}")
                     else:
@@ -112,14 +110,12 @@ async def process_url(url: str, data_points: List[Dict], filename: str, state: S
         state.results["failed"].append({"url": url, "reason": str(e)})
 
 @traceable(run_type="chain", name="Process URLs")
-async def process_urls(urls: List[str], data_points: List[Dict], filename: str) -> None:
-    """
-    Process multiple URLs concurrently with a limit on concurrent requests.
-    """
+async def process_urls(urls: List[str], data_points: List[Dict]) -> Dict:
+    """Process URLs and return scraped data"""
     state = ScrapingState()
     
     # Create tasks for all URLs
-    tasks = [process_url(url, data_points, filename, state) for url in urls]
+    tasks = [process_url(url, data_points, state) for url in urls]
     
     # Process URLs concurrently
     await asyncio.gather(*tasks, return_exceptions=True)
@@ -138,7 +134,32 @@ async def process_urls(urls: List[str], data_points: List[Dict], filename: str) 
             print("-" * 50)
     
     print(f"\nTotal records collected: {len(state.all_data)}")
-    export_to_csv(filename, filename.replace('.json', '.csv'))
+    
+    # Create result dictionary
+    result = {
+        "description": "A list of sales data grouped by manufacturer.",
+        "name": "manufacturers",
+        "reference": None,
+        "value": state.all_data
+    }
+    print(f"DEBUG: result['value'] type: {type(result['value'])}")
+    
+    # Always save to standard files
+    output_json = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.json"
+    output_csv = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.csv"
+    
+    print(f"DEBUG: output_json type: {type(output_json)}")
+    print(f"DEBUG: output_json value: {output_json}")
+    print(f"DEBUG: output_csv type: {type(output_csv)}")
+    print(f"DEBUG: output_csv value: {output_csv}")
+    
+    # Save JSON using save_json_pretty which handles appending
+    save_json_pretty(result['value'], str(output_json))
+    
+    # Then export to CSV using the JSON file
+    json_path = str(output_json)
+    csv_path = str(output_csv)
+    export_to_csv(json_path, csv_path)
     
     # Save the results report
     report_filename = OUTPUT_DIR / f"scraping_report_{time.strftime('%Y%m%d_%H%M%S')}.json"
@@ -150,4 +171,6 @@ async def process_urls(urls: List[str], data_points: List[Dict], filename: str) 
     send_mac_notification(
         "Web Scraping Complete", 
         f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
-    ) 
+    )
+    
+    return result 

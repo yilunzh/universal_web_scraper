@@ -53,4 +53,24 @@ async def get_job_results(job_id: str):
         "results": job.results,
         "start_time": job.start_time,
         "end_time": job.end_time
+    }
+
+@router.post("/cancel/{job_id}")
+async def cancel_job(job_id: str):
+    """Cancel a running job"""
+    job = jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    if job.status == JobStatus.COMPLETED:
+        raise HTTPException(status_code=400, detail="Cannot cancel completed job")
+    
+    if job.status == JobStatus.CANCELLED:
+        raise HTTPException(status_code=400, detail="Job already cancelled")
+    
+    job.status = JobStatus.CANCELLED
+    return {
+        "job_id": job_id,
+        "status": job.status,
+        "message": "Job cancelled successfully"
     } 

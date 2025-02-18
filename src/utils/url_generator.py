@@ -9,8 +9,10 @@ def find_first_valid_month_code(manufacturer_code: int, min_month_code: int) -> 
 
 def find_last_valid_month_code(manufacturer_code: int, max_month_code: int) -> int:
     """Find the last valid month code for a manufacturer."""
-    # Implementation here
-    return max_month_code
+    print(f"Finding last valid month for manufacturer {manufacturer_code} with max {max_month_code}")
+    # Add implementation here
+    # Make sure to enforce the max_month_code limit
+    return min(max_month_code, 86)  # Ensure we never return more than 86
 
 def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) -> List[str]:
     """
@@ -42,7 +44,7 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
             if mfr_code in range(62,63):  # Adjust range as needed
                 first_valid_month = find_first_valid_month_code(mfr_code, 1)
                 last_valid_month = find_last_valid_month_code(mfr_code, max(month_codes))
-                for month_code in range(85, last_valid_month + 1):
+                for month_code in range(first_valid_month, last_valid_month + 1):
                     url = base_url.format(mfr_code, month_code)
                     urls.append(url)
 
