@@ -34,7 +34,7 @@ async def extract_data_from_content(content: str, data_points: List[Dict], links
 
         # Extract data using the GPT model asynchronously
         response = await client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             response_model=DataPoints,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that extracts structured data from text."},
