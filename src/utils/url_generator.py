@@ -4,6 +4,7 @@ from pathlib import Path
 import aiohttp
 import asyncio
 import requests
+from tenacity import retry, wait_exponential, stop_after_attempt
 
 async def check_url_status(url: str, cache: Set[str] = None) -> bool:
     """Check if a URL exists by making a GET request"""
@@ -28,8 +29,9 @@ async def check_month(manufacturer_code: int, month: int, cache: Set[str] = None
     url = base_url.format(manufacturer_code, month)
     return await check_url_status(url, cache)
 
+@retry(wait=wait_exponential(multiplier=1, min=4, max=10), stop=stop_after_attempt(3))
 def check_url_sync(url: str, cache: Set[str] = None) -> bool:
-    """Synchronous version of check_url_status using requests"""
+    """Synchronous version of check_url_status using requests with retries"""
     if cache is not None and url in cache:
         return True
     
@@ -42,7 +44,7 @@ def check_url_sync(url: str, cache: Set[str] = None) -> bool:
         return exists
     except Exception as e:
         print(f"DEBUG: Error checking {url}: {str(e)}")
-        return False
+        raise  # Let tenacity handle the retry
 
 def check_month_sync(manufacturer_code: int, month: int, cache: Set[str] = None) -> bool:
     """Synchronous version of check_month"""
