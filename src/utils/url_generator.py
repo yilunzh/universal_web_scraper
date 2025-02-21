@@ -82,36 +82,41 @@ def find_first_valid_month_code(manufacturer_code: int, min_month: int) -> int:
     return max(1, left)
 
 def find_last_valid_month_code(manufacturer_code: int, max_month: int) -> int:
-    """Find last valid month code using exponential + binary search."""
+    """Find last valid month code using binary search."""
     print(f"Finding last valid month for manufacturer {manufacturer_code} with max {max_month}")
     cache = set()
     
-    # Verify max_month exists
-    print(f"Checking if max_month {max_month} exists...")
-    if check_month_sync(manufacturer_code, max_month, cache):
-        print(f"Max month {max_month} exists, using it")
-        return max_month
-
-    # Exponential search backwards from max_month
-    bound = 1
-    last_valid = None
-    print("Starting exponential search backwards...")
-    while bound <= max_month:
-        month = max_month - bound
-        print(f"Checking month {month}...")
-        if month <= 0:
-            break
-        if check_month_sync(manufacturer_code, month, cache):
-            print(f"Found valid month {month}")
-            last_valid = month
-            break
-        print(f"Month {month} invalid, doubling bound")
-        bound *= 2
-
-    if last_valid is None:
-        print("No valid months found")
+    # Check if any data exists
+    if not check_month_sync(manufacturer_code, 1, cache):
+        print("No data exists for this manufacturer")
         return 1
-
+    
+    # Binary search
+    left = 1
+    right = max_month
+    last_valid = 1  # Keep track of last valid month found
+    
+    print(f"Starting binary search between {left} and {right}")
+    while left <= right:
+        mid = (left + right) // 2
+        print(f"Checking month {mid}...")
+        
+        if check_month_sync(manufacturer_code, mid, cache):
+            print(f"Month {mid} valid, checking if it's the boundary")
+            last_valid = mid
+            
+            # Check if this is the boundary
+            if not check_month_sync(manufacturer_code, mid + 1, cache):
+                print(f"Found exact boundary at {mid}")
+                return mid
+                
+            # Not the boundary, look in upper half
+            left = mid + 1
+        else:
+            # Invalid month, look in lower half
+            print(f"Month {mid} invalid, looking lower")
+            right = mid - 1
+    
     print(f"Found last valid month: {last_valid}")
     return last_valid
 
