@@ -26,12 +26,13 @@ wheels/
 .installed.cfg
 *.egg
 
-# Data and output files
-*.json
-*.csv
-!manufacturer_code.csv
-!month_code.csv
-output/
+# Data directories
+data/
+logs/
+
+# Keep input template files
+!data/input/manufacturer_code.csv
+!data/input/month_code.csv
 
 # IDE
 .idea/
