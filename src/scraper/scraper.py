@@ -1,5 +1,7 @@
 import time
 import csv
+import asyncio
+import aiohttp
 from typing import Dict, List, Any
 from tenacity import retry, wait_random_exponential, stop_after_attempt, retry_if_exception_type
 from langsmith import traceable
@@ -33,20 +35,67 @@ def get_manufacturer_name(code: int) -> str:
     names = load_manufacturer_names()
     return names.get(code, "Unknown")
 
+@retry(
+    wait=wait_random_exponential(multiplier=1, max=60),
+    stop=stop_after_attempt(3)
+)
+async def scrape_url_content(url: str) -> Dict:
+    """Scrape content from a URL with retries"""
+    try:
+        print(f"Scraping URL: {url}")
+        response = firecrawl.scrape(url)
+        return {"content": response.text, "error": None}
+    except Exception as e:
+        print(f"Error scraping {url}: {e}")
+        return {"content": None, "error": str(e)}
+
+async def process_single_url(url: str, data_points: List[Dict], semaphore: asyncio.Semaphore) -> Dict:
+    """Process a single URL with rate limiting"""
+    async with semaphore:
+        try:
+            result = await scrape_url_content(url)
+            if result["error"]:
+                return {"error": result["error"]}
+            
+            content = result["content"]
+            return await extract_data_from_content(content, data_points, [], url)
+            
+        except Exception as e:
+            return {"error": str(e)}
+
+async def process_urls(urls: List[str], data_points: List[Dict]) -> Dict:
+    """Process multiple URLs concurrently with rate limiting"""
+    try:
+        # Process first URL immediately
+        if len(urls) == 1:
+            # Create a semaphore for single URL
+            semaphore = asyncio.Semaphore(1)
+            result = await process_single_url(urls[0], data_points, semaphore)
+            return {
+                "value": [result] if "error" not in result else [],
+                "errors": [{"url": urls[0], "error": result["error"]}] if "error" in result else None
+            }
+
+        # For multiple URLs, process concurrently
+        MAX_CONCURRENT = 5  # Adjust based on API limits
+        semaphore = asyncio.Semaphore(MAX_CONCURRENT)
+
+        # Create and start task for each URL
+        for url in urls:
+            asyncio.create_task(
+                process_single_url(url, data_points, semaphore)
+            )
+
+        # Return immediately
+        return {"message": "Processing started"}
+
+    except Exception as e:
+        print(f"Error in process_urls: {e}")
+        return {"error": str(e)}
+
 @traceable(run_type="tool", name="Extract Data")
 async def extract_data_from_content(content: str, data_points: List[Dict], links_scraped: List[str], url: str) -> Dict:
-    """
-    Extract structured data from parsed content using the GPT model.
-    
-    Args:
-        content (str): The content to extract data from
-        data_points (List[Dict]): The data points to extract
-        links_scraped (List[str]): List of already scraped links
-        url (str): The URL being processed
-        
-    Returns:
-        Dict: The extracted structured data
-    """
+    """Extract structured data from parsed content using the GPT model."""
     try:
         # Get manufacturer code from URL
         mfr_code = int(url.split('_')[0].split('/')[-1])

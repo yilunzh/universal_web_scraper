@@ -114,63 +114,68 @@ async def process_urls(urls: List[str], data_points: List[Dict]) -> Dict:
     """Process URLs and return scraped data"""
     state = ScrapingState()
     
-    # Create tasks for all URLs
-    tasks = [process_url(url, data_points, state) for url in urls]
-    
-    # Process URLs concurrently
-    await asyncio.gather(*tasks, return_exceptions=True)
-    
-    # Generate summary report
-    print("\n=== Scraping Summary ===")
-    print(f"Total URLs processed: {len(urls)}")
-    print(f"Successful: {len(state.results['successful'])}")
-    print(f"Failed: {len(state.results['failed'])}")
-    
-    if state.results["failed"]:
-        print("\nFailed URLs and reasons:")
-        for failure in state.results["failed"]:
-            print(f"URL: {failure['url']}")
-            print(f"Reason: {failure['reason']}")
-            print("-" * 50)
-    
-    print(f"\nTotal records collected: {len(state.all_data)}")
-    
-    # Create result dictionary
-    result = {
-        "description": "A list of sales data grouped by manufacturer.",
-        "name": "manufacturers",
-        "reference": None,
-        "value": state.all_data
-    }
-    print(f"DEBUG: result['value'] type: {type(result['value'])}")
-    
-    # Always save to standard files
-    output_json = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.json"
-    output_csv = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.csv"
-    
-    print(f"DEBUG: output_json type: {type(output_json)}")
-    print(f"DEBUG: output_json value: {output_json}")
-    print(f"DEBUG: output_csv type: {type(output_csv)}")
-    print(f"DEBUG: output_csv value: {output_csv}")
-    
-    # Save JSON using save_json_pretty which handles appending
-    save_json_pretty(result['value'], str(output_json))
-    
-    # Then export to CSV using the JSON file
-    json_path = str(output_json)
-    csv_path = str(output_csv)
-    export_to_csv(json_path, csv_path)
-    
-    # Save the results report
-    report_filename = OUTPUT_DIR / f"scraping_report_{time.strftime('%Y%m%d_%H%M%S')}.json"
-    with open(report_filename, 'w', encoding='utf-8') as f:
-        json.dump(state.results, f, indent=4, ensure_ascii=False)
-    print(f"\nDetailed report saved to {report_filename}")
-    
-    # Send notification
-    send_mac_notification(
-        "Web Scraping Complete", 
-        f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
-    )
-    
-    return result 
+    try:
+        print(f"Processing URLs: {urls}")  # Debug log
+        # Create tasks for all URLs
+        tasks = [process_url(url, data_points, state) for url in urls]
+        
+        # Process URLs concurrently
+        await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Generate summary report
+        print("\n=== Scraping Summary ===")
+        print(f"Total URLs processed: {len(urls)}")
+        print(f"Successful: {len(state.results['successful'])}")
+        print(f"Failed: {len(state.results['failed'])}")
+        
+        if state.results["failed"]:
+            print("\nFailed URLs and reasons:")
+            for failure in state.results["failed"]:
+                print(f"URL: {failure['url']}")
+                print(f"Reason: {failure['reason']}")
+                print("-" * 50)
+        
+        print(f"\nTotal records collected: {len(state.all_data)}")
+        
+        # Create result dictionary
+        result = {
+            "description": "A list of sales data grouped by manufacturer.",
+            "name": "manufacturers",
+            "reference": None,
+            "value": state.all_data
+        }
+        print(f"DEBUG: result['value'] type: {type(result['value'])}")
+        
+        # Always save to standard files
+        output_json = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.json"
+        output_csv = OUTPUT_DIR / "china_monthly_auto_sales_data_v2.csv"
+        
+        print(f"DEBUG: output_json type: {type(output_json)}")
+        print(f"DEBUG: output_json value: {output_json}")
+        print(f"DEBUG: output_csv type: {type(output_csv)}")
+        print(f"DEBUG: output_csv value: {output_csv}")
+        
+        # Save JSON using save_json_pretty which handles appending
+        save_json_pretty(result['value'], str(output_json))
+        
+        # Then export to CSV using the JSON file
+        json_path = str(output_json)
+        csv_path = str(output_csv)
+        export_to_csv(json_path, csv_path)
+        
+        # Save the results report
+        report_filename = OUTPUT_DIR / f"scraping_report_{time.strftime('%Y%m%d_%H%M%S')}.json"
+        with open(report_filename, 'w', encoding='utf-8') as f:
+            json.dump(state.results, f, indent=4, ensure_ascii=False)
+        print(f"\nDetailed report saved to {report_filename}")
+        
+        # Send notification
+        send_mac_notification(
+            "Web Scraping Complete", 
+            f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
+        )
+        
+        return result
+    except Exception as e:
+        print(f"Error processing URLs: {str(e)}")
+        return {"error": str(e)} 
