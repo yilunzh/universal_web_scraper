@@ -225,14 +225,15 @@ async def start_job(job_id: int) -> Dict:
                         await update_url_status(job_url['id'], "cancelled")
                         return
                     
-                    if 'error' in result:
+                    if 'error' in result or not result.get('value'):
+                        print(f"Failed to process URL: {job_url['url']}")  # Debug log
                         await update_url_status(job_url['id'], "failed")
-                    elif result.get('value'):
+                    else:
                         await update_url_status(job_url['id'], "completed", result['value'][0])
             
             except Exception as e:
+                print(f"Failed to process URL: {job_url['url']} with error: {str(e)}")  # Debug log
                 await update_url_status(job_url['id'], "failed")
-                print(f"Error processing URL {job_url['url']}: {str(e)}")
         
         # Create tasks for all pending URLs
         tasks = []
@@ -249,70 +250,78 @@ async def start_job(job_id: int) -> Dict:
                 
                 # Get final job status
                 final_job = await get_job_status(job_id)
+                if not final_job.data:
+                    raise Exception(f"Could not find job {job_id}")
+                    
                 job_data = final_job.data[0]
+                if not job_data.get('job_urls'):
+                    raise Exception(f"No URLs found for job {job_id}")
                 
-                # Calculate final stats and collect failed URLs
-                url_stats = {
-                    'total': len(job_data['job_urls']),
-                    'completed': len([u for u in job_data['job_urls'] if u['status'] == 'completed']),
-                    'failed': len([u for u in job_data['job_urls'] if u['status'] == 'failed']),
-                }
-                
-                # Explicitly collect failed URLs with their error status
-                failed_urls = []
-                for url in job_data['job_urls']:
-                    if url['status'] == 'failed':
-                        failed_urls.append(url['url'])
-                        print(f"Found failed URL: {url['url']}")  # Debug log
-                
-                # Generate final summary with array format
-                summary = f"""
-                Job Complete: {job_data['job_name']}
-                =====================================
-                Total URLs processed: {url_stats['total']}
-                Successfully scraped: {url_stats['completed']}
-                Failed: {url_stats['failed']}
-                Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
-                
-                Failed URLs ({len(failed_urls)}): [
-                    {chr(10).join('  ' + url for url in failed_urls) if failed_urls else 'None'}
-                ]
-                """
-                
-                # Save summary to output directory
-                summary_path = OUTPUT_DIR / f"job_{job_id}_summary.txt"
-                with open(summary_path, 'w', encoding='utf-8') as f:
-                    f.write(summary)
-                print(f"\nSummary saved to {summary_path}")
-                
-                # Add summary to job logs
-                await add_job_log(
-                    job_id=job_id,
-                    message=summary,
-                    level="INFO"
-                )
-                
-                # Update final status
-                final_status = (
-                    "completed" if url_stats['failed'] == 0
-                    else "partial_success" if url_stats['completed'] > 0
-                    else "failed"
-                )
-                
-                # Send single notification at job completion
-                os.system(f"""
-                    osascript -e 'display notification "Status: {final_status}
-                    Total: {url_stats['total']}
-                    Success: {url_stats['completed']}
-                    Failed: {url_stats['failed']}" with title "Job {job_id} Complete"'
-                """)
-                
-                print(f"\nJob {job_id} completed!")
-                print(summary)
-                await update_job_status(job_id, final_status)
+                try:
+                    # Calculate final stats and collect failed URLs
+                    completed_urls = [u for u in job_data['job_urls'] if u.get('status') == 'completed']
+                    failed_urls = [u for u in job_data['job_urls'] if u.get('status') == 'failed']
+                    
+                    url_stats = {
+                        'total': len(job_data['job_urls']),
+                        'completed': len(completed_urls),
+                        'failed': len(failed_urls),
+                    }
+                    
+                    # Generate final summary with array format
+                    failed_url_list = [u.get('url', 'Unknown URL') for u in failed_urls]
+                    summary = f"""
+                    Job Complete: {job_data.get('job_name', 'Unknown Job')}
+                    =====================================
+                    Total URLs processed: {url_stats['total']}
+                    Successfully scraped: {url_stats['completed']}
+                    Failed: {url_stats['failed']}
+                    Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
+                    
+                    Failed URLs ({len(failed_url_list)}): [
+                        {chr(10).join('  ' + url for url in failed_url_list) if failed_url_list else 'None'}
+                    ]
+                    """
+                    
+                    # Save summary to output directory
+                    summary_path = OUTPUT_DIR / f"job_{job_id}_summary.txt"
+                    with open(summary_path, 'w', encoding='utf-8') as f:
+                        f.write(summary)
+                    print(f"\nSummary saved to {summary_path}")
+                    
+                    # Add summary to job logs
+                    await add_job_log(
+                        job_id=job_id,
+                        message=summary,
+                        level="INFO"
+                    )
+                    
+                    # Update final status
+                    final_status = (
+                        "completed" if url_stats['failed'] == 0
+                        else "partial_success" if url_stats['completed'] > 0
+                        else "failed"
+                    )
+                    
+                    # Send single notification at job completion
+                    os.system(f"""
+                        osascript -e 'display notification "Status: {final_status}
+                        Total: {url_stats['total']}
+                        Success: {url_stats['completed']}
+                        Failed: {url_stats['failed']}" with title "Job {job_id} Complete"'
+                    """)
+                    
+                    print(f"\nJob {job_id} completed!")
+                    print(summary)
+                    await update_job_status(job_id, final_status)
+                    
+                except Exception as e:
+                    print(f"Error processing job results: {str(e)}")
+                    await update_job_status(job_id, "failed")
+                    raise
                 
             except Exception as e:
-                print(f"Error in job completion: {e}")
+                print(f"Error in job completion: {str(e)}")
                 await update_job_status(job_id, "failed")
                 # Notify on error
                 os.system(f"""
