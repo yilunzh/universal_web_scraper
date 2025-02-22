@@ -214,31 +214,24 @@ async def start_job(job_id: int) -> Dict:
                     if job_status.data[0]['status'] == 'cancelled':
                         if job_url['status'] in ['pending', 'in_progress']:
                             await update_url_status(job_url['id'], "cancelled")
-                            await add_log(job_url['id'], "URL processing cancelled", "INFO")
                         return
                         
                     await update_url_status(job_url['id'], "in_progress")
-                    await add_log(job_url['id'], "Starting URL processing", "INFO")
-                    
                     result = await process_urls([job_url['url']], data_points)
                     
                     # Check again for cancellation
                     job_status = await get_job_status(job_id)
                     if job_status.data[0]['status'] == 'cancelled':
                         await update_url_status(job_url['id'], "cancelled")
-                        await add_log(job_url['id'], "URL processing cancelled", "INFO")
                         return
                     
                     if 'error' in result:
                         await update_url_status(job_url['id'], "failed")
-                        await add_log(job_url['id'], f"Failed: {result['error']}", "ERROR")
                     elif result.get('value'):
                         await update_url_status(job_url['id'], "completed", result['value'][0])
-                        await add_log(job_url['id'], "Successfully scraped URL", "INFO")
-                    
+            
             except Exception as e:
                 await update_url_status(job_url['id'], "failed")
-                await add_log(job_url['id'], f"Error: {str(e)}", "ERROR")
                 print(f"Error processing URL {job_url['url']}: {str(e)}")
         
         # Create tasks for all pending URLs
@@ -258,15 +251,21 @@ async def start_job(job_id: int) -> Dict:
                 final_job = await get_job_status(job_id)
                 job_data = final_job.data[0]
                 
-                # Calculate final stats
+                # Calculate final stats and collect failed URLs
                 url_stats = {
                     'total': len(job_data['job_urls']),
                     'completed': len([u for u in job_data['job_urls'] if u['status'] == 'completed']),
                     'failed': len([u for u in job_data['job_urls'] if u['status'] == 'failed']),
                 }
                 
-                # Generate final summary
-                failed_urls = [u['url'] for u in job_data['job_urls'] if u['status'] == 'failed']
+                # Explicitly collect failed URLs with their error status
+                failed_urls = []
+                for url in job_data['job_urls']:
+                    if url['status'] == 'failed':
+                        failed_urls.append(url['url'])
+                        print(f"Found failed URL: {url['url']}")  # Debug log
+                
+                # Generate final summary with array format
                 summary = f"""
                 Job Complete: {job_data['job_name']}
                 =====================================
@@ -275,12 +274,23 @@ async def start_job(job_id: int) -> Dict:
                 Failed: {url_stats['failed']}
                 Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
                 
-                Failed URLs:
-                {chr(10).join(f'- {url}' for url in failed_urls) if failed_urls else 'None'}
+                Failed URLs ({len(failed_urls)}): [
+                    {chr(10).join('  ' + url for url in failed_urls) if failed_urls else 'None'}
+                ]
                 """
                 
-                # Add final summary to job logs
-                await add_job_log(job_id=job_id, message=summary, level="INFO")
+                # Save summary to output directory
+                summary_path = OUTPUT_DIR / f"job_{job_id}_summary.txt"
+                with open(summary_path, 'w', encoding='utf-8') as f:
+                    f.write(summary)
+                print(f"\nSummary saved to {summary_path}")
+                
+                # Add summary to job logs
+                await add_job_log(
+                    job_id=job_id,
+                    message=summary,
+                    level="INFO"
+                )
                 
                 # Update final status
                 final_status = (
