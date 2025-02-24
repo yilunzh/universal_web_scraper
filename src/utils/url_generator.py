@@ -53,50 +53,50 @@ def check_month_sync(manufacturer_code: int, month: int, cache: Set[str] = None)
     return check_url_sync(url, cache)
 
 def find_first_valid_month_code(manufacturer_code: int, min_month: int) -> int:
-    """Find first valid month code using binary search."""
+    """Find first valid month code by binary searching backwards from last valid month."""
     print(f"Finding first valid month for manufacturer {manufacturer_code}")
     cache = set()
     
     # Ensure min_month is at least 1
     min_month = max(1, min_month)
-    print(f"Starting binary search with left={min_month}, right=86")
     
-    # Binary search
-    left = min_month
-    right = 86  # Maximum possible month
+    # First find the last valid month
+    last_valid = find_last_valid_month_code(manufacturer_code, max_month=86)
+    print(f"Found last valid month: {last_valid}")
     
-    # If no valid months found in range, return 1
-    if not check_month_sync(manufacturer_code, right, cache):
-        print(f"No valid months found up to {right}, returning 1")
+    if last_valid < min_month:
+        print(f"No valid months found (last valid {last_valid} < min_month {min_month}), returning 1")
         return 1
     
-    while left < right:
+    # Binary search backwards from last_valid
+    print(f"Binary searching backwards from month {last_valid}")
+    left = min_month
+    right = last_valid
+    first_valid = right  # Initialize to last known valid month
+    
+    while left <= right:
         mid = (left + right) // 2
         print(f"Checking month {mid}...")
         if check_month_sync(manufacturer_code, mid, cache):
-            print(f"Month {mid} exists, looking earlier (right=mid)")
-            right = mid
+            # Valid month, record it and look earlier
+            first_valid = mid
+            right = mid - 1
         else:
-            print(f"Month {mid} doesn't exist, looking later (left=mid+1)")
+            # Invalid month, look later
             left = mid + 1
     
-    print(f"Binary search finished at month {left}")
-    return max(1, left)
+    print(f"First valid month is {first_valid}")
+    return first_valid
 
 def find_last_valid_month_code(manufacturer_code: int, max_month: int) -> int:
     """Find last valid month code using binary search."""
     print(f"Finding last valid month for manufacturer {manufacturer_code} with max {max_month}")
     cache = set()
     
-    # Check if any data exists
-    if not check_month_sync(manufacturer_code, 1, cache):
-        print("No data exists for this manufacturer")
-        return 1
-    
     # Binary search
     left = 1
     right = max_month
-    last_valid = 1  # Keep track of last valid month found
+    last_valid = max_month  # Keep track of last valid month found
     
     print(f"Starting binary search between {left} and {right}")
     while left <= right:
@@ -156,3 +156,11 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
     except Exception as e:
         print(f"Error: {e}")
         return [] 
+
+# ... existing code ...
+
+#validation code
+# first_month = find_first_valid_month_code(88, min_month=1)
+# print(first_month)
+# last_month = find_last_valid_month_code(88, max_month=86)
+# print(last_month)

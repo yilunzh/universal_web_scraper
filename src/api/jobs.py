@@ -614,52 +614,53 @@ async def create_manufacturer_job(request: ManufacturerScrapeRequest) -> Dict:
     try:
         print(f"Creating job for manufacturers: {request.manufacturer_codes}")
         
-        # Convert first manufacturer code string to int for month range check
-        first_manufacturer = int(request.manufacturer_codes[0])
-        print(f"Using first manufacturer code {first_manufacturer} to determine month range")
-        
-        # Determine month range
-        if not request.start_month_code:
-            print("Finding first valid month...")
-            try:
-                start_month = find_first_valid_month_code(
-                    manufacturer_code=first_manufacturer,
-                    min_month=1
-                )
-                print(f"Found start month: {start_month}")
-                request.start_month_code = str(start_month)
-            except Exception as e:
-                print(f"Error finding start month: {str(e)}")
-                raise
-            
-        if not request.end_month_code:
-            print("Finding last valid month...")
-            try:
-                end_month = find_last_valid_month_code(
-                    manufacturer_code=first_manufacturer,
-                    max_month=86
-                )
-                print(f"Found end month: {end_month}")
-                request.end_month_code = str(end_month)
-            except Exception as e:
-                print(f"Error finding end month: {str(e)}")
-                raise
-            
-        print(f"Generating URLs for months {request.start_month_code} to {request.end_month_code}")
-        
         # Generate all URLs for all manufacturers
         all_urls = []
-        for manufacturer_code in request.manufacturer_codes:
-            print(f"Generating URLs for manufacturer {manufacturer_code}")
-            current_month = int(request.start_month_code)
-            end_month = int(request.end_month_code)
-            
-            while current_month <= end_month:
-                url = f"http://www.myhomeok.com/xiaoliang/changshang/{manufacturer_code}_{current_month}.htm"
-                all_urls.append(url)
-                current_month += 1
+        manufacturer_ranges = {}  # Store the range for each manufacturer
         
-        print(f"Generated {len(all_urls)} URLs total")
+        for manufacturer_code in request.manufacturer_codes:
+            print(f"\nProcessing manufacturer {manufacturer_code}")
+            mfr_code_int = int(manufacturer_code)
+            
+            try:
+                # Determine month range for this manufacturer
+                start_month = (int(request.start_month_code) if request.start_month_code
+                             else find_first_valid_month_code(
+                                 manufacturer_code=mfr_code_int,
+                                 min_month=1
+                             ))
+                print(f"Start month for {manufacturer_code}: {start_month}")
+                
+                end_month = (int(request.end_month_code) if request.end_month_code
+                           else find_last_valid_month_code(
+                               manufacturer_code=mfr_code_int,
+                               max_month=86
+                           ))
+                print(f"End month for {manufacturer_code}: {end_month}")
+                
+                # Store the range for this manufacturer
+                manufacturer_ranges[manufacturer_code] = {
+                    'start': start_month,
+                    'end': end_month
+                }
+                
+                # Generate URLs for this manufacturer
+                current_month = start_month
+                while current_month <= end_month:
+                    url = f"http://www.myhomeok.com/xiaoliang/changshang/{manufacturer_code}_{current_month}.htm"
+                    all_urls.append(url)
+                    current_month += 1
+                
+                print(f"Generated {end_month - start_month + 1} URLs for manufacturer {manufacturer_code}")
+                
+            except Exception as e:
+                print(f"Error processing manufacturer {manufacturer_code}: {str(e)}")
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Failed to process manufacturer {manufacturer_code}: {str(e)}"
+                )
+        
+        print(f"\nGenerated {len(all_urls)} URLs total")
         
         # Create a single job with all URLs
         job_name = (f"{request.job_name} "
@@ -673,12 +674,12 @@ async def create_manufacturer_job(request: ManufacturerScrapeRequest) -> Dict:
             "message": "Manufacturer scrape job created and started",
             "job_id": job['id'],
             "manufacturer_codes": request.manufacturer_codes,
-            "date_range": {
-                "start": request.start_month_code,
-                "end": request.end_month_code
-            },
+            "manufacturer_ranges": manufacturer_ranges,
             "total_urls": len(all_urls),
-            "urls_per_manufacturer": len(all_urls) // len(request.manufacturer_codes)
+            "urls_per_manufacturer": {
+                mfr: ranges['end'] - ranges['start'] + 1
+                for mfr, ranges in manufacturer_ranges.items()
+            }
         }
         
     except Exception as e:
