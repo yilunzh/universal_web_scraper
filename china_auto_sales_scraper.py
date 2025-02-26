@@ -24,6 +24,7 @@ import csv
 import json
 import signal
 from functools import wraps
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -1296,28 +1297,37 @@ async def process_urls(urls: List[str], data_points: List[Dict], filename: str) 
         f"Collected {len(state.all_data)} records. Success: {len(state.results['successful'])}, Failed: {len(state.results['failed'])}"
     )
 
-# def main():
-#     """
-#     Main execution function that handles the web scraping process.
-#     """
-#     # Generate URLs to process
-#     urls = generate_urls_from_codes('manufacturer_code.csv', 'month_code.csv')
-#     print(f"Generated {len(urls)} URLs to process")
+def scrape_urls(urls):
+    successful_urls = []
+    failed_urls = []
     
-#     # Initialize data points from Pydantic model
-#     data_keys = list(DataPoints.__fields__.keys())
-#     data_fields = DataPoints.__fields__
-#     data_points = [{"name": key, "value": None, "reference": None, "description": data_fields[key].description} for key in data_keys]
+    for url in urls:
+        try:
+            # Your scraping logic here
+            successful_urls.append(url)
+        except Exception as e:
+            # Instead of a generic "Unknown URL"
+            failed_urls.append(url)
+            logging.error(f"Failed to scrape URL: {url}")
+            logging.error(f"Error: {str(e)}")
     
-#     # Set up output filename
-#     entity_name = 'china_monthly_auto_sales_data_v2'
-#     filename = f"{entity_name}.json"
-    
-#     # Run the async scraping
-#     asyncio.run(process_urls(urls, data_points, filename))
+    return successful_urls, failed_urls
 
-# if __name__ == "__main__":
-#     main()
+def generate_summary(job_name, total_urls, successful_urls, failed_urls):
+    success_rate = (len(successful_urls) / total_urls * 100) if total_urls > 0 else 0
+    
+    summary = f"""
+                    Job Complete: {job_name}
+                    =====================================
+                    Total URLs processed: {total_urls}
+                    Successfully scraped: {len(successful_urls)}
+                    Failed: {len(failed_urls)}
+                    Success rate: {success_rate:.1f}%
+                    
+                    Failed URLs ({len(failed_urls)}): [
+                    {"".join(f"    {url}\n" for url in failed_urls)}]
+                    """
+    return summary
 
 #validation code
 first_month = find_first_valid_month_code(62)

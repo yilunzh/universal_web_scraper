@@ -52,74 +52,140 @@ def check_month_sync(manufacturer_code: int, month: int, cache: Set[str] = None)
     url = base_url.format(manufacturer_code, month)
     return check_url_sync(url, cache)
 
-def find_first_valid_month_code(manufacturer_code: int, min_month: int) -> int:
-    """Find first valid month code by binary searching backwards from last valid month."""
+def find_first_valid_month_code(manufacturer_code: int, min_month: int = 1) -> int:
+    """
+    Find the first valid month code using common points and exponential search.
+    
+    Args:
+        manufacturer_code (int): The manufacturer code to check
+        min_month (int): The minimum month to check (default: 1)
+    
+    Returns:
+        int: The first valid month code, or -1 if none found
+    """
     print(f"Finding first valid month for manufacturer {manufacturer_code}")
     cache = set()
     
     # Ensure min_month is at least 1
     min_month = max(1, min_month)
+    max_search = 100  # Reasonable upper limit
     
-    # First find the last valid month
-    last_valid = find_last_valid_month_code(manufacturer_code, max_month=86)
-    print(f"Found last valid month: {last_valid}")
+    # First check if min_month itself is valid
+    if check_month_sync(manufacturer_code, min_month, cache):
+        return min_month
     
-    if last_valid < min_month:
-        print(f"No valid months found (last valid {last_valid} < min_month {min_month}), returning 1")
-        return 1
+    # Try common month points as optimization (ordered from lowest to highest)
+    common_points = [1, 10, 20, 30, 40, 50, 60, 70, 80, 86]
+    for point in common_points:
+        if min_month <= point <= max_search and check_month_sync(manufacturer_code, point, cache):
+            # Found a valid month, binary search for earliest in range [min_month, point]
+            return binary_search_first(manufacturer_code, min_month, point, cache)
     
-    # Binary search backwards from last_valid
-    print(f"Binary searching backwards from month {last_valid}")
-    left = min_month
-    right = last_valid
-    first_valid = right  # Initialize to last known valid month
+    # If common points didn't work, try exponential search
+    bound = 1
+    current = min_month
+    while current + bound < max_search:
+        if check_month_sync(manufacturer_code, current + bound, cache):
+            # Found a valid month, binary search for the first valid in range
+            return binary_search_first(manufacturer_code, current, current + bound, cache)
+        
+        current = current + bound
+        bound *= 2
+        
+        # Don't exceed our max search limit
+        if current + bound >= max_search:
+            # Try one last check at max_search
+            if check_month_sync(manufacturer_code, max_search, cache):
+                return binary_search_first(manufacturer_code, current, max_search, cache)
+            break
+    
+    # Linear search fallback
+    print("Common points and exponential search failed, trying full scan")
+    for month in range(min_month, max_search):
+        if check_month_sync(manufacturer_code, month, cache):
+            return month
+    
+    print(f"No valid months found for manufacturer {manufacturer_code}")
+    return -1
+
+def binary_search_first(manufacturer_code: int, left: int, right: int, cache: set) -> int:
+    """Binary search to find the first valid month in a range."""
+    first_valid = right  # Initialize to the known valid month
     
     while left <= right:
         mid = (left + right) // 2
-        print(f"Checking month {mid}...")
         if check_month_sync(manufacturer_code, mid, cache):
-            # Valid month, record it and look earlier
-            first_valid = mid
-            right = mid - 1
+            first_valid = mid  # This could be the first valid month
+            right = mid - 1  # Look for earlier valid months
         else:
-            # Invalid month, look later
-            left = mid + 1
-    
-    print(f"First valid month is {first_valid}")
+            left = mid + 1  # Look in upper half
+            
     return first_valid
 
-def find_last_valid_month_code(manufacturer_code: int, max_month: int) -> int:
-    """Find last valid month code using binary search."""
-    print(f"Finding last valid month for manufacturer {manufacturer_code} with max {max_month}")
+def find_last_valid_month_code(manufacturer_code: int, max_month: int = 86) -> int:
+    """
+    Find the last valid month code using common points and exponential search.
+    
+    Args:
+        manufacturer_code (int): The manufacturer code to check
+        max_month (int): The maximum month to check (default: 86)
+    
+    Returns:
+        int: The last valid month code, or -1 if none found
+    """
+    print(f"Finding last valid month for manufacturer {manufacturer_code}")
     cache = set()
     
-    # Binary search
-    left = 1
-    right = max_month
-    last_valid = max_month  # Keep track of last valid month found
+    # First check if max_month itself is valid
+    if check_month_sync(manufacturer_code, max_month, cache):
+        return max_month
     
-    print(f"Starting binary search between {left} and {right}")
+    # Try common month points as optimization (ordered from highest to lowest)
+    common_points = [86, 80, 70, 60, 50, 40, 30, 20, 10, 1]
+    for point in sorted(common_points, reverse=True):
+        if point <= max_month and check_month_sync(manufacturer_code, point, cache):
+            # Found a valid month, binary search for latest in range [point, max_month-1]
+            return binary_search_last(manufacturer_code, point, max_month - 1, cache)
+    
+    # If common points didn't work, try exponential search
+    bound = 1
+    current = max_month
+    while current - bound > 0:
+        if check_month_sync(manufacturer_code, current - bound, cache):
+            # Found a valid month, binary search for the last valid in range
+            return binary_search_last(manufacturer_code, current - bound, current - 1, cache)
+        
+        current = current - bound
+        bound *= 2
+        
+        # Don't go below 1
+        if current - bound <= 0:
+            # Try one last check at month 1
+            if check_month_sync(manufacturer_code, 1, cache):
+                return binary_search_last(manufacturer_code, 1, current - 1, cache)
+            break
+    
+    # Linear search fallback
+    print("Common points and exponential search failed, trying full scan")
+    for month in range(max_month, 0, -1):
+        if check_month_sync(manufacturer_code, month, cache):
+            return month
+    
+    print(f"No valid months found for manufacturer {manufacturer_code}")
+    return -1
+
+def binary_search_last(manufacturer_code: int, left: int, right: int, cache: set) -> int:
+    """Binary search to find the last valid month in a range."""
+    last_valid = left  # Initialize to the known valid month
+    
     while left <= right:
         mid = (left + right) // 2
-        print(f"Checking month {mid}...")
-        
         if check_month_sync(manufacturer_code, mid, cache):
-            print(f"Month {mid} valid, checking if it's the boundary")
-            last_valid = mid
-            
-            # Check if this is the boundary
-            if not check_month_sync(manufacturer_code, mid + 1, cache):
-                print(f"Found exact boundary at {mid}")
-                return mid
-                
-            # Not the boundary, look in upper half
-            left = mid + 1
+            last_valid = mid  # This could be the last valid month
+            left = mid + 1  # Look for later valid months
         else:
-            # Invalid month, look in lower half
-            print(f"Month {mid} invalid, looking lower")
-            right = mid - 1
-    
-    print(f"Found last valid month: {last_valid}")
+            right = mid - 1  # Look in lower half
+            
     return last_valid
 
 def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) -> List[str]:
@@ -159,8 +225,8 @@ def generate_urls_from_codes(manufacturer_csv_path: str, month_csv_path: str) ->
 
 # ... existing code ...
 
-#validation code
-# first_month = find_first_valid_month_code(88, min_month=1)
+# validation code
+# first_month = find_first_valid_month_code(120, min_month=1)
 # print(first_month)
-# last_month = find_last_valid_month_code(88, max_month=86)
+# last_month = find_last_valid_month_code(120, max_month=86)
 # print(last_month)

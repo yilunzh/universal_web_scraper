@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "validation_time": "2025-02-26T04:16:21.268425",
+  "total_records": 1000,
+  "unique_manufacturers": 4,
+  "date_range": {
+    "earliest": "2017-1",
+    "latest": "2024-12"
+  },
+  "duplicates": {
+    "found": false,
+    "count": 0,
+    "details": []
+  },
+  "missing_months": {
+    "found": false,
+    "count": 0,
+    "details": []
+  },
+  "is_valid": true
+}

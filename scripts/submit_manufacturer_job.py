@@ -25,17 +25,15 @@ def submit_manufacturer_job(
     # Prepare request data
     data = {
         "job_name": job_name,
-        "manufacturer_codes": manufacturer_codes
+        "manufacturer_codes": manufacturer_codes,
+        "start_month_code": start_month,
+        "end_month_code": end_month
     }
-    
-    # Add optional parameters if provided
-    if start_month:
-        data["start_month_code"] = start_month
-    if end_month:
-        data["end_month_code"] = end_month
         
     # Submit request
     print(f"\nSubmitting job for manufacturers: {', '.join(manufacturer_codes)}")
+    print(f"Month range: {start_month or 'auto'} to {end_month or 'auto'}")
+    
     response = requests.post(
         f"{api_url}/api/jobs/manufacturer",
         json=data
@@ -58,41 +56,44 @@ def submit_manufacturer_job(
 def main():
     parser = argparse.ArgumentParser(description='Submit a manufacturer scraping job')
     parser.add_argument(
-        'manufacturers',
-        nargs='+',
-        help='One or more manufacturer codes (e.g., 88 89)'
+        '--manufacturer-codes',
+        required=True,
+        help='Comma-separated list of manufacturer codes (e.g., "99,100")'
     )
     parser.add_argument(
-        '--name',
+        '--job-name',
         help='Optional job name'
     )
     parser.add_argument(
-        '--start',
+        '--start-month',
         help='Optional start month code'
     )
     parser.add_argument(
-        '--end',
+        '--end-month',
         help='Optional end month code'
     )
     parser.add_argument(
-        '--api',
+        '--api-url',
         default='http://localhost:8000',
         help='API URL (default: http://localhost:8000)'
     )
     
     args = parser.parse_args()
     
+    # Convert comma-separated string to list
+    manufacturer_codes = [code.strip() for code in args.manufacturer_codes.split(',')]
+    
     result = submit_manufacturer_job(
-        manufacturer_codes=args.manufacturers,
-        job_name=args.name,
-        start_month=args.start,
-        end_month=args.end,
-        api_url=args.api
+        manufacturer_codes=manufacturer_codes,
+        job_name=args.job_name,
+        start_month=args.start_month,
+        end_month=args.end_month,
+        api_url=args.api_url
     )
     
     if result:
         print("\nUse this command to check job status:")
-        print(f"curl {args.api}/api/jobs/{result['job_id']}")
+        print(f"curl {args.api_url}/api/jobs/{result['job_id']}")
 
 if __name__ == "__main__":
     main() 

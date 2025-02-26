@@ -4,6 +4,11 @@ import os
 from datetime import datetime
 import traceback
 from supabase.client import ClientOptions
+from dotenv import load_dotenv
+
+# Load environment variables first
+load_dotenv()
+load_dotenv('.env.local')  # Load .env.local which should override .env
 
 print("\n=== Initializing Supabase Client ===")
 try:
@@ -15,9 +20,17 @@ try:
         auto_refresh_token=False
     )
     
+    # Get values from environment after loading dotenv
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    
+    # Validate environment variables
+    if not supabase_url or not supabase_key:
+        raise ValueError("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not found in environment variables")
+    
     supabase = create_client(
-        os.getenv("SUPABASE_URL"),
-        os.getenv("SUPABASE_SERVICE_ROLE_KEY"),
+        supabase_url,
+        supabase_key,
         options=options
     )
     print("✓ Supabase client created")
@@ -36,6 +49,10 @@ except Exception as e:
 print("Initializing Supabase client...")
 print(f"URL: {os.getenv('SUPABASE_URL')}")
 print(f"Key length: {len(os.getenv('SUPABASE_SERVICE_ROLE_KEY'))}")
+
+def get_supabase_client():
+    """Get the Supabase client instance."""
+    return supabase
 
 async def create_scrape_job(job_name: str, urls: List[str]) -> Dict:
     """Create a new scrape job with multiple URLs"""

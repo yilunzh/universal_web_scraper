@@ -262,25 +262,49 @@ async def start_job(job_id: int) -> Dict:
                     completed_urls = [u for u in job_data['job_urls'] if u.get('status') == 'completed']
                     failed_urls = [u for u in job_data['job_urls'] if u.get('status') == 'failed']
                     
+                    # Debug information
+                    print(f"Found {len(failed_urls)} failed URLs")
+                    print(f"Job_data structure example: {job_data.keys()}")
+                    print(f"Job_urls structure: {type(job_data['job_urls'])}, length: {len(job_data['job_urls'])}")
+                    
+                    if failed_urls:
+                        print(f"First failed URL structure:")
+                        for key, value in failed_urls[0].items():
+                            print(f"  {key}: {value}")
+                    
                     url_stats = {
                         'total': len(job_data['job_urls']),
                         'completed': len(completed_urls),
                         'failed': len(failed_urls),
                     }
                     
-                    # Generate final summary with array format
-                    failed_url_list = [u.get('url', 'Unknown URL') for u in failed_urls]
+                    # Generate final summary with actual failed URLs
+                    failed_url_list = []
+                    for u in failed_urls:
+                        if isinstance(u, dict):
+                            print(f"Processing failed URL dict: {u.keys()}")
+                            if 'url' in u:
+                                failed_url_list.append(u['url'])
+                                print(f"Added URL: {u['url']}")
+                            else:
+                                print(f"No 'url' key in failed URL: {u}")
+                        else:
+                            print(f"Failed URL not a dict: {type(u)} - {u}")
+                    
+                    # Debug the extracted list
+                    print(f"Extracted {len(failed_url_list)} URLs from {len(failed_urls)} failed URLs")
+                    
+                    # Use the actual number of failed URLs consistently in the summary
                     summary = f"""
                     Job Complete: {job_data.get('job_name', 'Unknown Job')}
                     =====================================
                     Total URLs processed: {url_stats['total']}
                     Successfully scraped: {url_stats['completed']}
-                    Failed: {url_stats['failed']}
+                    Failed: {len(failed_url_list)}
                     Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
                     
                     Failed URLs ({len(failed_url_list)}): [
-                        {chr(10).join('  ' + url for url in failed_url_list) if failed_url_list else 'None'}
-                    ]
+                    {"".join(f"    {url}\n" for url in failed_url_list)}]
                     """
                     
                     # Save summary to output directory
@@ -724,8 +748,14 @@ async def monitor_job_status(job_id: int):
                 
                 # Check if job is complete (no pending or in-progress URLs)
                 if url_stats['in_progress'] == 0 and url_stats['pending'] == 0:
-                    # Generate summary report
-                    failed_urls = [u['url'] for u in job['job_urls'] if u['status'] == 'failed']
+                    # Get actual failed URLs and their error messages
+                    failed_urls = [
+                        f"{u['url']} - {u.get('error', 'Unknown error')}"
+                        for u in job['job_urls'] 
+                        if u['status'] == 'failed'
+                    ]
+                    
+                    # Generate summary report with actual URLs
                     summary = f"""
                     Job Summary for {job['job_name']}
                     =====================================
@@ -738,7 +768,7 @@ async def monitor_job_status(job_id: int):
                     """
                     
                     try:
-                        # Try to add job log
+                        # Add job log with detailed summary
                         await add_job_log(
                             job_id=job_id,
                             message=summary,
