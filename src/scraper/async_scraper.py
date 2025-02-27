@@ -13,7 +13,7 @@ from src.config.settings import MAX_TOKEN
 from pathlib import Path
 from src.config.constants import OUTPUT_DIR
 
-@traceable(run_type="chain", name="Async Scrape")
+# @traceable(run_type="chain", name="Async Scrape")
 async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[str], semaphore: asyncio.Semaphore) -> Dict:
     """
     Asynchronously scrape a given URL and extract structured data.
@@ -69,7 +69,7 @@ async def async_scrape(url: str, data_points: List[Dict], links_scraped: List[st
         print(f"Failed to scrape {url}: {e}")
         return {"error": str(e)}
 
-@traceable(run_type="chain", name="Process single URL")
+# @traceable(run_type="chain", name="Process single URL")
 async def process_url(url: str, data_points: List[Dict], state: ScrapingState) -> None:
     """
     Process a single URL with proper error handling.
@@ -109,7 +109,7 @@ async def process_url(url: str, data_points: List[Dict], state: ScrapingState) -
         print(f"Error processing {url}: {str(e)}")
         state.results["failed"].append({"url": url, "reason": str(e)})
 
-@traceable(run_type="chain", name="Process URLs")
+# @traceable(run_type="chain", name="Process URLs")
 async def process_urls(urls: List[str], data_points: List[Dict]) -> Dict:
     """Process URLs and return scraped data"""
     state = ScrapingState()

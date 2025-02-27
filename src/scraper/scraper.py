@@ -93,7 +93,7 @@ async def process_urls(urls: List[str], data_points: List[Dict]) -> Dict:
         print(f"Error in process_urls: {e}")
         return {"error": str(e)}
 
-@traceable(run_type="tool", name="Extract Data")
+# @traceable(run_type="tool", name="Extract Data")
 async def extract_data_from_content(content: str, data_points: List[Dict], links_scraped: List[str], url: str) -> Dict:
     """Extract structured data from parsed content using the GPT model."""
     try:

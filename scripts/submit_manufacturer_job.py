@@ -4,10 +4,18 @@ import argparse
 from typing import List
 import sys
 from pathlib import Path
+import pandas as pd
+import os
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
+
+# Import config after adding project root to path
+from src.config.langsmith import disable_logging as disable_langsmith_logging
+
+# Disable LangSmith logging
+disable_langsmith_logging()
 
 def submit_manufacturer_job(
     manufacturer_codes: List[str],
@@ -57,8 +65,10 @@ def main():
     parser = argparse.ArgumentParser(description='Submit a manufacturer scraping job')
     parser.add_argument(
         '--manufacturer-codes',
-        required=True,
-        help='Comma-separated list of manufacturer codes (e.g., "99,100")'
+        required=False,
+        nargs='+',  # Accept one or more values
+        default=None,
+        help='One or more manufacturer codes (e.g., "99 100" or "99,100"). If not provided, all manufacturers will be processed.'
     )
     parser.add_argument(
         '--job-name',
@@ -80,20 +90,48 @@ def main():
     
     args = parser.parse_args()
     
-    # Convert comma-separated string to list
-    manufacturer_codes = [code.strip() for code in args.manufacturer_codes.split(',')]
+    manufacturer_codes = []
+    if args.manufacturer_codes:
+        # Process the list of manufacturer codes
+        manufacturer_codes = []
+        for code_arg in args.manufacturer_codes:
+            # Handle comma-separated values within each argument
+            if ',' in code_arg:
+                manufacturer_codes.extend([code.strip() for code in code_arg.split(',') if code.strip()])
+            else:
+                if code_arg.strip():  # Only add non-empty codes
+                    manufacturer_codes.append(code_arg.strip())
+                
+        print(f"Processing specified manufacturer codes: {', '.join(manufacturer_codes)}")
+    else:
+        # Process all manufacturers
+        print("No manufacturer codes provided. Processing all manufacturers...")
+        # Use standard pandas to read the CSV
+        manufacturer_df = pd.read_csv(f"{project_root}/data/input/manufacturer_code.csv")
+        manufacturer_codes = manufacturer_df['manufacturer_code'].astype(str).tolist()
+        print(f"Found {len(manufacturer_codes)} manufacturer codes to process")
     
-    result = submit_manufacturer_job(
-        manufacturer_codes=manufacturer_codes,
-        job_name=args.job_name,
-        start_month=args.start_month,
-        end_month=args.end_month,
-        api_url=args.api_url
-    )
+    # Filter out any empty codes
+    manufacturer_codes = [code for code in manufacturer_codes if code]
     
-    if result:
-        print("\nUse this command to check job status:")
-        print(f"curl {args.api_url}/api/jobs/{result['job_id']}")
+    # Process all manufacturer codes in a single job
+    if manufacturer_codes:
+        print(f"Submitting job for {len(manufacturer_codes)} manufacturer codes")
+        result = submit_manufacturer_job(
+            manufacturer_codes=manufacturer_codes,
+            job_name=args.job_name,
+            start_month=args.start_month,
+            end_month=args.end_month,
+            api_url=args.api_url
+        )
+        
+        if result:
+            print("\nUse this command to check job status:")
+            print(f"curl {args.api_url}/api/jobs/{result['job_id']}")
+    else:
+        print("No valid manufacturer codes to process")
+    
+    print("Job submission completed")
 
 if __name__ == "__main__":
     main() 
