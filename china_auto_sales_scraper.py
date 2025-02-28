@@ -795,8 +795,8 @@ def export_to_csv(json_file_path: str, csv_file_path: str):
     with open(csv_file_path, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
 
-        # Write header
-        writer.writerow(['manufacturer', 'model_name', 'month', 'year', 'units_sold'])
+        # Write header - Add 'url' to the header
+        writer.writerow(['manufacturer', 'model_name', 'month', 'year', 'units_sold', 'url'])
 
         # Process each manufacturer's data
         for manufacturer in data.get('value', []):
@@ -813,7 +813,7 @@ def export_to_csv(json_file_path: str, csv_file_path: str):
                     month,
                     year,
                     model.get('units_sold'),
-                    reference
+                    reference  # Include the reference URL
                 ])
 
 def check_url_status(url: str, cache: dict = {}) -> bool:
