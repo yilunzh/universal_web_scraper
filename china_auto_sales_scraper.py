@@ -3,7 +3,7 @@ import re, time, os
 from firecrawl import FirecrawlApp
 from dotenv import load_dotenv
 import json
-from tenacity import retry, wait_random_exponential, stop_after_attempt,  retry_if_exception_type
+from tenacity import retry, wait_random_exponential, stop_after_attempt,  retry_if_exception_type, wait_exponential
 from termcolor import colored
 import tiktoken
 from langsmith import traceable
@@ -1343,4 +1343,23 @@ print(last_month)
 # # Clear the alarm
 # signal.alarm(0)
 # return extracted_data
+
+@retry(wait=wait_exponential(multiplier=1, min=4, max=10), stop=stop_after_attempt(3))
+async def fetch_with_retry(session, url):
+    async with session.get(url, timeout=60) as response:
+        return await response.text()
+
+# Modify the headers used in requests
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1',
+}
+
+# Then use these headers in your requests
+async with session.get(url, headers=headers, timeout=60) as response:
+    # Process response
 

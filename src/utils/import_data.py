@@ -5,6 +5,7 @@ from typing import Dict, List, Any, Optional
 import asyncio
 import json
 from src.db.supabase_client import get_supabase_client
+from src.utils.validation import filter_valid_records
 
 async def import_auto_sales_data_to_supabase(
     csv_file_path: str, 
@@ -197,6 +198,17 @@ async def import_auto_sales_data_to_supabase(
             except Exception as e:
                 print(f"Error creating DataFrame: {str(e)}")
                 return {"status": "error", "message": f"DataFrame creation error: {str(e)}"}
+            
+            # Validate records before importing
+            print("Validating records before import...")
+            valid_records, validation_stats = filter_valid_records(df.to_dict('records'), detailed_logs=True)
+            print(f"Validation results: {len(valid_records)} valid records of {validation_stats['total']} total")
+            print(f"Invalid breakdown: {validation_stats['reasons']}")
+
+            # If validation removed records, update the DataFrame
+            if len(valid_records) < validation_stats['total']:
+                print(f"Removing {validation_stats['invalid']} invalid records")
+                df = pd.DataFrame(valid_records)
             
         else:
             # If CSV file, read directly

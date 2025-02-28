@@ -226,10 +226,13 @@ async def start_job(job_id: int) -> Dict:
                         return
                     
                     if 'error' in result or not result.get('value'):
-                        print(f"Failed to process URL: {job_url['url']}")  # Debug log
+                        print(f"Failed to process URL: {job_url['url']}")
                         await update_url_status(job_url['id'], "failed")
                     else:
-                        await update_url_status(job_url['id'], "completed", result['value'][0])
+                        # Add the URL to each data point before saving
+                        for data_point in result['value']:
+                            data_point['url'] = job_url['url']
+                        await update_url_status(job_url['id'], "completed", result['value'])
             
             except Exception as e:
                 print(f"Failed to process URL: {job_url['url']} with error: {str(e)}")  # Debug log
@@ -389,6 +392,9 @@ async def get_job_data(job_id: int, format: str = "json") -> Dict:
         
         for url in job['job_urls']:
             if url.get('scraped_data'):
+                # Make sure each data point has the source URL
+                for data_point in url['scraped_data'][0]['data']:
+                    data_point['url'] = url['url']
                 all_data.extend(url['scraped_data'][0]['data'])
                 
         if format == "json":
@@ -396,6 +402,9 @@ async def get_job_data(job_id: int, format: str = "json") -> Dict:
         elif format == "csv":
             # Convert to DataFrame and then to CSV
             df = pd.DataFrame(all_data)
+            # Ensure url column is included
+            if 'url' not in df.columns:
+                print("Warning: URL column missing from data")
             csv_string = df.to_csv(index=False)
             return Response(
                 content=csv_string,
