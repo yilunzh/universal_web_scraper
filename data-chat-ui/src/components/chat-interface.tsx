@@ -99,6 +99,7 @@ export default function ChatInterface() {
                   insight: data.insight,
                   sqlQuery: data.sqlQuery,
                   reasoning: data.reasoning,
+                  column_order: data.column_order,
                 },
               };
             } else if (data.type === 'error') {
@@ -108,6 +109,7 @@ export default function ChatInterface() {
                 isLoading: false,
                 isError: true,
                 errorMessage: data.error,
+                sqlQuery: data.sqlQuery
               };
             }
           }

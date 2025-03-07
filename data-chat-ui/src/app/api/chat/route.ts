@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { processQuestion, generateInsights } from '@/lib/openai';
-import { executeSqlQuery } from '@/lib/supabase';
+import { executeSqlQuery, fetchSchemaMetadata } from '@/lib/supabase';
 import { OpenAIResponse } from '@/lib/types';
 
 export async function POST(request: Request) {
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
               type: 'error',
               content: 'Error executing SQL query',
               error: error.toString(),
+              sqlQuery: response.sqlQuery
             },
             { status: 500 }
           );
@@ -61,6 +62,32 @@ export async function POST(request: Request) {
         // Determine the best way to display this data
         const displayType = determineDisplayType(response.sqlQuery, data || []);
 
+        // For SQL queries, add schema metadata to the response
+        if (data) {
+          try {
+            // Include schema metadata for tables referenced in the query if available
+            const sqlQuery = response.sqlQuery?.toLowerCase() || '';
+            const schemaMetadata = await fetchSchemaMetadata();
+            
+            if (schemaMetadata && schemaMetadata.tables) {
+              const referencedTables: Record<string, any> = {};
+              
+              // Simple parsing to find table names in the query
+              Object.keys(schemaMetadata.tables).forEach(tableName => {
+                if (sqlQuery.includes(`from ${tableName}`) || sqlQuery.includes(`join ${tableName}`)) {
+                  referencedTables[tableName] = schemaMetadata.tables[tableName];
+                }
+              });
+              
+              if (Object.keys(referencedTables).length > 0) {
+                data.schema_metadata = referencedTables;
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching schema metadata:", error);
+          }
+        }
+
         return NextResponse.json({
           type: 'data',
           content: response.content,
@@ -69,6 +96,7 @@ export async function POST(request: Request) {
           reasoning: response.reasoning || '',
           insight,
           displayType,
+          column_order: data.column_order || Object.keys(data[0] || {})
         });
       } catch (error: any) {
         console.error('SQL execution error:', error);
@@ -77,6 +105,7 @@ export async function POST(request: Request) {
             type: 'error',
             content: 'Error executing the query',
             error: error.message || error.toString(),
+            sqlQuery: response.sqlQuery
           },
           { status: 500 }
         );

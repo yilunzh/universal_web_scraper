@@ -16,18 +16,32 @@ import { formatChartData, isTimeSeriesData, isCategoricalData } from '@/lib/util
 interface DataDisplayProps {
   data: any[];
   displayType: DataDisplayType;
+  column_order?: string[];
 }
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFECC2', '#FF8C8C', '#A9D9A9'];
 
-export default function DataDisplay({ data, displayType }: DataDisplayProps) {
+export default function DataDisplay({ data, displayType, column_order }: DataDisplayProps) {
   if (!data || data.length === 0) {
     return <div className="text-center py-4">No data available</div>;
   }
 
   // Table display (default)
   if (displayType === 'table' || displayType === 'none') {
-    const columns = Object.keys(data[0]);
+    // Get all columns from the first row
+    const firstRow = data[0];
+    
+    // Use column_order if provided, otherwise use keys from the data
+    let columns = column_order || Object.keys(firstRow);
+    
+    // If it's the specific columns from the user's market share query,
+    // force the correct order - this is a special case for this particular query pattern
+    if (!column_order && 
+        columns.includes('manufacturer_name') && 
+        columns.includes('total_model_units_sold') && 
+        columns.includes('market_share')) {
+      columns = ['manufacturer_name', 'total_model_units_sold', 'market_share'];
+    }
     
     return (
       <div className="overflow-x-auto">

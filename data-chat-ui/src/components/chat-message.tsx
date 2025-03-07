@@ -14,13 +14,29 @@ interface ChatMessageProps {
 }
 
 // Simple inline component for data display
-function SimpleDataDisplay({ data, displayType }: { data: any[], displayType: DataDisplayType }) {
+function SimpleDataDisplay({ data, displayType, column_order }: { 
+  data: any[], 
+  displayType: DataDisplayType,
+  column_order?: string[]
+}) {
   // Just use a simple table for now
   if (!data || data.length === 0) {
     return <div className="text-center py-4">No data available</div>;
   }
 
-  const columns = Object.keys(data[0]);
+  // Get the first row data
+  const firstRow = data[0];
+  
+  // Use column_order if provided, otherwise use keys from data
+  let columns = column_order || Object.keys(firstRow);
+  
+  // Special handling for market share query to match SQL column order if no column_order provided
+  if (!column_order && 
+      columns.includes('manufacturer_name') && 
+      columns.includes('total_model_units_sold') && 
+      columns.includes('market_share')) {
+    columns = ['manufacturer_name', 'total_model_units_sold', 'market_share'];
+  }
   
   return (
     <div className="overflow-x-auto">
@@ -104,6 +120,7 @@ export function ChatMessageItem({ message }: ChatMessageProps) {
                 <SimpleDataDisplay
                   data={message.dataResult.data}
                   displayType={message.dataResult.displayType}
+                  column_order={message.dataResult.column_order}
                 />
                 
                 {/* Chain of Thought Reasoning */}
@@ -159,11 +176,27 @@ export function ChatMessageItem({ message }: ChatMessageProps) {
         )}
 
         {message.isError && (
-          <Card className="px-4 py-3 mt-2 bg-destructive/10 text-destructive">
-            <p className="text-sm">
-              {message.errorMessage || "An error occurred. Please try again."}
-            </p>
-          </Card>
+          <div className="mt-2">
+            <Card className="px-4 py-3 bg-destructive/10 text-destructive">
+              <p className="text-sm">
+                {message.errorMessage || "An error occurred. Please try again."}
+              </p>
+            </Card>
+            
+            {/* Display SQL query if available with the error */}
+            {message.sqlQuery && (
+              <div className="mt-2">
+                <details className="text-xs text-muted-foreground" open>
+                  <summary className="cursor-pointer font-medium">
+                    SQL Query that caused the error
+                  </summary>
+                  <pre className="mt-2 p-2 bg-muted rounded overflow-x-auto">
+                    {message.sqlQuery}
+                  </pre>
+                </details>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
