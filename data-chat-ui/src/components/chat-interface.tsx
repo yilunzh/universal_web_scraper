@@ -109,7 +109,6 @@ export default function ChatInterface() {
                 isLoading: false,
                 isError: true,
                 errorMessage: data.error,
-                sqlQuery: data.sqlQuery
               };
             }
           }
@@ -145,6 +144,125 @@ export default function ChatInterface() {
     'Compare sales of BMW and Mercedes in 2022',
   ];
 
+  // Add a simplified query modification handler
+  const handleQueryModification = async (originalQuery: string, suggestion: string, originalData: any[]): Promise<void> => {
+    // Don't allow modifications if already loading
+    if (isLoading) return;
+    
+    setIsLoading(true);
+    
+    try {
+      // Add the user's suggestion as a new message
+      const userMessageId = generateId();
+      const userMessage: ChatMessage = {
+        id: userMessageId,
+        role: 'user',
+        content: `Modify query: ${suggestion}`,
+        createdAt: new Date(),
+      };
+      
+      // Add user message
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Create a placeholder for the assistant's response to the modification
+      const assistantMessageId = generateId();
+      const assistantMessage: ChatMessage = {
+        id: assistantMessageId,
+        role: 'assistant',
+        content: `Modifying query to ${suggestion}...`,
+        createdAt: new Date(),
+        isLoading: true,
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
+      
+      // Call the API to modify the query
+      const response = await fetch('/api/chat/modify-query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          originalQuery,
+          suggestion,
+          originalResults: originalData.slice(0, 5)
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to modify query');
+      }
+      
+      const data = await response.json();
+      
+      // Generate insights for the modified data if not provided by the API
+      let insight = data.insight || '';
+      
+      if (!insight && data.data && data.data.length > 0) {
+        try {
+          // Call the API to generate insights for the modified data
+          const insightResponse = await fetch('/api/chat/generate-insight', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              data: data.data,
+              sqlQuery: data.modifiedQuery,
+              question: suggestion
+            }),
+          });
+          
+          if (insightResponse.ok) {
+            const insightData = await insightResponse.json();
+            insight = insightData.insight || '';
+          }
+        } catch (error) {
+          console.error('Error generating insights:', error);
+        }
+      }
+      
+      // Update the assistant message with the modification results
+      setMessages(prev => 
+        prev.map(msg => {
+          if (msg.id === assistantMessageId) {
+            return {
+              ...msg,
+              content: `Modified query to ${suggestion}: ${data.explanation || 'Query modified successfully.'}`,
+              isLoading: false,
+              dataResult: {
+                data: data.data || [],
+                displayType: data.displayType || 'table',
+                sqlQuery: data.modifiedQuery,
+                insight: insight,
+              },
+            };
+          }
+          return msg;
+        })
+      );
+    } catch (error) {
+      // Handle errors during modification
+      setMessages(prev => 
+        prev.map(msg => {
+          if (msg.isLoading) {
+            return {
+              ...msg,
+              content: 'Sorry, there was an error modifying the query.',
+              isLoading: false,
+              isError: true,
+              errorMessage: error instanceof Error ? error.message : 'Unknown error',
+            };
+          }
+          return msg;
+        })
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto">
       <div className="bg-gradient-to-r from-indigo-600 to-blue-500 py-4 px-6 text-white">
@@ -154,7 +272,11 @@ export default function ChatInterface() {
       
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
-          <ChatMessageItem key={message.id} message={message} />
+          <ChatMessageItem 
+            key={message.id} 
+            message={message} 
+            onModifyQuery={handleQueryModification}
+          />
         ))}
         <div ref={endOfMessagesRef} />
       </div>
@@ -205,4 +327,4 @@ export default function ChatInterface() {
       </form>
     </div>
   );
-} 
+}
