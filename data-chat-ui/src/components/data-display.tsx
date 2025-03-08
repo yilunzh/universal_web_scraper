@@ -102,8 +102,10 @@ export default function DataDisplay({ data, displayType, column_order }: DataDis
                   key={key} 
                   type="monotone" 
                   dataKey={key} 
-                  stroke={COLORS[index % COLORS.length]} 
+                  stroke={COLORS[index % COLORS.length]}
                   name={formatColumnName(key)}
+                  dot={false}
+                  strokeWidth={2}
                 />
               ))}
             </LineChart>
