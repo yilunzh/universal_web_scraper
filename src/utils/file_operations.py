@@ -98,7 +98,8 @@ def export_to_csv(json_file_path: str, csv_file_path: str) -> None:
                     'year': mfr.get('year'),
                     'total_units_sold': mfr.get('total_units_sold'),
                     'model_name': model.get('model_name'),
-                    'model_units_sold': model.get('units_sold')
+                    'model_units_sold': model.get('units_sold'),
+                    'url': mfr.get('reference')  # Add the reference URL
                 }
                 rows.append(row)
 
