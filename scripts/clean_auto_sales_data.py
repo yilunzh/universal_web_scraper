@@ -91,6 +91,107 @@ def get_month_code_from_url(url):
         print(f"Error extracting month code from URL {url}: {e}")
     return None
 
+def load_model_mapping(model_mapping_file='data/input/specific_model_mapping.csv'):
+    """Load model mapping from CSV file."""
+    if not os.path.exists(model_mapping_file):
+        print(f"Warning: Model mapping file {model_mapping_file} not found")
+        return None
+    
+    try:
+        # Read the CSV file with proper handling of quoted strings
+        df = pd.read_csv(model_mapping_file, encoding='utf-8', quotechar='"', escapechar='\\')
+        
+        print(f"Loaded model mapping file with {len(df)} rows")
+        
+        # Create lookup dictionaries
+        variant_to_canonical = {}
+        code_variant_to_canonical = {}
+        
+        # Check if NIO models are present
+        nio_variants = df[df['manufacturer_name'] == '蔚来汽车']['variants'].str.split(',').explode().str.strip().unique().tolist()
+        print(f"Found {len(nio_variants)} NIO variants: {', '.join(nio_variants)}")
+        
+        # Process each row in the mapping file
+        for _, row in df.iterrows():
+            # Extract data from the row
+            model_id = row.get('model_id')
+            manufacturer_name = row.get('manufacturer_name')
+            manufacturer_code = row.get('manufacturer_code')
+            canonical_name = row.get('canonical_model_name')
+            
+            # Skip if we don't have all the required data
+            if pd.isna(canonical_name) or pd.isna(row.get('variants')):
+                continue
+            
+            # Process comma-separated list of variants
+            variants_str = row.get('variants', '')
+            if isinstance(variants_str, str):
+                # Handle quoted variants containing commas by splitting properly
+                variants = []
+                for variant in variants_str.split(','):
+                    variant = variant.strip()
+                    if variant:
+                        variants.append(variant)
+                
+                for variant in variants:
+                    # Map each variant to its canonical name
+                    variant_to_canonical[variant] = canonical_name
+                    
+                    # Create code+variant key for more precise matching
+                    if not pd.isna(manufacturer_code):
+                        code_variant_key = f"{manufacturer_code}:{variant}"
+                        code_variant_to_canonical[code_variant_key] = canonical_name
+        
+        print(f"Created lookup with {len(variant_to_canonical)} variants and {len(code_variant_to_canonical)} code+variant pairs")
+        
+        return {
+            'variant_to_canonical': variant_to_canonical,
+            'code_variant_to_canonical': code_variant_to_canonical
+        }
+    except Exception as e:
+        print(f"Error loading model mapping: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+def normalize_model_name(model_name, manufacturer_code, model_mapping):
+    """Normalize model name using mapping."""
+    if not model_name or not model_mapping:
+        return model_name
+    
+    variant_to_canonical = model_mapping.get('variant_to_canonical', {})
+    code_variant_to_canonical = model_mapping.get('code_variant_to_canonical', {})
+    
+    # Special handling for NIO models - convert "NIO ES6" to "蔚来ES6" etc.
+    if model_name.startswith('NIO '):
+        model_suffix = model_name[4:]  # Get the part after "NIO "
+        nio_model = f"蔚来{model_suffix}"
+        print(f"  Converting NIO model '{model_name}' to '{nio_model}'")
+        
+        # Check if the converted name exists in our mapping
+        if nio_model in variant_to_canonical:
+            return variant_to_canonical[nio_model]
+        
+        # If not in mapping, use the converted name directly
+        return nio_model
+    
+    # Try to find a match with manufacturer code for more precision
+    if manufacturer_code:
+        code_variant_key = f"{manufacturer_code}:{model_name}"
+        if code_variant_key in code_variant_to_canonical:
+            print(f"  Normalizing model: '{model_name}' with manufacturer code: {manufacturer_code}")
+            print(f"    Found code+variant match: '{model_name}'")
+            return code_variant_to_canonical[code_variant_key]
+    
+    # Fall back to variant-only lookup
+    if model_name in variant_to_canonical:
+        print(f"  Normalizing model: '{model_name}' with manufacturer code: {manufacturer_code}")
+        print(f"    Found variant-only match for: '{model_name}'")
+        return variant_to_canonical[model_name]
+    
+    # No match found, return original name
+    return model_name
+
 def clean_json_data(json_file_path, output_file_path=None):
     """
     Clean the JSON data file by removing problematic entries.
@@ -126,6 +227,10 @@ def clean_json_data(json_file_path, output_file_path=None):
     # Load valid manufacturers
     code_to_name, name_to_code, valid_manufacturers = load_valid_manufacturers()
     
+    # Load model mapping
+    model_mapping = load_model_mapping()
+    print(f"Loaded mapping for {len(model_mapping['variant_to_canonical'])} model variants")
+    
     # Handle different JSON structures
     if isinstance(data, dict) and 'value' in data:
         records = data['value']
@@ -155,6 +260,9 @@ def clean_json_data(json_file_path, output_file_path=None):
     # Collect manufacturer/month combinations that need rescraping
     rescrape_combos = []
     
+    # Count model name normalizations
+    normalized_count = 0
+    
     for record in records:
         should_exclude = False
         exclusion_reason = None
@@ -167,15 +275,16 @@ def clean_json_data(json_file_path, output_file_path=None):
         # Check for problematic manufacturer name
         if 'manufacturer_name' in record:
             mfr_name = record['manufacturer_name']
+            
+            # Check for specific problematic manufacturer names
             if any(problem_name in mfr_name for problem_name in ['VGV', '长安佳程']):
                 excluded_records["problematic_manufacturer"] += 1
                 should_exclude = True
                 exclusion_reason = f"Problematic manufacturer name: {mfr_name}"
             elif valid_manufacturers and mfr_name not in valid_manufacturers:
-                # Extract manufacturer and month code from URL
+                # Attempt to find a URL-based manufacturer code
                 mfr_code = get_manufacturer_code_from_url(record.get('reference', ''))
                 month_code = get_month_code_from_url(record.get('reference', ''))
-                print(f"yilun output: {mfr_name} - {mfr_code}_{month_code}")
                 
                 if mfr_code and month_code:
                     # Add to rescrape list
@@ -202,9 +311,17 @@ def clean_json_data(json_file_path, output_file_path=None):
                     should_exclude = True
                     exclusion_reason = f"Unknown manufacturer: {mfr_name} (cannot determine code/month)"
         
-        # Check for problematic models in the models array
+        # Check for problematic models in the models array and normalize model names
         if not should_exclude and 'models' in record and isinstance(record['models'], list):
+            # Get manufacturer code for model normalization
+            mfr_code = None
+            if 'reference' in record and record['reference']:
+                mfr_code = get_manufacturer_code_from_url(record['reference'])
+            
             for model in record['models']:
+                if 'model_name' not in model:
+                    continue
+                    
                 model_name = model.get('model_name', '')
                 
                 # Check for summary rows
@@ -220,8 +337,15 @@ def clean_json_data(json_file_path, output_file_path=None):
                     should_exclude = True
                     exclusion_reason = f"Problematic model found: {model_name}"
                     break
+                
+                # Normalize model name
+                normalized_name = normalize_model_name(model_name, mfr_code, model_mapping)
+                if normalized_name != model_name:
+                    model['original_model_name'] = model_name
+                    model['model_name'] = normalized_name
+                    normalized_count += 1
         
-        # Check for problematic model_name in flat structure
+        # Check for problematic model_name in flat structure and normalize
         if not should_exclude and 'model_name' in record:
             model_name = record['model_name']
             
@@ -236,6 +360,19 @@ def clean_json_data(json_file_path, output_file_path=None):
                 excluded_records["specific_models"] += 1
                 should_exclude = True
                 exclusion_reason = f"Problematic model found: {model_name}"
+            
+            # Normalize model name if not excluded
+            if not should_exclude:
+                # Get manufacturer code for model normalization
+                mfr_code = None
+                if 'reference' in record and record['reference']:
+                    mfr_code = get_manufacturer_code_from_url(record['reference'])
+                
+                normalized_name = normalize_model_name(model_name, mfr_code, model_mapping)
+                if normalized_name != model_name:
+                    record['original_model_name'] = model_name
+                    record['model_name'] = normalized_name
+                    normalized_count += 1
         
         # Check for duplicates where model_name equals manufacturer_name
         if not should_exclude and 'manufacturer_name' in record and 'model_name' in record and 'month' in record and 'year' in record:
@@ -270,6 +407,9 @@ def clean_json_data(json_file_path, output_file_path=None):
         for mfr_code, month_code in rescrape_combos:
             print(f"  python scripts/submit_manufacturer_job.py --manufacturer-codes {mfr_code} --start-month {month_code} --end-month {month_code}")
     
+    # Print normalization summary
+    print(f"\nNormalized {normalized_count} model names using model mapping")
+    
     # Create output structure matching the input
     if isinstance(data, dict) and 'value' in data:
         output_data = data.copy()
@@ -293,6 +433,7 @@ def clean_json_data(json_file_path, output_file_path=None):
         "initial_count": initial_count,
         "final_count": len(filtered_records),
         "removed_count": removed_count,
+        "normalized_count": normalized_count,
         "excluded_breakdown": excluded_records
     }, rescrape_combos
 
@@ -458,101 +599,133 @@ def rescrape_if_needed(rescrape_combos, auto=False):
             print(f"  python scripts/submit_manufacturer_job.py --manufacturer-codes {mfr_code} --start-month {month_code} --end-month {month_code}")
         return False
 
-def export_json_to_csv(json_file_path, csv_file_path):
-    """
-    Export JSON data to CSV format, ensuring the reference URL is included.
+def export_json_to_csv(json_file, csv_file, model_mapping=None):
+    """Export JSON data to CSV format, with model normalization."""
+    print(f"Exporting JSON data from {json_file} to CSV at {csv_file}")
     
-    Args:
-        json_file_path: Path to the JSON file
-        csv_file_path: Path to the CSV file to create
-    """
-    print(f"Exporting JSON data from {json_file_path} to CSV at {csv_file_path}")
+    if model_mapping is None:
+        model_mapping = load_model_mapping()
+        if model_mapping:
+            print(f"Loaded mapping for {len(model_mapping['variant_to_canonical'])} model variants")
     
     try:
-        # Read the JSON data
-        with open(json_file_path, 'r', encoding='utf-8') as f:
+        with open(json_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        
-        # Handle different JSON structures
-        if isinstance(data, dict) and 'value' in data:
-            manufacturers = data['value']
-        elif isinstance(data, list):
-            manufacturers = data
-        else:
-            print("Unexpected JSON structure. Expected list or dict with 'value' key.")
-            return False
-        
-        # Flatten the data structure
-        rows = []
-        for mfr in manufacturers:
-            # Check if it's a nested structure with a models array
-            if 'models' in mfr and isinstance(mfr.get('models'), list):
-                # Extract manufacturer data
-                manufacturer_name = mfr.get('manufacturer_name', '')
-                month = mfr.get('month', '')
-                year = mfr.get('year', '')
-                total_units_sold = mfr.get('total_units_sold', '')
-                reference_url = mfr.get('reference', '')
-                
-                # Extract each model
-                for model in mfr.get('models', []):
-                    model_name = model.get('model_name', '')
-                    units_sold = model.get('units_sold', 0)
-                    
-                    # Create a row for this model
-                    row = {
-                        'manufacturer_name': manufacturer_name,
-                        'month': month,
-                        'year': year,
-                        'total_units_sold': total_units_sold,
-                        'model_name': model_name,
-                        'model_units_sold': units_sold,
-                        'url': reference_url  # Make sure URL is included
-                    }
-                    rows.append(row)
-            else:
-                # It's a flat structure - just add the record as is
-                row = {k: v for k, v in mfr.items()}
-                
-                # Make sure there's a URL field
-                if 'reference' in mfr and 'url' not in row:
-                    row['url'] = mfr['reference']
-                
-                rows.append(row)
-        
-        # Write to CSV
-        if rows:
-            with open(csv_file_path, 'w', newline='', encoding='utf-8') as f:
-                # Determine fieldnames - make sure url is included
-                all_fields = set()
-                for row in rows:
-                    all_fields.update(row.keys())
-                
-                # Ensure key fields are in a good order
-                priority_fields = ['manufacturer_name', 'model_name', 'month', 'year', 
-                                  'total_units_sold', 'model_units_sold', 'units_sold', 'url']
-                
-                # Create an ordered list of fields
-                fieldnames = []
-                for field in priority_fields:
-                    if field in all_fields:
-                        fieldnames.append(field)
-                        all_fields.remove(field)
-                
-                # Add any remaining fields
-                fieldnames.extend(sorted(all_fields))
-                
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(rows)
-            print(f"Successfully exported {len(rows)} records to {csv_file_path}")
-            return True
-        else:
-            print("No data to export")
-            return False
-            
     except Exception as e:
-        print(f"Error exporting JSON to CSV: {e}")
+        print(f"Error loading JSON file: {str(e)}")
+        return False
+    
+    # Check the JSON structure - data might be in a 'value' field in the root object
+    if isinstance(data, dict) and 'value' in data and isinstance(data['value'], list):
+        print("Found 'value' field in JSON structure, using it as data source")
+        manufacturers = data['value']
+    elif isinstance(data, list):
+        manufacturers = data
+    else:
+        print(f"Error: Unexpected JSON structure. Root should be a list or have a 'value' list field.")
+        return False
+    
+    all_rows = []
+    
+    for manufacturer in manufacturers:
+        # Check if manufacturer is a dictionary
+        if not isinstance(manufacturer, dict):
+            print(f"Error: Manufacturer data is not a dictionary: {manufacturer}")
+            continue
+            
+        manufacturer_name = manufacturer.get('manufacturer') or manufacturer.get('manufacturer_name')
+        manufacturer_code = manufacturer.get('code') or manufacturer.get('manufacturer_code')
+        reference_url = manufacturer.get('reference', '')
+        
+        # Handle nested structure (with 'models' array)
+        if 'models' in manufacturer:
+            for model in manufacturer['models']:
+                model_name = model.get('model_name', '')
+                
+                # Keep track of the original model name before normalization
+                original_model_name = model_name
+                
+                # Normalize model name if mapping is available
+                normalized_model_name = normalize_model_name(model_name, manufacturer_code, model_mapping)
+                if normalized_model_name != model_name:
+                    # This is a NIO model that needs conversion
+                    print(f"  Converting '{model_name}' to '{normalized_model_name}'")
+                    model_name = normalized_model_name
+                
+                # Handle entries differently based on structure
+                if 'entries' in model:
+                    # Standard entries with month/year/value structure
+                    for entry in model.get('entries', []):
+                        month = entry.get('month')
+                        year = entry.get('year')
+                        value = entry.get('value')
+                        
+                        row = {
+                            'manufacturer': manufacturer_name,
+                            'model': model_name,
+                            'original_model': original_model_name,
+                            'month': month,
+                            'year': year,
+                            'units': value,
+                            'code': manufacturer_code,
+                            'url': reference_url
+                        }
+                        all_rows.append(row)
+                elif 'units_sold' in model:
+                    # Alternative structure with direct units_sold value
+                    row = {
+                        'manufacturer': manufacturer_name,
+                        'model': model_name,
+                        'original_model': original_model_name,
+                        'units': model.get('units_sold'),
+                        'code': manufacturer_code,
+                        'url': reference_url
+                    }
+                    all_rows.append(row)
+        
+        # Handle flat structure (direct entries at manufacturer level)
+        elif 'entries' in manufacturer:
+            for entry in manufacturer.get('entries', []):
+                model_name = entry.get('model_name', '')
+                
+                # Keep track of the original model name before normalization
+                original_model_name = model_name
+                
+                # Normalize model name if mapping is available
+                normalized_model_name = normalize_model_name(model_name, manufacturer_code, model_mapping)
+                if normalized_model_name != model_name:
+                    # This is a NIO model that needs conversion
+                    print(f"  Converting '{model_name}' to '{normalized_model_name}'")
+                    model_name = normalized_model_name
+                
+                month = entry.get('month')
+                year = entry.get('year')
+                value = entry.get('value')
+                
+                row = {
+                    'manufacturer': manufacturer_name,
+                    'model': model_name,
+                    'original_model': original_model_name,
+                    'month': month,
+                    'year': year,
+                    'units': value,
+                    'code': manufacturer_code,
+                    'url': reference_url
+                }
+                all_rows.append(row)
+    
+    # Write to CSV
+    if all_rows:
+        try:
+            df = pd.DataFrame(all_rows)
+            df.to_csv(csv_file, index=False, encoding='utf-8-sig')
+            print(f"Successfully exported {len(all_rows)} rows to {csv_file}")
+            return True
+        except Exception as e:
+            print(f"Error exporting JSON to CSV: {str(e)}")
+            return False
+    else:
+        print("No data to export to CSV")
         return False
 
 def main():
