@@ -121,7 +121,7 @@ async def run_scraper_job(job_id: str, request: ScraperRequest):
 
         except Exception as scrape_error:
             job_logger.error(f"Scraping failed: {str(scrape_error)}")
-            job_logger.error(f"Traceback: {traceback.format_exc()}")
+            job_logger.error("Traceback: " + traceback.format_exc())
             raise
 
         # Store results
@@ -639,7 +639,7 @@ async def get_job_progress(job_id: int) -> Dict:
         print(f"Error in get_job_progress:")
         print(f"Error type: {type(e)}")
         print(f"Error message: {str(e)}")
-        print(f"Traceback: {traceback.format_exc()}")
+        print("Traceback: " + traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/jobs/manufacturer")
@@ -718,7 +718,7 @@ async def create_manufacturer_job(request: ManufacturerScrapeRequest) -> Dict:
         
     except Exception as e:
         print(f"Error in create_manufacturer_job: {str(e)}")
-        print(f"Traceback: {traceback.format_exc()}")
+        print("Traceback: " + traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/test")
@@ -774,8 +774,7 @@ async def monitor_job_status(job_id: int):
                     Failed: {url_stats['failed']}
                     
                     Failed URLs:
-                    {"".join([f'- {url}\n' for url in failed_urls]) if failed_urls else 'None'}
-                    """
+                    """ + ("".join([f'- {url}\n' for url in failed_urls]) if failed_urls else 'None')
                     
                     try:
                         # Add job log with detailed summary

@@ -42,7 +42,7 @@ except Exception as e:
     print(f"ERROR initializing Supabase:")
     print(f"Error type: {type(e)}")
     print(f"Error message: {str(e)}")
-    print(f"Traceback: {traceback.format_exc()}")
+    print("Traceback: " + traceback.format_exc())
     raise
 
 # Add at the start of the file after client initialization
@@ -174,7 +174,7 @@ async def get_job_status(job_id: int) -> Dict:
         print(f"ERROR in get_job_status:")
         print(f"Error type: {type(e)}")
         print(f"Error message: {str(e)}")
-        print(f"Traceback: {traceback.format_exc()}")
+        print("Traceback: " + traceback.format_exc())
         raise
 
 async def update_job_status(job_id: int, status: str):
@@ -232,4 +232,6 @@ async def add_job_log(job_id: int, message: str, level: str = 'INFO'):
                 job_url_id=first_url['id'],
                 message=f"[JOB LOG] {message}",
                 level=level
-            ) 
+            )
+        print(f"Error creating scrape job: {str(e)}")
+        print("Traceback: " + traceback.format_exc()) 
