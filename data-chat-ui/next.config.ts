@@ -26,7 +26,13 @@ const nextConfig: NextConfig = {
   },
   // Explicitly define webpack configuration to ensure path aliases work
   webpack: (config) => {
-    // Add your webpack config here if needed
+    // Ensure path aliases are resolved correctly
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@': require('path').resolve(__dirname, 'src'),
+    };
+    
     return config;
   }
 };

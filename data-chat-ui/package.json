@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "bash ./setup.sh",
+    "prebuild": "node vercel-build.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

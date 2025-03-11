@@ -1,0 +1,12 @@
+# Ignore everything outside of data-chat-ui
+/src/api
+/src/db
+/src/scrapers
+/scripts
+/*.ipynb
+/*.md
+/*.py
+/.venv
+
+# Except for the Next.js project files
+!data-chat-ui/ 
