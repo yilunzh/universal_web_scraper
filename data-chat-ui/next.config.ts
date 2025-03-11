@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
+  // Configure environment variables for builds that don't have them
+  env: {
+    NEXT_PUBLIC_SQL_API_URL: process.env.NEXT_PUBLIC_SQL_API_URL || 'https://your-render-backend-url.onrender.com',
+  },
   // Configure domain rewrites if needed
   async rewrites() {
     // Only apply rewrites if the API URL is defined
