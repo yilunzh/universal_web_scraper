@@ -209,5 +209,5 @@ async def execute_sql_query(
             return [], [], f"Error executing RPC: {str(e)}. Query: {formatted_query[:100]}{'...' if len(formatted_query) > 100 else ''}"
     
     except Exception as e:
-        error_message = f"Error executing query: {str(e)}. Query: {query[:100]}{'...' if len(query) > 100 else ''}\n{traceback.format_exc()}"
+        error_message = f"Error executing query: {str(e)}. Query: {query[:100]}{'...' if len(query) > 100 else ''}" + f"\n{traceback.format_exc()}"
         return [], [], error_message

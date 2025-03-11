@@ -133,7 +133,7 @@ async def run_scraper_job(job_id: str, request: ScraperRequest):
         job_logger.info("Job completed successfully")
 
     except Exception as e:
-        error_msg = f"Job failed: {str(e)}\nTraceback: {traceback.format_exc()}"
+        error_msg = f"Job failed: {str(e)}\n" + f"Traceback: {traceback.format_exc()}"
         job_logger.error(error_msg)
         job.status = JobStatus.FAILED
         job.error = error_msg
