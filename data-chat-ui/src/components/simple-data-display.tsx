@@ -24,16 +24,11 @@ export default function SimpleDataDisplay({
   // Get the first row data
   const firstRow = data[0];
   
-  // Use column_order if provided, otherwise use keys from data
+  // 1. Use explicit column_order if provided
+  // 2. Use Object.keys() from data which preserves insertion order in modern JS/TS
   let columns = column_order || Object.keys(firstRow);
   
-  // Special handling for market share query to match SQL column order if no column_order provided
-  if (!column_order && 
-      columns.includes('manufacturer_name') && 
-      columns.includes('total_model_units_sold') && 
-      columns.includes('market_share')) {
-    columns = ['manufacturer_name', 'total_model_units_sold', 'market_share'];
-  }
+  // Remove all special case handling as it won't be necessary with proper column order preservation
   
   return (
     <div className="overflow-x-auto">

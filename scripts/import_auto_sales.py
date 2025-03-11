@@ -5,12 +5,52 @@ import sys
 from pathlib import Path
 import pandas as pd
 import os
+import re
 
 # Add the project root to Python path
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
 from src.utils.import_data import import_auto_sales_data_to_supabase
+
+def extract_manufacturer_code_from_url(url):
+    """
+    Extract manufacturer code from URL.
+    Expected format: http://www.myhomeok.com/xiaoliang/changshang/{manufacturer_code}_{month_code}.htm
+    """
+    if not url or not isinstance(url, str):
+        return None
+    
+    # Try several regex patterns to extract the code
+    patterns = [
+        r'/changshang/(\d+)_\d+\.htm',  # matches /changshang/24_31.htm
+        r'/manufacturer/(\d+)/',        # matches /manufacturer/24/
+        r'manufacturer=(\d+)',          # matches manufacturer=24
+        r'manufacturer[/_-](\d+)',      # matches manufacturer_24 or manufacturer-24
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    
+    print(f"Could not extract manufacturer code from URL: {url}")
+    return None
+
+def extract_month_code_from_url(url):
+    """
+    Extract month code from URL.
+    Expected format: http://www.myhomeok.com/xiaoliang/changshang/{manufacturer_code}_{month_code}.htm
+    """
+    if not url or not isinstance(url, str):
+        return None
+    
+    # Try regex pattern to extract the month code
+    match = re.search(r'/changshang/\d+_(\d+)\.htm', url)
+    if match:
+        return match.group(1)
+    
+    return None
 
 async def main():
     parser = argparse.ArgumentParser(description="Import auto sales data from CSV to Supabase")
@@ -40,6 +80,11 @@ async def main():
         "--month-codes",
         nargs='+',
         help="Specific month codes to import/update (e.g., '86 87 88' or '86,87,88'). If not provided, all months will be processed."
+    )
+    parser.add_argument(
+        "--manufacturer-codes",
+        nargs='+',
+        help="Specific manufacturer codes to import/update (e.g., '1 2 3' or '1,2,3'). If not provided, all manufacturers will be processed."
     )
     parser.add_argument(
         "--input-file",
@@ -122,6 +167,19 @@ async def main():
         for _, row in relevant_months.iterrows():
             print(f"  Code {row[month_mapping_column]}: {row['month']}/{row['year']}")
     
+    # Process manufacturer codes if provided
+    manufacturer_codes = []
+    if args.manufacturer_codes:
+        # Process the list of manufacturer codes
+        for code_arg in args.manufacturer_codes:
+            # Handle comma-separated values
+            if ',' in code_arg:
+                manufacturer_codes.extend([code.strip() for code in code_arg.split(',') if code.strip()])
+            else:
+                if code_arg.strip():
+                    manufacturer_codes.append(code_arg.strip())
+        print(f"Processing specified manufacturer codes: {', '.join(manufacturer_codes)}")
+    
     # Supabase import (if --csv-file is provided)
     if args.csv_file:
         # Read the CSV file into a DataFrame
@@ -131,41 +189,100 @@ async def main():
         # Check column names
         print(f"Available columns: {input_data.columns.tolist()}")
         
+        # Apply filters sequentially if specified
+        filtered_data = input_data.copy()
+        
         # Filter by month codes if specified
         if month_codes and len(relevant_months) > 0:
             print(f"Filtering data for month codes: {', '.join(month_codes)}")
             
             # Try different strategies to filter
             # Strategy 1: If month_year_code exists directly
-            if 'month_year_code' in input_data.columns:
-                filtered_data = input_data[input_data['month_year_code'].astype(str).isin(month_codes)]
+            if 'month_year_code' in filtered_data.columns:
+                filtered_data = filtered_data[filtered_data['month_year_code'].astype(str).isin(month_codes)]
             # Strategy 2: If separate month and year columns exist
-            elif 'month' in input_data.columns and 'year' in input_data.columns:
+            elif 'month' in filtered_data.columns and 'year' in filtered_data.columns:
                 # Create a list of (month, year) tuples from the relevant_months
                 month_year_pairs = list(zip(relevant_months['month'], relevant_months['year']))
                 
                 # Create a mask for matching rows
                 mask = False
                 for month, year in month_year_pairs:
-                    mask = mask | ((input_data['month'] == month) & (input_data['year'] == year))
+                    mask = mask | ((filtered_data['month'] == month) & (filtered_data['year'] == year))
                 
-                filtered_data = input_data[mask]
+                filtered_data = filtered_data[mask]
+            # Strategy 3: Extract month code from URL
+            elif 'url' in filtered_data.columns:
+                print("Extracting month codes from URL column...")
+                
+                # Add a new column with extracted month codes
+                filtered_data['extracted_month_code'] = filtered_data['url'].apply(extract_month_code_from_url)
+                
+                # Print a sample of extracted codes for debugging
+                print("Sample of extracted month codes:")
+                sample_urls = filtered_data.head(5)['url'].tolist()
+                for url in sample_urls:
+                    print(f"  URL: {url} → Month Code: {extract_month_code_from_url(url)}")
+                
+                # Count how many codes were successfully extracted
+                extracted_count = filtered_data['extracted_month_code'].count()
+                print(f"Successfully extracted month codes from {extracted_count} of {len(filtered_data)} records")
+                
+                # Filter based on the extracted codes
+                filtered_data = filtered_data[filtered_data['extracted_month_code'].isin(month_codes)]
+                print(f"Found {len(filtered_data)} records with matching month codes in URLs")
             else:
-                print("Could not find appropriate columns for filtering")
+                print("Could not find appropriate columns for month filtering")
                 return
                 
-            print(f"After filtering: {len(filtered_data)} records")
+            print(f"After month filtering: {len(filtered_data)} records")
+        
+        # Filter by manufacturer codes if specified
+        if manufacturer_codes:
+            print(f"Filtering data for manufacturer codes: {', '.join(manufacturer_codes)}")
             
-            # Save filtered data to a temporary file for Supabase import
-            temp_file = f"{args.csv_file}.filtered.csv"
-            filtered_data.to_csv(temp_file, index=False)
-            print(f"Saved filtered data to {temp_file} for import")
+            # Check which columns might contain manufacturer codes
+            if 'manufacturer_code' in filtered_data.columns:
+                filtered_data = filtered_data[filtered_data['manufacturer_code'].astype(str).isin(manufacturer_codes)]
+            elif 'code' in filtered_data.columns:
+                filtered_data = filtered_data[filtered_data['code'].astype(str).isin(manufacturer_codes)]
+            elif 'url' in filtered_data.columns:
+                # Try to extract manufacturer code from URL
+                print("Extracting manufacturer codes from URL column...")
+                
+                # Add a new column with extracted manufacturer codes
+                filtered_data['extracted_mfr_code'] = filtered_data['url'].apply(extract_manufacturer_code_from_url)
+                
+                # Print a sample of extracted codes for debugging
+                print("Sample of extracted manufacturer codes:")
+                sample_urls = filtered_data.head(5)['url'].tolist()
+                for url in sample_urls:
+                    print(f"  URL: {url} → Code: {extract_manufacturer_code_from_url(url)}")
+                
+                # Count how many codes were successfully extracted
+                extracted_count = filtered_data['extracted_mfr_code'].count()
+                print(f"Successfully extracted codes from {extracted_count} of {len(filtered_data)} records")
+                
+                # Filter based on the extracted codes
+                filtered_data = filtered_data[filtered_data['extracted_mfr_code'].isin(manufacturer_codes)]
+                print(f"Found {len(filtered_data)} records with matching manufacturer codes in URLs")
+            else:
+                print("Could not find manufacturer_code, code, or url column for filtering")
+                return
+                
+            print(f"After manufacturer filtering: {len(filtered_data)} records")
             
-            # Use the filtered file for Supabase import
-            csv_file_path = temp_file
-        else:
-            # Use the original file if no filtering
-            csv_file_path = args.csv_file
+        if len(filtered_data) == 0:
+            print("No records match the filter criteria! Aborting import.")
+            return
+        
+        # Save filtered data to a temporary file for Supabase import
+        temp_file = f"{args.csv_file}.filtered.csv"
+        filtered_data.to_csv(temp_file, index=False)
+        print(f"Saved filtered data ({len(filtered_data)} records) to {temp_file} for import")
+        
+        # Use the filtered file for Supabase import
+        csv_file_path = temp_file
         
         # Run the import process with upsert by default
         print(f"Importing data to Supabase...")
@@ -177,7 +294,7 @@ async def main():
         )
         
         # Clean up temporary file if it was created
-        if month_codes and os.path.exists(temp_file):
+        if os.path.exists(temp_file):
             os.remove(temp_file)
             print(f"Removed temporary file {temp_file}")
         

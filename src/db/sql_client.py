@@ -96,12 +96,17 @@ async def execute_sql_query(
                     query_parts = formatted_query.lower().split('select')
                     if len(query_parts) > 1:
                         # Use the last SELECT statement for column extraction
-                        select_part = 'select' + query_parts[-1]
-                        if 'from' in select_part:
-                            select_part = select_part.split('from')[0].strip()
-                            select_part = select_part.replace('select', '', 1).strip()
+                        last_select_part = 'select' + query_parts[-1]
+                        
+                        # Extract between SELECT and FROM (or GROUP BY if no FROM)
+                        if 'from' in last_select_part:
+                            select_part = last_select_part.split('from')[0].strip()
+                        elif 'group by' in last_select_part:
+                            select_part = last_select_part.split('group by')[0].strip()
                         else:
-                            select_part = ""
+                            select_part = last_select_part.strip()
+                        
+                        select_part = select_part.replace('select', '', 1).strip()
                     else:
                         select_part = ""
                 else:
@@ -115,17 +120,28 @@ async def execute_sql_query(
                     column_parts = []
                     current_part = ""
                     paren_count = 0
+                    quote_type = None  # Track quote type (' or ")
                     
-                    # Parse the SELECT part to handle parentheses correctly
+                    # Parse the SELECT part to handle parentheses and quotes correctly
                     for char in select_part:
-                        if char == ',' and paren_count == 0:
+                        # Handle comma separators (only outside parentheses and quotes)
+                        if char == ',' and paren_count == 0 and quote_type is None:
                             column_parts.append(current_part.strip())
                             current_part = ""
                         else:
-                            if char == '(':
+                            # Track parentheses depth
+                            if char == '(' and quote_type is None:
                                 paren_count += 1
-                            elif char == ')':
+                            elif char == ')' and quote_type is None:
                                 paren_count -= 1
+                            # Track quote state
+                            elif char == "'" and quote_type is None:
+                                quote_type = "'"
+                            elif char == '"' and quote_type is None:
+                                quote_type = '"'
+                            elif char == quote_type:
+                                quote_type = None
+                                
                             current_part += char
                     
                     if current_part:
@@ -133,15 +149,29 @@ async def execute_sql_query(
                     
                     # Extract column names or aliases
                     for part in column_parts:
+                        part_lower = part.lower()
                         # If there's an AS keyword, get the alias
-                        if ' as ' in part.lower():
-                            alias = part.lower().split(' as ')[-1].strip()
+                        if ' as ' in part_lower:
+                            alias_part = part_lower.split(' as ')[-1].strip()
+                            # Handle quoted identifiers
+                            if (alias_part.startswith('"') and alias_part.endswith('"')) or \
+                               (alias_part.startswith("'") and alias_part.endswith("'")):
+                                # Extract the actual name without quotes
+                                alias = alias_part[1:-1]
+                            else:
+                                alias = alias_part
                             columns.append(alias)
                         # For simple columns without AS
                         else:
                             # Just take the last part after any dots (table.column)
                             col_name = part.split('.')[-1].strip()
+                            # Handle quoted identifiers
+                            if (col_name.startswith('"') and col_name.endswith('"')) or \
+                               (col_name.startswith("'") and col_name.endswith("'")):
+                                col_name = col_name[1:-1]
                             columns.append(col_name)
+                    
+                    print(f"Extracted columns: {columns}")
             except Exception as e:
                 # If column extraction fails, fall back to keys from data
                 print(f"Column extraction failed: {str(e)}")
@@ -149,6 +179,25 @@ async def execute_sql_query(
             # If column extraction failed or is incomplete, use data keys as fallback
             if not columns:
                 columns = list(data[0].keys()) if data and len(data) > 0 else []
+            
+            # IMPORTANT: If we extracted column order but data doesn't match these columns,
+            # we need to ensure the data maintains the correct order in JavaScript objects
+            if data and len(data) > 0 and columns:
+                # Create ordered data with column order preserved
+                ordered_data = []
+                for row in data:
+                    # Create a new ordered dictionary for each row
+                    ordered_row = {}
+                    # First add columns we know about in the correct order
+                    for col in columns:
+                        if col in row:
+                            ordered_row[col] = row[col]
+                    # Then add any other columns we didn't recognize
+                    for key, value in row.items():
+                        if key not in ordered_row:
+                            ordered_row[key] = value
+                    ordered_data.append(ordered_row)
+                data = ordered_data
                 
             print(f"Query returned {len(data)} rows")
             return data, columns, None

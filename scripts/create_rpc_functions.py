@@ -159,10 +159,15 @@ async def main():
     AS $$
     DECLARE
         result jsonb;
+        normalized_sql text;
     BEGIN
-        -- Security check: Only allow SELECT statements
-        IF NOT (lower(sql) LIKE 'select%') THEN
-            RAISE EXCEPTION 'Only SELECT statements are allowed';
+        -- Convert to lowercase and remove extra whitespace for consistent checking
+        normalized_sql := lower(regexp_replace(sql, E'\\s+', ' ', 'g'));
+        
+        -- Security check: Block any statements that could modify the database
+        -- Check for keywords that modify data or database structure
+        IF normalized_sql ~* '\\m(insert|update|delete|drop|alter|create|truncate|grant|revoke|vacuum|analyze|reindex|discard|lock|prepare|execute|deallocate|declare|explain\\s+analyze)\\M' THEN
+            RAISE EXCEPTION 'Only read-only queries are allowed. Detected potential data modification keywords.';
         END IF;
         
         -- Execute the query and convert results to JSON

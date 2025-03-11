@@ -38,15 +38,6 @@ export default function DataDisplay({ data, displayType, column_order }: DataDis
   // Use column_order if provided, otherwise use keys from the data
   let columns = column_order || Object.keys(firstRow);
   
-  // If it's the specific columns from the user's market share query,
-  // force the correct order - this is a special case for this particular query pattern
-  if (!column_order && 
-      columns.includes('manufacturer_name') && 
-      columns.includes('total_model_units_sold') && 
-      columns.includes('market_share')) {
-    columns = ['manufacturer_name', 'total_model_units_sold', 'market_share'];
-  }
-
   // Render chart based on display type
   const renderChart = () => {
     // Bar Chart
