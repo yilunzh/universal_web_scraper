@@ -41,52 +41,6 @@ def load_valid_manufacturers():
 # Global variable to store valid manufacturers
 VALID_MANUFACTURERS = load_valid_manufacturers()
 
-def normalize_model_name(model_name, manufacturer_name):
-    """
-    Normalize model names to ensure consistent naming conventions.
-    
-    Args:
-        model_name: The model name to normalize
-        manufacturer_name: The manufacturer name to check against
-        
-    Returns:
-        str: Normalized model name
-    """
-    if not model_name or not manufacturer_name:
-        return model_name
-    
-    # Convert to strings
-    model_str = str(model_name).strip()
-    mfr_str = str(manufacturer_name).strip()
-    
-    # Remove manufacturer name from beginning if it's prefixed
-    if model_str.lower().startswith(mfr_str.lower()):
-        model_str = model_str[len(mfr_str):].strip()
-    
-    # Remove non-Latin characters at the beginning (e.g., "特斯拉")
-    # This is a simplistic approach; a more robust solution would use proper character detection
-    latin_start = 0
-    for i, char in enumerate(model_str):
-        if ord(char) < 0x3000:  # Basic check for Latin vs CJK characters
-            latin_start = i
-            break
-    
-    if latin_start > 0:
-        model_str = model_str[latin_start:].strip()
-    
-    # Normalize spaces and fix common formatting issues
-    model_str = re.sub(r'\s+', ' ', model_str)
-    
-    # Normalize common variant naming patterns (MODEL 3 -> Model 3, Model-3 -> Model 3)
-    model_str = re.sub(r'(\w+)[- ](\d+)', r'\1 \2', model_str)
-    
-    # Remove redundant qualifiers
-    redundant_terms = ["款", "型", "系列", "系", "纯电", "版"]
-    for term in redundant_terms:
-        model_str = model_str.replace(term, "").strip()
-    
-    return model_str.strip()
-
 def check_model_name_consistency(records):
     """
     Check for inconsistent model naming conventions across months.
@@ -123,9 +77,9 @@ def check_model_name_consistency(records):
     model_groups = defaultdict(list)
     for mfr, models in manufacturer_models.items():
         for model in models:
-            normalized = normalize_model_name(model, mfr)
-            if normalized:  # Skip empty strings
-                model_groups[(mfr, normalized)].append(model)
+            # Use the model name directly without normalization
+            if model:  # Skip empty strings
+                model_groups[(mfr, model)].append(model)
     
     # Find groups with inconsistent naming
     inconsistencies = []
@@ -162,6 +116,7 @@ def check_missing_months(records):
     """
     # Group sales by manufacturer, model, and month/year
     sales_by_mfr_model = defaultdict(dict)
+    reference_by_mfr_model_month = {}  # Store reference URLs
     
     # Process flat records
     for record in records:
@@ -178,6 +133,16 @@ def check_missing_months(records):
                 sales = float(record['units_sold']) if record['units_sold'] else 0
             
             sales_by_mfr_model[(mfr, model)][month_year] = sales
+            
+            # Store reference URL
+            ref_url = None
+            if 'reference' in record and record['reference']:
+                ref_url = record['reference']
+            elif 'url' in record and record['url']:
+                ref_url = record['url']
+                
+            if ref_url:
+                reference_by_mfr_model_month[(mfr, model, month_year)] = ref_url
     
     # Process nested records (manufacturer with models array)
     for record in records:
@@ -187,6 +152,13 @@ def check_missing_months(records):
             # Only process if we have month/year at the manufacturer level
             if 'month' in record and 'year' in record:
                 month_year = (int(record['year']), int(record['month']))
+                
+                # Get reference URL from top-level record
+                ref_url = None
+                if 'reference' in record and record['reference']:
+                    ref_url = record['reference']
+                elif 'url' in record and record['url']:
+                    ref_url = record['url']
                 
                 for model_data in record['models']:
                     if 'model_name' in model_data:
@@ -200,6 +172,10 @@ def check_missing_months(records):
                             sales = float(model_data['sales']) if model_data['sales'] else 0
                         
                         sales_by_mfr_model[(mfr, model)][month_year] = sales
+                        
+                        # Store reference URL
+                        if ref_url:
+                            reference_by_mfr_model_month[(mfr, model, month_year)] = ref_url
     
     # Check for missing months
     missing_month_warnings = []
@@ -227,7 +203,8 @@ def check_missing_months(records):
                 month_diff_next = (next_month[0] - curr_month[0]) * 12 + (next_month[1] - curr_month[1])
                 
                 if 1 <= month_diff_prev <= 2 and 1 <= month_diff_next <= 2:
-                    missing_month_warnings.append({
+                    warning_data = {
+                        'type': 'missing_month',
                         'manufacturer': mfr,
                         'model': model,
                         'suspicious_month': f"{curr_month[1]}/{curr_month[0]}",
@@ -235,7 +212,25 @@ def check_missing_months(records):
                         'previous_sales': month_data[prev_month],
                         'next_month': f"{next_month[1]}/{next_month[0]}",
                         'next_sales': month_data[next_month]
-                    })
+                    }
+                    
+                    # Add reference URLs if available
+                    if (mfr, model, curr_month) in reference_by_mfr_model_month:
+                        warning_data['reference_url'] = reference_by_mfr_model_month[(mfr, model, curr_month)]
+                    else:
+                        warning_data['reference_url'] = "MISSING REFERENCE URL"  # Flag missing URL
+                    
+                    if (mfr, model, prev_month) in reference_by_mfr_model_month:
+                        warning_data['previous_reference_url'] = reference_by_mfr_model_month[(mfr, model, prev_month)]
+                    else:
+                        warning_data['previous_reference_url'] = "MISSING REFERENCE URL"  # Flag missing URL
+                        
+                    if (mfr, model, next_month) in reference_by_mfr_model_month:
+                        warning_data['next_reference_url'] = reference_by_mfr_model_month[(mfr, model, next_month)]
+                    else:
+                        warning_data['next_reference_url'] = "MISSING REFERENCE URL"  # Flag missing URL
+                    
+                    missing_month_warnings.append(warning_data)
     
     return missing_month_warnings
 
@@ -257,7 +252,7 @@ def validate_auto_sales_record(record):
     
     # 3. Check for missing URL
     if ('url' not in record or not record['url']) and ('reference' not in record or not record['reference']):
-        return False, "Missing URL"
+        return False, "Missing required reference URL"
     
     # 4. Check if manufacturer name exists in the manufacturer_code.csv
     if 'manufacturer_name' in record:
@@ -293,7 +288,8 @@ def filter_valid_records(records, detailed_logs=False):
             "duplicate": 0,
             "inconsistent_model_naming": 0,
             "missing_month_data": 0,
-            "unknown_manufacturer": 0
+            "unknown_manufacturer": 0,
+            "other": 0
         }
     }
     
@@ -321,10 +317,12 @@ def filter_valid_records(records, detailed_logs=False):
                 stats["reasons"]["summary_row"] += 1
             elif "Problematic model" in reason:
                 stats["reasons"]["problematic_model"] += 1
-            elif "Missing URL" in reason:
+            elif "Missing required reference URL" in reason:
                 stats["reasons"]["missing_url"] += 1
             elif "Unknown manufacturer" in reason:
                 stats["reasons"]["unknown_manufacturer"] += 1
+            else:
+                stats["reasons"]["other"] += 1
                 
             if detailed_logs:
                 print(f"Invalid record: {reason}")
@@ -422,8 +420,8 @@ def validate_json_data(json_file_path):
         problems = []
         
         # Check for missing URL
-        if 'reference' not in record or not record['reference']:
-            problems.append("Missing URL")
+        if ('url' not in record or not record['url']) and ('reference' not in record or not record['reference']):
+            problems.append("Missing required reference URL")
             results["empty_url_problems"] += 1
         
         # Check for problematic manufacturer name
@@ -507,14 +505,25 @@ def validate_json_data(json_file_path):
         results["missing_month_data"] = len(missing_month_warnings)
         for warning in missing_month_warnings:
             results["problems_found"] += 1
-            results["problematic_records"].append({
+            # Create a missing month warning record with all the fields from warning
+            missing_month_record = {
                 "type": "missing_month",
                 "manufacturer": warning['manufacturer'],
                 "model": warning['model'],
                 "suspicious_month": warning['suspicious_month'],
                 "previous_month": warning['previous_month'],
                 "next_month": warning['next_month']
-            })
+            }
+            
+            # Add reference URLs
+            if 'reference_url' in warning:
+                missing_month_record['reference_url'] = warning['reference_url']
+            if 'previous_reference_url' in warning:
+                missing_month_record['previous_reference_url'] = warning['previous_reference_url']
+            if 'next_reference_url' in warning:
+                missing_month_record['next_reference_url'] = warning['next_reference_url']
+                
+            results["problematic_records"].append(missing_month_record)
     
     results["is_valid"] = results["problems_found"] == 0
     results["status"] = "valid" if results["is_valid"] else "invalid"
@@ -582,7 +591,7 @@ def main():
                 print(f"  - Manufacturer problems: {json_results['manufacturer_problems']}")
                 print(f"  - Unknown manufacturers: {json_results['unknown_manufacturer_problems']}")
                 print(f"  - Model problems: {json_results['model_problems']}")
-                print(f"  - Empty URL problems: {json_results['empty_url_problems']}")
+                print(f"  - Empty URL problems: {json_results['empty_url_problems']} (CRITICAL: Reference URLs are mandatory)")
                 print(f"  - Summary row problems: {json_results['summary_row_problems']}")
                 print(f"  - Duplicate problems: {json_results['duplicate_problems']}")
                 print(f"  - Inconsistent model naming: {json_results['inconsistent_model_naming']}")
@@ -598,6 +607,11 @@ def main():
                         print(f"  Potential missing data for {record['manufacturer']} {record['model']}:")
                         print(f"    Suspicious month with zero sales: {record['suspicious_month']}")
                         print(f"    Has sales in previous month {record['previous_month']} and next month {record['next_month']}")
+                        
+                        # Defensively display reference URLs with get() method to avoid KeyError
+                        print(f"    Suspicious month reference URL: {record.get('reference_url', 'N/A')}")
+                        print(f"    Previous month reference URL: {record.get('previous_reference_url', 'N/A')}")
+                        print(f"    Next month reference URL: {record.get('next_reference_url', 'N/A')}")
                     else:
                         print(f"  Record {record.get('index', 'unknown')}: {record.get('record', {})}")
                         if 'problems' in record:
