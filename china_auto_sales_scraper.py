@@ -1325,7 +1325,8 @@ def generate_summary(job_name, total_urls, successful_urls, failed_urls):
                     Success rate: {success_rate:.1f}%
                     
                     Failed URLs ({len(failed_urls)}): [
-                    {"".join(f"    {url}\n" for url in failed_urls)}]
+                    {"\n".join([f"    {url}" for url in failed_urls])}
+                    ]
                     """
     return summary
 

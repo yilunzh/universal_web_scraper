@@ -774,7 +774,7 @@ async def monitor_job_status(job_id: int):
                     Failed: {url_stats['failed']}
                     
                     Failed URLs:
-                    {chr(10).join(f'- {url}' for url in failed_urls) if failed_urls else 'None'}
+                    {"".join([f'- {url}\n' for url in failed_urls]) if failed_urls else 'None'}
                     """
                     
                     try:
