@@ -307,7 +307,8 @@ async def start_job(job_id: int) -> Dict:
                     Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
                     
                     Failed URLs ({len(failed_url_list)}): [
-                    {"".join(f"    {url}\n" for url in failed_url_list)}]
+                    {"\n".join([f"    {url}" for url in failed_url_list])}
+                    ]
                     """
                     
                     # Save summary to output directory
