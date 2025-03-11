@@ -281,35 +281,24 @@ async def start_job(job_id: int) -> Dict:
                         'failed': len(failed_urls),
                     }
                     
-                    # Generate final summary with actual failed URLs
-                    failed_url_list = []
-                    for u in failed_urls:
-                        if isinstance(u, dict):
-                            print(f"Processing failed URL dict: {u.keys()}")
-                            if 'url' in u:
-                                failed_url_list.append(u['url'])
-                                print(f"Added URL: {u['url']}")
-                            else:
-                                print(f"No 'url' key in failed URL: {u}")
-                        else:
-                            print(f"Failed URL not a dict: {type(u)} - {u}")
-                    
-                    # Debug the extracted list
-                    print(f"Extracted {len(failed_url_list)} URLs from {len(failed_urls)} failed URLs")
-                    
-                    # Use the actual number of failed URLs consistently in the summary
-                    summary = f"""
-                    Job Complete: {job_data.get('job_name', 'Unknown Job')}
-                    =====================================
-                    Total URLs processed: {url_stats['total']}
-                    Successfully scraped: {url_stats['completed']}
-                    Failed: {len(failed_url_list)}
-                    Success rate: {(url_stats['completed'] / url_stats['total'] * 100):.1f}%
-                    
-                    Failed URLs ({len(failed_url_list)}): [
-                    {"\n".join([f"    {url}" for url in failed_url_list])}
+                    # Get actual failed URLs and their error messages
+                    failed_urls_with_errors = [
+                        (f"{u['url']} - {u.get('error', 'Unknown error')}", u['error'])
+                        for u in job_data['job_urls'] 
+                        if u['status'] == 'failed'
                     ]
-                    """
+                    
+                    # Generate failed URLs section
+                    failed_section = "".join([f'- {url}\n    Error: {error_msg}\n' for url, error_msg in failed_urls_with_errors]) if failed_urls_with_errors else 'None'
+                    
+                    # Create summary in parts to avoid f-string syntax issues
+                    summary_header = f"Job Summary for {job_data.get('job_name', 'Unknown Job')}"
+                    summary_divider = "====================================="
+                    summary_stats = f"Total URLs: {url_stats['total']}\nSuccessful: {url_stats['completed']}\nFailed: {url_stats['failed']}"
+                    summary_failed_header = "Failed URLs:"
+                    
+                    # Combine all parts with proper formatting
+                    summary = f"{summary_header}\n{summary_divider}\n{summary_stats}\n\n{summary_failed_header}\n{failed_section}"
                     
                     # Save summary to output directory
                     summary_path = OUTPUT_DIR / f"job_{job_id}_summary.txt"
@@ -765,16 +754,17 @@ async def monitor_job_status(job_id: int):
                         if u['status'] == 'failed'
                     ]
                     
-                    # Generate summary report with actual URLs
-                    summary = f"""
-                    Job Summary for {job['job_name']}
-                    =====================================
-                    Total URLs: {url_stats['total']}
-                    Successful: {url_stats['completed']}
-                    Failed: {url_stats['failed']}
+                    # Generate failed URLs section
+                    failed_section = "".join([f'- {url}\n    Error: {error_msg}\n' for url, error_msg in failed_urls_with_errors]) if failed_urls_with_errors else 'None'
                     
-                    Failed URLs:
-                    """ + ("".join([f'- {url}\n' for url in failed_urls]) if failed_urls else 'None')
+                    # Create summary in parts to avoid f-string syntax issues
+                    summary_header = f"Job Summary for {job['job_name']}"
+                    summary_divider = "====================================="
+                    summary_stats = f"Total URLs: {url_stats['total']}\nSuccessful: {url_stats['completed']}\nFailed: {url_stats['failed']}"
+                    summary_failed_header = "Failed URLs:"
+                    
+                    # Combine all parts with proper formatting
+                    summary = f"{summary_header}\n{summary_divider}\n{summary_stats}\n\n{summary_failed_header}\n{failed_section}"
                     
                     try:
                         # Add job log with detailed summary
