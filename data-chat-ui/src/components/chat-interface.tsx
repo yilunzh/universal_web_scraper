@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ChatMessageItem } from '@/components/chat-message';
-import { ChatMessage } from '@/lib/types';
-import { generateId } from '@/lib/utils';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { ChatMessageItem } from './chat-message';
+import { ChatMessage } from '../lib/types';
+import { generateId } from '../lib/utils';
 import { Card } from './ui/card';
 import { Separator } from './ui/separator';
 

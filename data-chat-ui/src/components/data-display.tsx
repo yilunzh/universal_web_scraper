@@ -9,10 +9,10 @@ import {
 import { 
   Table, TableBody, TableCaption, TableCell, 
   TableHead, TableHeader, TableRow 
-} from '@/components/ui/table';
-import { DataDisplayType } from '@/lib/types';
-import { formatChartData, isTimeSeriesData, isCategoricalData } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+} from './ui/table';
+import { DataDisplayType } from '../lib/types';
+import { formatChartData, isTimeSeriesData, isCategoricalData } from '../lib/utils';
+import { Button } from './ui/button';
 import { BarChart2, LineChart as LineChartIcon, PieChart as PieChartIcon, Table as TableIcon } from 'lucide-react';
 
 interface DataDisplayProps {

@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         destination: `${apiUrl}/:path*` // Proxy API requests with proper string interpolation
       }
     ];
+  },
+  // Explicitly define webpack configuration to ensure path aliases work
+  webpack: (config) => {
+    // Add your webpack config here if needed
+    return config;
   }
 };
 
